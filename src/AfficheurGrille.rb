@@ -103,7 +103,7 @@ class AfficheurGrille < Gtk::DrawingArea
 	# Retourne la position virtuelle en x correspondante
 	def getVX(x)
 		if width / @ratio > height
-			return (x - (width - height * @ratio) / 2 + @vY) / @vY
+			return (x - (width - height * @ratio) / 2 - @vY) / @vY
 		else
 			return (x - @vX) / @vX
 		end
@@ -120,7 +120,7 @@ class AfficheurGrille < Gtk::DrawingArea
 	# Retourne la position virtuelle en y correspondante
 	def getVY(y)
 		if height * @ratio > width
-			return (y - (height - width / @ratio) / 2 + @vX) / @vX
+			return (y - (height - width / @ratio) / 2 - @vX) / @vX
 		else
 			return (y - @vY) / @vY
 		end
@@ -170,17 +170,51 @@ class AfficheurGrille < Gtk::DrawingArea
     	y = c.posY()
     	n = c.etiquetteCase()
 
+    	#nord
+    	if c.tabTriangle[0]
+    		cr.move_to(getX(x), getY(y)-scale(0.45))
+  			cr.line_to(getX(x) - scale(0.2), getY(y))
+  			cr.line_to(getX(x) + scale(0.2), getY(y))
+			cr.close_path()
+			cr.fill()
+		end
+		#est
+		if c.tabTriangle[1]
+			cr.move_to(getX(x)+scale(0.45), getY(y))
+	  		cr.line_to(getX(x), getY(y)- scale(0.2))
+	  		cr.line_to(getX(x), getY(y)+ scale(0.2))
+			cr.close_path()
+			cr.fill()
+		end
+		#sud
+		if c.tabTriangle[2]
+			cr.move_to(getX(x), getY(y)+scale(0.45))
+	  		cr.line_to(getX(x) - scale(0.2), getY(y))
+	  		cr.line_to(getX(x) + scale(0.2), getY(y))
+			cr.close_path()
+			cr.fill()
+		end
+		#ouest
+		if c.tabTriangle[3]
+			cr.move_to(getX(x)-scale(0.45), getY(y))
+	  		cr.line_to(getX(x), getY(y)- scale(0.2))
+	  		cr.line_to(getX(x), getY(y)+ scale(0.2))
+			cr.close_path()
+			cr.fill()
+		end
+
+    	# Affichage bordure cercle
     	cr.set_source_rgb(0, 0, 0)
 	    cr.arc(getX(x), getY(y), scale(0.3), 0, 2*Math::PI)
-	    cr.fill
+	    cr.fill()
+	    # Affichage partie balnche cercle
 	    cr.set_source_rgb(1, 1, 1)
 	    cr.arc(getX(x), getY(y), scale(0.28), 0, 2*Math::PI)
-	    cr.fill
+	    cr.fill()
+	    #Affichage numéro
 	    cr.set_source_rgb(0, 0, 0)
 	    cr.move_to(getX(x) - scale(0.14), getY(y) + scale(0.18))
 	    cr.show_text(n.to_s())
-
-	    # TODO Dessin des triangles
     end
 
     # Dessin d'un lien
@@ -199,7 +233,7 @@ class AfficheurGrille < Gtk::DrawingArea
     	cr.set_source_rgb(0, 0, 0)
 	    cr.rectangle(getX(x1)-scale(epaisseur/2), getY(y1), scale(epaisseur), getY(y2)-getY(y1))
 	    cr.rectangle(getX(x1), getY(y1)-scale(epaisseur/2), getX(x2)-getX(x1), scale(epaisseur))
-	    cr.fill
+	    cr.fill()
 
 	    # TODO Gestion deux liens
     end
@@ -210,7 +244,46 @@ class AfficheurGrille < Gtk::DrawingArea
 	#
 	# * +event+ => Evenement Gtk contenant les informations sur le clic
     def mouseClick(event)
-    	#puts(event.x, event.y, getVX(event.x), getVY(event.y))
-    	# TODO Appel à clicTriangle(), clicCercle() ou clicLien() en fonction des coordoonées de la souris
+    	#puts(event.x, event.y)
+    	#puts(getVX(event.x), getVY(event.y))
+    	@grille.tabCase.each() do |c|
+    		x = c.posX
+    		y = c.posY
+
+    		if (x > getVX(event.x) - 0.3) && (x < getVX(event.x) + 0.3) && (y > getVY(event.y) - 0.3) && (y < getVY(event.y) + 0.3)
+    			puts("clic case")
+    			#@grille.clicCase(c)
+    		end
+       	end
+
+       	@grille.tabLien.each() do |l|
+       		if l.case1.posX < l.case2.posX
+       			x1 = l.case1.posX
+    			x2 = l.case2.posX
+    		else
+    			x1 = l.case2.posX
+    			x2 = l.case1.posX
+    		end
+
+    		if l.case1.posY < l.case2.posY
+    			y1 = l.case1.posY
+    			y2 = l.case2.posY
+    		else
+    			y1 = l.case2.posY
+    			y2 = l.case1.posY
+    		end
+
+    		if y1 == y2
+    			if (getVX(event.x) > x1 + 0.4) && (getVX(event.x) < x2 - 0.4) && (getVY(event.y) > y1 - 0.2) && (getVY(event.y) < y1 + 0.2)
+    				puts("clic lien")
+    				#@grille.clicLien(l)
+    			end
+    		else
+    			if (getVX(event.x) > x1 - 0.2) && (getVX(event.x) < x1 + 0.2) && (getVY(event.y) > y1 + 0.4) && (getVY(event.y) < y2 - 0.4)
+    				puts("clic lien")
+    				#@grille.clicLien(l)
+    			end
+    		end
+       	end
     end
 end

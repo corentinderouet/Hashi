@@ -27,5 +27,6 @@ g.tabLien.push(tab[1].creer_lien(2, false, g.tabLien))
 fenetre = Gtk::Window.new()
 fenetre.set_default_size(500, 500)
 fenetre.add(AfficheurGrille.new(g, 5, 5))
+fenetre.signal_connect('destroy') { Gtk.main_quit }
 fenetre.show_all()
 Gtk.main()
