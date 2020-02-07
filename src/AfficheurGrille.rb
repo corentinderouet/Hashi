@@ -250,9 +250,33 @@ class AfficheurGrille < Gtk::DrawingArea
     		x = c.posX
     		y = c.posY
 
-    		if (x > getVX(event.x) - 0.3) && (x < getVX(event.x) + 0.3) && (y > getVY(event.y) - 0.3) && (y < getVY(event.y) + 0.3)
+    		if (getVX(event.x) > x - 0.3) && (getVX(event.x) < x + 0.3) && (getVY(event.y) > y - 0.3) && (getVY(event.y) < y + 0.3)
     			puts("clic case")
     			#@grille.clicCase(c)
+    		end
+
+    		#haut
+    		if c.tabTriangle[0] && (getVX(event.x) > x - 0.1) && (getVX(event.x) < x + 0.1) && (getVY(event.y) > y - 0.5) && (getVY(event.y) < y - 0.3)
+    			puts("clic triangle haut")
+    			#@grille.clicTriangle(c, 0)
+    		end
+
+    		#bas
+    		if c.tabTriangle[2] && (getVX(event.x) > x - 0.1) && (getVX(event.x) < x + 0.1) && (getVY(event.y) > y + 0.3) && (getVY(event.y) < y + 0.5)
+    			puts("clic triangle bas")
+    			#@grille.clicTriangle(c, 2)
+    		end
+
+    		#gauche
+    		if c.tabTriangle[3] && (getVX(event.x) > x - 0.5) && (getVX(event.x) < x - 0.3) && (getVY(event.y) > y - 0.1) && (getVY(event.y) < y + 0.1)
+    			puts("clic triangle gauche")
+    			#@grille.clicTriangle(c, 3)
+    		end
+
+    		#droite
+    		if c.tabTriangle[1] && (getVX(event.x) > x + 0.3) && (getVX(event.x) < x + 0.5) && (getVY(event.y) > y - 0.1) && (getVY(event.y) < y + 0.1)
+    			puts("clic triangle droite")
+    			#@grille.clicTriangle(c, 1)
     		end
        	end
 
@@ -273,13 +297,15 @@ class AfficheurGrille < Gtk::DrawingArea
     			y2 = l.case1.posY
     		end
 
+    		marge = 0.2
+
     		if y1 == y2
-    			if (getVX(event.x) > x1 + 0.4) && (getVX(event.x) < x2 - 0.4) && (getVY(event.y) > y1 - 0.2) && (getVY(event.y) < y1 + 0.2)
+    			if (getVX(event.x) > x1 + 0.4) && (getVX(event.x) < x2 - 0.4) && (getVY(event.y) > y1 - marge) && (getVY(event.y) < y1 + marge)
     				puts("clic lien")
     				#@grille.clicLien(l)
     			end
     		else
-    			if (getVX(event.x) > x1 - 0.2) && (getVX(event.x) < x1 + 0.2) && (getVY(event.y) > y1 + 0.4) && (getVY(event.y) < y2 - 0.4)
+    			if (getVX(event.x) > x1 - marge) && (getVX(event.x) < x1 + marge) && (getVY(event.y) > y1 + 0.4) && (getVY(event.y) < y2 - 0.4)
     				puts("clic lien")
     				#@grille.clicLien(l)
     			end
