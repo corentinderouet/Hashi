@@ -1,8 +1,4 @@
-
-
 class SerGrille
-
-
 	def SerGrille.serialise(tabGrille,nb_lignes,nb_colonnes,id)
 		verifId=1
 		fichier=File.open("grilles_serialisées.txt", "a")
@@ -181,15 +177,17 @@ class SerGrille
 	def transformeSerial
 		
 		fichierLec=File.open("grilles_site.txt", "r")
-		fichierEcr=File.open("grilles_serialisées","a")
+		fichierEcr=File.open("grilles_site_ser.txt","a")
 		#compteur pour savoir les coordonées de chaque case
 		id=1
 		fichierLec.each_line do | ligne |
 			fichierEcr.write(id)
 			fichierEcr.write(":")
-			taille=ligne.length
+			taille=ligne.length - 1
 			tailleLigne=Math.sqrt(taille)
 			comptLigne=0
+			ligne=ligne.split('')
+			ligne.pop
 			ligne.each do | car |
 				comptLigne+=1
 				if(car==" ")
@@ -205,7 +203,8 @@ class SerGrille
 				else
 					fichierEcr.write(car)
 				end
-				if(comptLigne % tailleLigne == 0)
+
+				if((comptLigne % tailleLigne) == 0)
 					fichierEcr.write(";")
 				end
 			end
