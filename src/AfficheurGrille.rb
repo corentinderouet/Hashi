@@ -37,7 +37,7 @@ class AfficheurGrille < Gtk::DrawingArea
 		@vHeight = vHeight
 		@ratio = 1.0 * @vWidth / @vHeight
         self.signal_connect("draw") { |widget, cr| draw(cr) }
-        self.signal_connect("button-press-event") { |widget, event| mouseClick(event) } if playable
+        self.signal_connect("button-press-event") { |widget, event| mouseClick(event); self.queue_draw() } if playable
         self.events = :all_events_mask
 	end
 
@@ -70,9 +70,9 @@ class AfficheurGrille < Gtk::DrawingArea
 	# Retourne la position réelle en x correspondante
 	def getX(vX)
 		if width / @ratio > height
-			return vX * @vY + (width - height * @ratio) / 2 + @vY
+			return vX * @vY + (width - height * @ratio) / 2 + @vY/2
 		else
-			return vX * @vX + @vX
+			return vX * @vX + @vX/2
 		end
 	end
 
@@ -87,9 +87,9 @@ class AfficheurGrille < Gtk::DrawingArea
 	# Retourne la position réelle en y correspondante
 	def getY(vY)
 		if height * @ratio > width
-			return vY * @vX + (height - width / @ratio) / 2 + @vX
+			return vY * @vX + (height - width / @ratio) / 2 + @vX/2
 		else
-			return vY * @vY + @vY
+			return vY * @vY + @vY/2
 		end
 	end
 
@@ -104,9 +104,9 @@ class AfficheurGrille < Gtk::DrawingArea
 	# Retourne la position virtuelle en x correspondante
 	def getVX(x)
 		if width / @ratio > height
-			return (x - (width - height * @ratio) / 2 - @vY) / @vY
+			return (x - (width - height * @ratio) / 2 - @vY/2) / @vY
 		else
-			return (x - @vX) / @vX
+			return (x - @vX/2) / @vX
 		end
 	end
 
@@ -121,9 +121,9 @@ class AfficheurGrille < Gtk::DrawingArea
 	# Retourne la position virtuelle en y correspondante
 	def getVY(y)
 		if height * @ratio > width
-			return (y - (height - width / @ratio) / 2 - @vX) / @vX
+			return (y - (height - width / @ratio) / 2 - @vX/2) / @vX
 		else
-			return (y - @vY) / @vY
+			return (y - @vY/2) / @vY
 		end
 	end
 
@@ -156,14 +156,18 @@ class AfficheurGrille < Gtk::DrawingArea
 		@vY = 1.0 * height / @vHeight
     	cr.select_font_face("Arial", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL)
         cr.set_font_size(scale(0.5))
+        t = []
         @grille.tabLien.each() do |l|
-        	#l2 = @grille.lienSimilaire(l)
-        	#if l2
-        	#	drawLien(cr, l, -1)
-        	#	drawLien(cr, l2, 1)
-        	#else
-        		drawLien(cr, l, 0)
-        	#end
+        	if !t.include?(l)
+	        	l2 = @grille.lienSimilaire(l)
+	        	if l2
+	        		drawLien(cr, l, -0.075)
+	        		drawLien(cr, l2, 0.075)
+	        		t.append(l2)
+	        	else
+	        		drawLien(cr, l, 0)
+	        	end
+	        end
         end
         @grille.tabCase.each() { |c| drawCircle(cr, c) }
     end
@@ -175,8 +179,8 @@ class AfficheurGrille < Gtk::DrawingArea
 	# * +cr+ => Contexte sur lequel dessiner
 	# * +c+ => Cercle à dessiner
     def drawCircle(cr, c)
-    	x = c.posX()
-    	y = c.posY()
+    	x = c.colonne()
+    	y = c.ligne()
     	n = c.etiquetteCase()
 
     	cr.set_source_rgb(0, 0, 0)
@@ -235,10 +239,10 @@ class AfficheurGrille < Gtk::DrawingArea
 	# * +l+ => Lien à dessiner
 	# * +offset+ => Décalage du lien
     def drawLien(cr, l, offset)
-    	x1 = l.case1.posX()
-    	y1 = l.case1.posY()
-    	x2 = l.case2.posX()
-    	y2 = l.case2.posY()
+    	x1 = l.case1.colonne()
+    	y1 = l.case1.ligne()
+    	x2 = l.case2.colonne()
+    	y2 = l.case2.ligne()
 
     	epaisseur = 0.02
 
@@ -249,9 +253,9 @@ class AfficheurGrille < Gtk::DrawingArea
     	end
 
     	if lienHorizontal(l)
-    		cr.rectangle(getX(x1), getY(y1)-scale(epaisseur/2), getX(x2)-getX(x1), scale(epaisseur))
+    		cr.rectangle(getX(x1), getY(y1)-scale(epaisseur/2)+scale(offset), getX(x2)-getX(x1), scale(epaisseur))
     	else
-	    	cr.rectangle(getX(x1)-scale(epaisseur/2), getY(y1), scale(epaisseur), getY(y2)-getY(y1))
+	    	cr.rectangle(getX(x1)-scale(epaisseur/2)+scale(offset), getY(y1), scale(epaisseur), getY(y2)-getY(y1))
 	    end
 	    
 	    cr.fill()
@@ -268,54 +272,59 @@ class AfficheurGrille < Gtk::DrawingArea
     	#puts(event.x, event.y)
     	#puts(getVX(event.x), getVY(event.y))
     	@grille.tabCase.each() do |c|
-    		x = c.posX
-    		y = c.posY
+    		x = c.colonne
+    		y = c.ligne
 
     		if (getVX(event.x) > x - 0.3) && (getVX(event.x) < x + 0.3) && (getVY(event.y) > y - 0.3) && (getVY(event.y) < y + 0.3)
     			puts("clic case")
-    			#@grille.clicCase(c)
+    			@grille.clickCercle(c)
+    			return
     		end
 
     		#haut
     		if c.tabTriangle[0] && (getVX(event.x) > x - 0.1) && (getVX(event.x) < x + 0.1) && (getVY(event.y) > y - 0.5) && (getVY(event.y) < y - 0.3)
     			puts("clic triangle haut")
-    			#@grille.clicTriangle(c, 0)
+    			@grille.clickTriangle(c)
+    			return
     		end
 
     		#bas
     		if c.tabTriangle[2] && (getVX(event.x) > x - 0.1) && (getVX(event.x) < x + 0.1) && (getVY(event.y) > y + 0.3) && (getVY(event.y) < y + 0.5)
     			puts("clic triangle bas")
-    			#@grille.clicTriangle(c, 2)
+    			@grille.clickTriangle(c)
+    			return
     		end
 
     		#gauche
     		if c.tabTriangle[3] && (getVX(event.x) > x - 0.5) && (getVX(event.x) < x - 0.3) && (getVY(event.y) > y - 0.1) && (getVY(event.y) < y + 0.1)
     			puts("clic triangle gauche")
-    			#@grille.clicTriangle(c, 3)
+    			@grille.clickTriangle(c)
+    			return
     		end
 
     		#droite
     		if c.tabTriangle[1] && (getVX(event.x) > x + 0.3) && (getVX(event.x) < x + 0.5) && (getVY(event.y) > y - 0.1) && (getVY(event.y) < y + 0.1)
     			puts("clic triangle droite")
-    			#@grille.clicTriangle(c, 1)
+    			@grille.clickTriangle(c)
+    			return
     		end
        	end
 
        	@grille.tabLien.each() do |l|
-       		if l.case1.posX < l.case2.posX
-       			x1 = l.case1.posX
-    			x2 = l.case2.posX
+       		if l.case1.colonne < l.case2.colonne
+       			x1 = l.case1.colonne
+    			x2 = l.case2.colonne
     		else
-    			x1 = l.case2.posX
-    			x2 = l.case1.posX
+    			x1 = l.case2.colonne
+    			x2 = l.case1.colonne
     		end
 
-    		if l.case1.posY < l.case2.posY
-    			y1 = l.case1.posY
-    			y2 = l.case2.posY
+    		if l.case1.ligne < l.case2.ligne
+    			y1 = l.case1.ligne
+    			y2 = l.case2.ligne
     		else
-    			y1 = l.case2.posY
-    			y2 = l.case1.posY
+    			y1 = l.case2.ligne
+    			y2 = l.case1.ligne
     		end
 
     		marge = 0.2
@@ -323,12 +332,14 @@ class AfficheurGrille < Gtk::DrawingArea
     		if y1 == y2
     			if (getVX(event.x) > x1 + 0.4) && (getVX(event.x) < x2 - 0.4) && (getVY(event.y) > y1 - marge) && (getVY(event.y) < y1 + marge)
     				puts("clic lien")
-    				#@grille.clicLien(l)
+    				@grille.clicLien(l)
+    				return
     			end
     		else
     			if (getVX(event.x) > x1 - marge) && (getVX(event.x) < x1 + marge) && (getVY(event.y) > y1 + 0.4) && (getVY(event.y) < y2 - 0.4)
     				puts("clic lien")
-    				#@grille.clicLien(l)
+    				@grille.clicLien(l)
+    				return
     			end
     		end
        	end
@@ -344,6 +355,6 @@ class AfficheurGrille < Gtk::DrawingArea
     #
     # Retourne vrai si le lien est horizontal, faux sinon
     def lienHorizontal(l)
-    	return l.case1.posX != l.case2.posX
+    	return l.case1.colonne != l.case2.colonne
     end
 end

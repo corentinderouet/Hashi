@@ -17,7 +17,7 @@ tab[1].tabTriangle[2] = true
 tab[1].tabTriangle[3] = true
 tab[2].tabTriangle[0] = true
 
-g = Grille.new(tab)
+g = Grille.creer(tab)
 
 g.tabLien.push(tab[0].creer_lien(1, false, g.tabLien))
 #g.tabLien.push(tab[1].creer_lien(3, false, g.tabLien))
