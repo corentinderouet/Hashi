@@ -29,14 +29,15 @@ class AfficheurGrille < Gtk::DrawingArea
 	# * +grille+ => Grille à afficher
 	# * +vWidth+ => Largeur virtuelle de la grille (TODO à voir pour l'obtenir directement depuis la grille)
 	# * +vHeight+ => Hauteur virtuelle de la grille (TODO à voir pour l'obtenir directement depuis la grille)
-	def initialize(grille, vWidth, vHeight)
+	# * +playable+ => Réagit au clics de souris ou non
+	def initialize(grille, vWidth, vHeight, playable)
 		super()
 		@grille = grille
 		@vWidth = vWidth
 		@vHeight = vHeight
 		@ratio = 1.0 * @vWidth / @vHeight
         self.signal_connect("draw") { |widget, cr| draw(cr) }
-        self.signal_connect("button-press-event") { |widget, event| mouseClick(event) }
+        self.signal_connect("button-press-event") { |widget, event| mouseClick(event) } if playable
         self.events = :all_events_mask
 	end
 
@@ -242,8 +243,7 @@ class AfficheurGrille < Gtk::DrawingArea
     	epaisseur = 0.02
 
     	if l.hypothese
-    		puts("vert")
-    		cr.set_source_rgb(0.2, 0.8, 0.2)
+    		cr.set_source_rgb(0.2, 0.8, 0.2) # Couleur verte
     	else
     		cr.set_source_rgb(0, 0, 0)
     	end
