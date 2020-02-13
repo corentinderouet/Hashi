@@ -45,10 +45,10 @@ class SerGrille
 			fichier=File.open("grilles_serialisées.txt", "a")
 			fichier.write(id)
 			fichier.write(":")
-			fichier.write(nb_lignes)
-			fichier.write(";")
-			fichier.write(nb_colonnes)
-			fichier.write(";")
+			# fichier.write(nb_lignes)
+			# fichier.write(";")
+			# fichier.write(nb_colonnes)
+			# fichier.write(";")
 			for i in 0..nb_lignes-1 do
 				for j in 0..nb_colonnes-1 do
 					fichier.write(tabGrille[i][j])
@@ -133,33 +133,33 @@ class SerGrille
 				end
 			end
 			#skip la taille dans l'affichage
-			evittaille=0
-			while(evittaille!=2)do
-				s=fichier.readchar()
-				if(s==";")then
-					evittaille+=1
-				end
-			end
+			# evittaille=0
+			# while(evittaille!=2)do
+			# 	s=fichier.readchar()
+			# 	if(s==";")then
+			# 		evittaille+=1
+			# 	end
+			# end
 			#affichage primaire de la grille après désériaisation + création du tableau de case
 			sortie=0
 			while sortie==0 do
 				s=fichier.readchar()
 				comptcolonne+=1
-				if(s==";") then
+				if(s==";") 
 					puts("  ")
 					comptligne+=1
 					comptcolonne=-1
-				elsif(s=="D")then
+				elsif(s=="D")
 					print("==")
-				elsif(s=="H") then
+				elsif(s=="H") 
 					print("--")
-				elsif(s=="V") then
+				elsif(s=="V") 
 					print("| ")
-				elsif (s=="E") then
+				elsif (s=="E") 
 					print("||")
-				elsif (s=="_") then
+				elsif (s=="_") 
 					print("  ")
-				elsif(s=="$") then
+				elsif(s=="$") 
 					sortie=1
 				else
 					print(s)
@@ -167,13 +167,50 @@ class SerGrille
 					tabCase.push(c)
 					print(" ")
 				end	
-			end
-			g=Grille.creer(tabCase)
+			end	
 			print("\n\n\n")
+			g=Grille.creer(tabCase,nb_lignes,nb_colonnes)
 			fichier.close
+
 			return g
 		else
 			puts("Id non trouvé")
+		end
+	end
+
+	def transformeSerial
+		
+		fichierLec=File.open("grilles_site.txt", "r")
+		fichierEcr=File.open("grilles_serialisées","a")
+		#compteur pour savoir les coordonées de chaque case
+		id=1
+		fichierLec.each_line do | ligne |
+			fichierEcr.write(id)
+			fichierEcr.write(":")
+			taille=ligne.length
+			tailleLigne=Math.sqrt(taille)
+			comptLigne=0
+			ligne.each do | car |
+				comptLigne+=1
+				if(car==" ")
+					fichierEcr.write("_")
+				elsif(car=="a")
+					fichierEcr.write("H")
+				elsif(car=="b")
+					fichierEcr.write("D")
+				elsif(car=="c")
+					fichierEcr.write("V")
+				elsif(car=="d")
+					fichierEcr.write("E")
+				else
+					fichierEcr.write(car)
+				end
+				if(comptLigne % tailleLigne == 0)
+					fichierEcr.write(";")
+				end
+			end
+			fichierEcr.write("$")
+			id+=1
 		end
 	end
 end
