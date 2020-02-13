@@ -1,5 +1,3 @@
-
-
 class Lien
 
     attr_reader:case1
