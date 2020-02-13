@@ -21,7 +21,7 @@ g = Grille.new(tab)
 
 g.tabLien.push(tab[0].creer_lien(1, false, g.tabLien))
 #g.tabLien.push(tab[1].creer_lien(3, false, g.tabLien))
-g.tabLien.push(tab[1].creer_lien(2, false, g.tabLien))
+g.tabLien.push(tab[1].creer_lien(2, true, g.tabLien))
 #g.tabLien.push(tab[0].creer_lien(1, true, g.tabLien))
 
 fenetre = Gtk::Window.new()

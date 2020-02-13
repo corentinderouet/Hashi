@@ -155,7 +155,15 @@ class AfficheurGrille < Gtk::DrawingArea
 		@vY = 1.0 * height / @vHeight
     	cr.select_font_face("Arial", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL)
         cr.set_font_size(scale(0.5))
-        @grille.tabLien.each() { |l| drawLien(cr, l) }
+        @grille.tabLien.each() do |l|
+        	#l2 = @grille.lienSimilaire(l)
+        	#if l2
+        	#	drawLien(cr, l, -1)
+        	#	drawLien(cr, l2, 1)
+        	#else
+        		drawLien(cr, l, 0)
+        	#end
+        end
         @grille.tabCase.each() { |c| drawCircle(cr, c) }
     end
 
@@ -169,6 +177,8 @@ class AfficheurGrille < Gtk::DrawingArea
     	x = c.posX()
     	y = c.posY()
     	n = c.etiquetteCase()
+
+    	cr.set_source_rgb(0, 0, 0)
 
     	#nord
     	if c.tabTriangle[0]
@@ -204,7 +214,6 @@ class AfficheurGrille < Gtk::DrawingArea
 		end
 
     	# Affichage bordure cercle
-    	cr.set_source_rgb(0, 0, 0)
 	    cr.arc(getX(x), getY(y), scale(0.3), 0, 2*Math::PI)
 	    cr.fill()
 	    # Affichage partie balnche cercle
@@ -223,16 +232,28 @@ class AfficheurGrille < Gtk::DrawingArea
 	#
 	# * +cr+ => Contexte sur lequel dessiner
 	# * +l+ => Lien à dessiner
-    def drawLien(cr, l)
+	# * +offset+ => Décalage du lien
+    def drawLien(cr, l, offset)
     	x1 = l.case1.posX()
     	y1 = l.case1.posY()
     	x2 = l.case2.posX()
     	y2 = l.case2.posY()
+
     	epaisseur = 0.02
 
-    	cr.set_source_rgb(0, 0, 0)
-	    cr.rectangle(getX(x1)-scale(epaisseur/2), getY(y1), scale(epaisseur), getY(y2)-getY(y1))
-	    cr.rectangle(getX(x1), getY(y1)-scale(epaisseur/2), getX(x2)-getX(x1), scale(epaisseur))
+    	if l.hypothese
+    		puts("vert")
+    		cr.set_source_rgb(0.2, 0.8, 0.2)
+    	else
+    		cr.set_source_rgb(0, 0, 0)
+    	end
+
+    	if lienHorizontal(l)
+    		cr.rectangle(getX(x1), getY(y1)-scale(epaisseur/2), getX(x2)-getX(x1), scale(epaisseur))
+    	else
+	    	cr.rectangle(getX(x1)-scale(epaisseur/2), getY(y1), scale(epaisseur), getY(y2)-getY(y1))
+	    end
+	    
 	    cr.fill()
 
 	    # TODO Gestion deux liens
@@ -311,5 +332,18 @@ class AfficheurGrille < Gtk::DrawingArea
     			end
     		end
        	end
+    end
+
+    # Test si lien horizontal
+    #
+    # === Paramètres
+    #
+    # * +l+ => Lien à tester
+    #
+    # === Retour
+    #
+    # Retourne vrai si le lien est horizontal, faux sinon
+    def lienHorizontal(l)
+    	return l.case1.posX != l.case2.posX
     end
 end
