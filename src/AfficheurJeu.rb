@@ -68,7 +68,8 @@ class AfficheurJeu < Gtk::Paned
         boxVerticale.add(@pause)
         @pause.signal_connect("clicked") { |widget| @grille.pause() }
 
-		self.add1(@grille)
+		self.add1(@afficheurGrille)
 		self.add2(boxVerticale)
+		self.set_position(450)
 	end
 end
