@@ -11,18 +11,18 @@ require_relative "SerGrille"
 class Grille
 
     # Méthode d'accès en lecture/écriture de @tabCase
-    attr_accessor:tabCase
+    attr_accessor :tabCase
     # Méthode d'accès en lecture/écriture de @tabLien
-    attr_accessor:tabLien
+    attr_accessor :tabLien
     # Méthode d'accès en lecture/écriture de @hypothese
-    attr_accessor:hypothese
+    attr_accessor :hypothese
 
-    attr_reader:hauteur
+    attr_reader :hauteur
 
-    attr_reader:largeur
+    attr_reader :largeur
 
     # Rend la méthode new privée
-    private_class_method:new
+    private_class_method :new
 
     # Initialisation de la grille
     #
