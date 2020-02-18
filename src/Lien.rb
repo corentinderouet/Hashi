@@ -7,23 +7,23 @@ class Lien
     # @hypothese => booléen sur l'état du lien, si il est une hypothese(true) ou pas(false)
 
     # Méthode d'acces en lecture de @case1
-    attr_reader:case1
+    attr_reader :case1
     # Méthode d'acces en lecture de @case2
-    attr_reader:case2
+    attr_reader :case2
     # Meéhode d'acces en lecture / écriture de @hypothese
-    attr_accessor:hypothese
+    attr_accessor :hypothese
 
     # On rend privé la méthode de classe new pour forcer l'utilisation de Lien.creer
-    private_class_method:new
+    private_class_method :new
 
 
     # Initialisation d'un lien
     #
     # === Parametres
     #
-    # * + case1 + = > case de départ du lien
-    # * + case2 + = > case d'arrivé du lien
-    # * + hypothese + = > booléen, vrai si le lien est une hypothèse, faux sinon
+    # * +case1+ => case de départ du lien
+    # * +case2+ => case d'arrivé du lien
+    # * +hypothese+ => booléen, vrai si le lien est une hypothèse, faux sinon
     #
     def initialize(case1,case2,hypothese)
         @case1=case1
@@ -36,9 +36,9 @@ class Lien
     #
     # === Paramètres
     #
-    # * + case1 + = > case de départ du lien
-    # * + case2 + = > case d'arrivé du lien
-    # * + hypothese + = > booléen, vrai si le lien est une hypothèse, faux sinon
+    # * +case1+ => case de départ du lien
+    # * +case2+ => case d'arrivé du lien
+    # * +hypothese+ => booléen, vrai si le lien est une hypothèse, faux sinon
     #
     # === Retour
     #
