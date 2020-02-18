@@ -1,7 +1,7 @@
 require_relative "Grille"
 
 class Main
-    private_class_method:new
+    private_class_method :new
 
     def Main.creer()
         new()
@@ -32,8 +32,6 @@ class Main
             end
             puts "|"
         end
-
-
 
     end
 
