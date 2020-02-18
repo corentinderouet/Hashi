@@ -1,19 +1,19 @@
 
-#Représente un lien entre deux cases qui peut etre un lien hypothese
+#Représente un lien entre deux cases qui peut être un lien hypothèse
 class Lien
 
-    # @case1 => correspond a la premiere case auquelle est relié ce lien
-    # @case2 => correspond a la deuxieme case auquelle est relié ce lien
-    # @hypothese => boolean sur l'état du lien, si il est une hypothese(true) ou pas(false)
+    # @case1 => correspond à la première case à laquelle est reliée ce lien
+    # @case2 => correspond à la deuxième case à laquelle est reliée ce lien
+    # @hypothese => booléen sur l'état du lien, si il est une hypothese(true) ou pas(false)
 
-    # Methode d ’ acces en lecture de @case1
+    # Méthode d'acces en lecture de @case1
     attr_reader:case1
-    # Methode d ’ acces en lecture de @case2
+    # Méthode d'acces en lecture de @case2
     attr_reader:case2
-    # Methode d ’ acces en lecture / ecriture de @hypothese
+    # Meéhode d'acces en lecture / écriture de @hypothese
     attr_accessor:hypothese
 
-    # On rend privé la methode de classe new pour forcer l'utilisation de Lien.creer
+    # On rend privé la méthode de classe new pour forcer l'utilisation de Lien.creer
     private_class_method:new
 
 
@@ -23,7 +23,7 @@ class Lien
     #
     # * + case1 + = > case de départ du lien
     # * + case2 + = > case d'arrivé du lien
-    # * + hypothese + = > boolean, vrai sur le lien est une hypothese, faux sinon
+    # * + hypothese + = > booléen, vrai si le lien est une hypothèse, faux sinon
     #
     def initialize(case1,case2,hypothese)
         @case1=case1
@@ -32,29 +32,26 @@ class Lien
     end
 
     
-    # Creation d'un lien
+    # Création d'un lien
     #
-    # === Parametres
+    # === Paramètres
     #
     # * + case1 + = > case de départ du lien
     # * + case2 + = > case d'arrivé du lien
-    # * + hypothese + = > boolean, vrai sur le lien est une hypothese, faux sinon
+    # * + hypothese + = > booléen, vrai si le lien est une hypothèse, faux sinon
     #
     # === Retour
     #
-    # le lien creer
+    # Le lien créé
     #
     def Lien.creer(case1,case2,hypothese)
         new(case1,case2,hypothese)
     end
 
 
-    # affiche les info d'un lien
+    # Affiche les informations d'un lien
     #
     def afficherLien()
         puts("( #{@case1.etiquetteCase} , #{@case2.etiquetteCase} , #{self.hypothese} )")
     end
-
-
-
 end
