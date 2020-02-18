@@ -1,21 +1,44 @@
-load'Case.rb'
-load'Utilitaire.rb'
-load "SerGrille.rb"
+require_relative "Case.rb"
+require_relative "Utilitaire.rb"
+require_relative "SerGrille.rb"
+
+#Classe représentant une Grille
+# Une grille peut :
+# avoir une table des cases : méthode contientCaseAvecEtiquette
+# avoir une table des liens entre les cases, et supprimer les liens
+# commencer les hypotheses des liens, les valider ou annuler
 
 class Grille
+
+    # Méthode d'accès en lecture/écriture de @tabCase
     attr_accessor:tabCase
+    # Méthode d'accès en lecture/écriture de @tabLien
     attr_accessor:tabLien
+    # Méthode d'accès en lecture/écriture de @hypothese
     attr_accessor:hypothese
 
+    attr_reader:hauteur
 
+    attr_reader:largeur
+
+    # Rend la méthode new privée
     private_class_method:new
 
-
-    def initialize(tab)
+    # Initialisation de la grille
+    #
+    # === Paramètres
+    #
+    # * +tab+ => la table des cases
+    # * +hauteur+ => le nombre maximal des lignes de la grille
+    # * +largeur+ => le nombre maximal des colonnes de la grille
+    #
+    def initialize(tab,hauteur,largeur)
         @hypothese=false
         @tabLien=Array.new()
         @tabCase=Array.new()
         @tabCase=tab
+        @hauteur=hauteur
+        @largeur=largeur
 
 
         for i in 0..@tabCase.length-1 do
@@ -46,67 +69,75 @@ class Grille
         end
     end
 
-    def Grille.creer(tab)
-        new(tab)
+    # Méthode de création d'une grille
+    #
+    # === Paramètres
+    #
+    # * +tab+ => la table des cases
+    # * +hauteur+ => le nombre maximal des lignes de la grille
+    # * +largeur+ => le nombre maximal des colonnes de la grille
+    #
+    def Grille.creer(tab,hauteur,largeur)
+        new(tab,hauteur,largeur)
     end
 
+    # Méthode d'affichage de la table des cases
+    #
     def tabCaseAfficher()
         for i in 0..@tabCase.length-1
             puts(tabCase[i])
         end
     end
 
-    def supprimerLien(ligne,colonne)
-        tabC=Array.new(4,false)
-        for j in 0..@tabCase.length-1 do
-        #on enleve les tabCase[i].  , on remplace tabVoisins par tabC et on laisse les tabCase[j]
-            #on recupere le voisin le plus proche dans la direction nord
-            if((tabC[0]==false && ligne>@tabCase[j].ligne && colonne==@tabCase[j].colonne) || ( ligne>@tabCase[j].ligne && colonne==@tabCase[j].colonne && @tabCase[j].ligne>tabC[0].ligne ) )
-                tabC[0]=@tabCase[j]
+    # Méthode de suppression des liens entres les cases
+    #
+    # === Paramètres
+    #
+    # * + l + => le lien a supprimer
+    #
+    def supprimerLien(l)
+        i=Utilitaire.index(@tabLien,l)
+        x=Utilitaire.index(@tabCase,@tabLien[i].case1)
+        y=Utilitaire.index(@tabCase,@tabLien[i].case2)
+        #on peut remplacer par l.case1 et l.case2 au lieu des indices
+        @tabLien.delete_at(i)
+
+        
+        for j in 0..3 do
+
+            #ici on gere l'ajout des triangles de la case
+            if(@tabCase[x].tabVoisins[j]!=false && @tabCase[x].nbLienEntreDeuxCases(@tabLien,j)!=2 )
+                @tabCase[x].tabTriangle[j]=true
+            end
+            if(@tabCase[x].tabVoisins[j]!=false && @tabCase[x].nbLienEntreDeuxCases(@tabLien,j)!=2 )
+                @tabCase[x].tabVoisins[j].tabTriangle[(j+2)%4]=true
             end
 
-            #on recupere le voisin le plus proche dans la direction Sud
-            if((tabC[2]==false && ligne<@tabCase[j].ligne && colonne==@tabCase[j].colonne) || ( ligne<@tabCase[j].ligne && colonne==@tabCase[j].colonne && @tabCase[j].ligne<tabC[2].ligne ) )
-                tabC[2]=@tabCase[j]
+            #de meme ici mais pour l'autre case de ce lien
+            if(@tabCase[y].tabVoisins[j]!=false && @tabCase[y].nbLienEntreDeuxCases(@tabLien,j)!=2 )
+                @tabCase[y].tabTriangle[j]=true
+            end
+            if(@tabCase[y].tabVoisins[j]!=false && @tabCase[y].nbLienEntreDeuxCases(@tabLien,j)!=2 )
+                @tabCase[y].tabVoisins[j].tabTriangle[(j+2)%4]=true
             end
 
-            #on recupere le voisin le plus proche dans la direction ouest
-            if((tabC[3]==false && colonne>@tabCase[j].colonne && ligne==@tabCase[j].ligne) || ( colonne>@tabCase[j].colonne && ligne==@tabCase[j].ligne && @tabCase[j].colonne>tabC[3].colonne ) )
-                tabC[3]=@tabCase[j]
-            end
-
-            #on recupere le voisin le plus proche dans la direction est
-            if((tabC[1]==false && colonne<@tabCase[j].colonne && ligne==@tabCase[j].ligne) || ( colonne<@tabCase[j].colonne && ligne==@tabCase[j].ligne && @tabCase[j].colonne<tabC[1].colonne ) )
-                tabC[1]=@tabCase[j]
-            end
         end
-        for i in 0..1 do
-            if(tabC[i]!=false&&tabC[i+2]!=false)
-                for j in 0..@tabLien.length-1 do
-                    if ((@tabLien[j]!=nil && @tabLien[j].case1.etiquetteCase ==tabC[i].etiquetteCase &&  @tabLien[j].case2.etiquetteCase ==tabC[i+2].etiquetteCase)||(@tabLien[j]!=nil && @tabLien[j].case2.etiquetteCase ==tabC[i+2].etiquetteCase &&  @tabLien[j].case2.etiquetteCase ==tabC[i].etiquetteCase))
-                        x=Utilitaire.index(@tabCase,@tabLien[j].case1)
-                        y=Utilitaire.index(@tabCase,@tabLien[j].case2)
-                        @tabLien.delete_at(j)
-                        if(@tabCase[x].ligne<@tabCase[y].ligne && @tabCase[x].colonne == @tabCase[y].colonne)
-                            @tabCase[x].tabTriangle[2] = true
-                            @tabCase[y].tabTriangle[0] = true
-                        elsif(@tabCase[x].ligne>@tabCase[y].ligne && @tabCase[x].colonne == @tabCase[y].colonne)
-                            @tabCase[x].tabTriangle[0] = true
-                            @tabCase[y].tabTriangle[2] = true
-                        elsif(@tabCase[x].ligne==@tabCase[y].ligne && @tabCase[x].colonne < @tabCase[y].colonne)
-                            @tabCase[x].tabTriangle[1] = true
-                            @tabCase[y].tabTriangle[3] = true
-                        elsif(@tabCase[x].ligne==@tabCase[y].ligne && @tabCase[x].colonne > @tabCase[y].colonne)
-                            @tabCase[x].tabTriangle[3] = true
-                            @tabCase[y].tabTriangle[1] = true
-                        end
-                    end
-                end
-            end
-        end
+        
+
+
     end
 
-
+    # Méthode de remplir la table des cases avec une valeur
+    #
+    # === Paramètres
+    #
+    # * +ligne+ => entier correspondant la ligne d'une case de la grille
+    # * +colonne+ => entier correspondant la colonne d'une case de la grille
+    #
+    # === Retour
+    #
+    # retour la valeur de la case, sinon retour faux
+    #
     def contientCaseAvecEtiquette(ligne,colonne)
         for i in 0..@tabCase.length-1 do
             if(@tabCase[i].ligne==ligne && @tabCase[i].colonne==colonne)
@@ -116,36 +147,50 @@ class Grille
         return false
     end
 
-    def clickCercle(ligne,colonne)#a modifier pour afficher toutes les cases reliées
 
-        for i in 0..@tabCase.length-1 do
-            if(@tabCase[i].ligne==ligne && @tabCase[i].colonne==colonne)
-                break
-            end
-        end
-        return @tabCase[i].tabVoisins
-
+    # Méthode de cliquer le cercle de la case
+    #
+    # === Paramètres
+    #
+    # * +case1+ => la case du clique
+    #
+    # === Retour
+    #
+    # retour la table des voisins, sinon break
+    #
+    def clicCercle(case1)#a modifier pour afficher toutes les cases reliées
+        return case1.tabVoisins
     end
 
-    def clickTriangle(ligne,colonne,pos)
-        for i in 0..@tabCase.length-1 do
-            if(@tabCase[i].ligne==ligne && @tabCase[i].colonne==colonne)
-                break
-            end
-        end
-        @tabCase[i].creerLien(pos,@hypothese,@tabLien)
-        
+    # Méthode de cliquer le triangle du cercle
+    #
+    # === Paramètres
+    #
+    # * +case1+ => la case du clique
+    # * +pos+ => entier correspondant la position du lien de deux cases
+    #
+    def clicTriangle(case1,pos)
+        case1.creerLien(pos,@hypothese,@tabLien)
     end
 
-    def clicLien(ligne, colonne)
-        self.supprimerLien(ligne,colonne)
+    # Méthode de cliquer le lien  d'une case pour supprimer ce lien
+    #
+    # === Paramètres
+    #
+    # * +l+ => le lien qui a été cliqué
+    #
+    def clicLien(l)
+        self.supprimerLien(l)
     end
 
+    # Méthode de commencer à faire une hypothèse
+    #
     def commencerHypothese()
         @hypothese=true
     end
 
-
+    # Méthode de valider une hypothèse
+    #
     def validerHypothese()
         for i in 0..@tabLien.length-1 do
             if(@tabLien[i].hypothese==true)
@@ -155,6 +200,16 @@ class Grille
         @hypothese=false
     end
 
+    # Méthode de cliquer le cercle de la case
+    #
+    # === Paramètres
+    #
+    # * +l+ => un lien
+    #
+    # === Retour
+    #
+    # retour le lien si c'est le même, sinon return nil
+    #
     def lienSimilaire(l)
         @tabLien.each do  |lien|
             if(l!=lien  && (lien.case1==l.case1 && lien.case2==l.case2) || (lien.case1==l.case2 && lien.case2==l.case1))
@@ -164,6 +219,8 @@ class Grille
         return nil
     end
 
+    # Méthode de annuler une hypothèse
+    #
     def annulerHypothese()
         for i in 0..@tabLien.length-1 do
             if(@tabLien[i].hypothese==true)
@@ -173,11 +230,7 @@ class Grille
             end
         end
         @hypothese=false
-        
+
     end
-
-
-
-
 
 end
