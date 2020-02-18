@@ -1,8 +1,7 @@
-load "Grille.rb"
-
+require_relative "Grille"
 
 class Main
-    private_class_method:new
+    private_class_method :new
 
     def Main.creer()
         new()
@@ -17,7 +16,7 @@ class Main
 
         
 
-        g= Grille.creer(SerGrille.deserialise(9).tabCase)
+        g= Grille.creer(SerGrille.deserialise(9,"k").tabCase)
 
 
         puts "Affichage GRILLE"
@@ -33,8 +32,6 @@ class Main
             end
             puts "|"
         end
-
-
 
     end
 
