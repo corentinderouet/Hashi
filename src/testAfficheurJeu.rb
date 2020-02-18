@@ -5,7 +5,8 @@ require_relative "Case"
 require_relative "Lien"
 require_relative "Grille"
 
-g = Grille.creer(SerGrille.deserialise(9).tabCase)
+res=SerGrille.deserialise(1,"")
+g = Grille.creer(res.tabCase,res.hauteur,res.largeur)
 a = AfficheurJeu.new(g)
 
 fenetre = Gtk::Window.new()

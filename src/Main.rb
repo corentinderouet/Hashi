@@ -17,7 +17,7 @@ class Main
 
         
 
-        g= Grille.creer(SerGrille.deserialise(9).tabCase)
+        g= Grille.creer(SerGrille.deserialise(9,"k").tabCase)
 
 
         puts "Affichage GRILLE"

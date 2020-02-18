@@ -275,35 +275,35 @@ class AfficheurGrille < Gtk::DrawingArea
 
     		if (getVX(event.x) > x - 0.3) && (getVX(event.x) < x + 0.3) && (getVY(event.y) > y - 0.3) && (getVY(event.y) < y + 0.3)
     			puts("clic case")
-    			@grille.clickCercle(c)
+    			@grille.clicCercle(c)
     			return
     		end
 
     		#haut
     		if c.tabTriangle[0] && (getVX(event.x) > x - 0.1) && (getVX(event.x) < x + 0.1) && (getVY(event.y) > y - 0.5) && (getVY(event.y) < y - 0.3)
     			puts("clic triangle haut")
-    			@grille.clickTriangle(c)
+    			@grille.clicTriangle(c,0)
     			return
     		end
 
     		#bas
     		if c.tabTriangle[2] && (getVX(event.x) > x - 0.1) && (getVX(event.x) < x + 0.1) && (getVY(event.y) > y + 0.3) && (getVY(event.y) < y + 0.5)
     			puts("clic triangle bas")
-    			@grille.clickTriangle(c)
+    			@grille.clicTriangle(c,2)
     			return
     		end
 
     		#gauche
     		if c.tabTriangle[3] && (getVX(event.x) > x - 0.5) && (getVX(event.x) < x - 0.3) && (getVY(event.y) > y - 0.1) && (getVY(event.y) < y + 0.1)
     			puts("clic triangle gauche")
-    			@grille.clickTriangle(c)
+    			@grille.clicTriangle(c,3)
     			return
     		end
 
     		#droite
     		if c.tabTriangle[1] && (getVX(event.x) > x + 0.3) && (getVX(event.x) < x + 0.5) && (getVY(event.y) > y - 0.1) && (getVY(event.y) < y + 0.1)
     			puts("clic triangle droite")
-    			@grille.clickTriangle(c)
+    			@grille.clicTriangle(c,1)
     			return
     		end
        	end
