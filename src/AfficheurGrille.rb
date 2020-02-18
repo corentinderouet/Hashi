@@ -259,8 +259,6 @@ class AfficheurGrille < Gtk::DrawingArea
 	    end
 	    
 	    cr.fill()
-
-	    # TODO Gestion deux liens
     end
 
     # Clic sur la souris
