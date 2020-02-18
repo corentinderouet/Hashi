@@ -43,9 +43,24 @@ class AfficheurJeu < Gtk::Paned
         boxVerticale.add(@verif)
         @verif.signal_connect("clicked") { |widget| @grille.verification() }
 
-		@hypothese = Gtk::Button.new(:label => "Hypothèse")
+		@hypothese = Gtk::Stack.new()
+        @boutonHypothese = Gtk::Button.new(:label => "Hypothèse")
+        @boutonHypothese.signal_connect("clicked") { |widget| @grille.commencerHypothese(); @hypothese.visible_child = @boxHypothese; @grille.queue_draw() }
+        @hypothese.add_named(@boutonHypothese, "Inactif")
+
+        @boxHypothese = Gtk::Box.new(Gtk::Orientation.new(0), 0)
+        @boutonValiderHypothese = Gtk::Button.new(:label => "Valider")
+        @boutonValiderHypothese.signal_connect("clicked") { |widget| @grille.validerHypothese(); @hypothese.visible_child = @boutonHypothese; @grille.queue_draw() }
+        @boutonValiderHypothese.hexpand = true
+        @boutonAnnulerHypothese = Gtk::Button.new(:label => "Annuler")
+        @boutonAnnulerHypothese.signal_connect("clicked") { |widget| @grille.annulerHypothese(); @hypothese.visible_child = @boutonHypothese; @grille.queue_draw() }
+        @boutonAnnulerHypothese.hexpand = true
+
+        @boxHypothese.add(@boutonAnnulerHypothese)
+        @boxHypothese.add(@boutonValiderHypothese)
+        @hypothese.add_named(@boxHypothese, "Actif")
+        @hypothese.visible_child = @boutonHypothese
         boxVerticale.add(@hypothese)
-        @hypothese.signal_connect("clicked") { |widget| @grille.commencerHypothese() }
 
 
 
@@ -56,6 +71,7 @@ class AfficheurJeu < Gtk::Paned
         box.add(Gtk::Label.new("Aide :"))
 
         @aidePos = Gtk::Button.new(:label => "Position")
+        @aidePos.margin_top = 5
         box.add(@aidePos)
         @aidePos.signal_connect("clicked") { |widget| @grille.aidePos() }
 
