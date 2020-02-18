@@ -1,5 +1,4 @@
-load "Grille.rb"
-
+require_relative "Grille"
 
 class Main
     private_class_method:new
