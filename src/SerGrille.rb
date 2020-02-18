@@ -73,9 +73,10 @@ class SerGrille
 	# Transformation des grilles sous format texte en format Grille
 	# === Parametres
 	# * +id+ => identifiant de la grille à charger
+	# * +difficulte+ => caractère en fonction de la difficulté : m-> moyen / f-> facile / d-> difficile
 	# === Retour 
-	# Aucun retour : Création d'un fichier si inexistant sinon ajout de la grille
-	def SerGrille.deserialise(id, difficulte)  # m-> moyen / f-> facile / d-> difficile
+	# retourne une grille qui a été créée
+	def SerGrille.deserialise(id, difficulte)
 		
 		# Choix des fichiers à ouvrir 
 
@@ -208,8 +209,12 @@ class SerGrille
 		end
 	end
 
-	def transformeSerial(difficulte) # m-> moyen / f-> facile / d-> difficile
-		
+	# Transformation des grilles sous format texte prise sur internet en format texte avec notre convention d'écriture
+	# === Parametres
+	# * +difficulte+ => caractère en fonction de la difficulté pour savoir dans quel fichier aller: m-> moyen / f-> facile / d-> difficile
+	# === Retour 
+	# Aucun retour : création d'un fichier texte sous notre convention d'écriture.
+	def transformeSerial(difficulte)		
 		# Choix des fichiers à ouvrir et supression des anciens fichiers
 		if(difficulte=="f")then
 			if (File.exist?("grilles_site_ser_facile.txt"))
