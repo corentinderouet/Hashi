@@ -11,19 +11,19 @@ class Case
     # @tabVoisins => tableau(0 a 3) des cases voisines 
     # @tabTriangle => tableau(0 a 3) contenant des booleans correspondant a la possibilitée ou non de créer un lien dans une direction
 
-    # Methode d ’ acces en lecture de @ligne
-    attr_reader:ligne
-    # Methode d ’ acces en lecture de @colonne
-    attr_reader:colonne
-    # Methode d ’ acces en lecture de @etiquetteCase
-    attr_reader:etiquetteCase
-    # Methode d ’ acces en lecture / ecriture de @tabVoisins
-    attr_accessor:tabVoisins
-    # Methode d ’ acces en lecture / ecriture de @tabTriangle
-    attr_accessor:tabTriangle
+    # Méthode d'acces en lecture de @ligne
+    attr_reader :ligne
+    # Méthode d'acces en lecture de @colonne
+    attr_reader :colonne
+    # Méthode d'acces en lecture de @etiquetteCase
+    attr_reader :etiquetteCase
+    # Méthode d'acces en lecture / ecriture de @tabVoisins
+    attr_accessor :tabVoisins
+    # Méthode d'acces en lecture / ecriture de @tabTriangle
+    attr_accessor :tabTriangle
 
-    # On rend privé la methode de classe new pour forcer l'utilisation de Case.creer
-    private_class_method:new
+    # On rend privé la méthode de classe new pour forcer l'utilisation de Case.creer
+    private_class_method :new
 
     # Initialisation d'une case
     #
@@ -31,7 +31,7 @@ class Case
     #
     # * + ligne + = > la ligne de la case dans la grille
     # * + colonne + = > la colonne de la case dans la grille
-    # * + etiquetteCase + = > le nombre de lien total pouvant etre relié à cette case
+    # * + etiquetteCase + = > le nombre de liens total pouvant être relié à cette case
     #
     def initialize(ligne,colonne,etiquetteCase)
         @ligne=ligne
@@ -43,24 +43,24 @@ class Case
     end
 
 
-    # Creation d'une case
+    # Création d'une case
     #
     # === Parametres
     #
     # * + ligne + = > la ligne de la case dans la grille
     # * + colonne + = > la colonne de la case dans la grille
-    # * + etiquetteCase + = > le nombre de lien total pouvant etre relié à cette case
+    # * + etiquetteCase + = > le nombre de liens total pouvant être reliés à cette case
     #
     # === Retour
     #
-    # la case creer
+    # La case créée
     #
     def Case.creer(ligne,colonne,etiquetteCase)
         new(ligne,colonne,etiquetteCase)
     end
 
 
-    # compte le nb de lien attaché a une case
+    # Compte le nombre de liens attachés à une case
     #
     # === Parametres
     #
@@ -68,7 +68,7 @@ class Case
     #
     # === Retour
     #
-    # le nombre de lien
+    # Le nombre de liens
     #
     def nbLienCase(tabLien)
         compteur=0
@@ -80,16 +80,16 @@ class Case
         return compteur
     end
 
-    # calcule le nombre de lien entre une case et une direction, les test sont a faire avant l'appel de la methode
+    # Calcule le nombre de liens entre une case et une direction, les tests sont à faire avant l'appel de la méthode
     #
     # === Parametres
     #
-    # * + posTabTriangle + = > entier qui correspond a la direction de création du lien,0==nord,1==est,2==sud,3==ouest
-    # * + tabLien + = > le tableau de lien de la grille
+    # * + posTabTriangle + = > entier correspondant à la direction de création du lien (0==nord,1==est,2==sud,3==ouest)
+    # * + tabLien + = > le tableau de liens de la grille
     #
     # === Retour
     #
-    # nb entre 0 et 2 compris
+    # Nombre entre 0 et 2 compris
     #
     def nbLienEntreDeuxCases(tabLien,posTabTriangle)
         c=0
@@ -107,19 +107,15 @@ class Case
     end
 
 
-    # creation d'un lien a partir de cette case dans une certaine direction
+    # Création d'un lien à partir de cette case dans une certaine direction
     #
-    # === Parametres
+    # === Paramètres
     #
-    # * + posTabTriangle + = > entier qui correspond a la direction de création du lien,0==nord,1==est,2==sud,3==ouest
-    # * + hypothese + = > boolean qui correspond a l'état du lien, si il est créer ou non lors d'une hypothese
-    # * + tabLien + = > le tableau de lien de la grille
+    # * + posTabTriangle + = > entier qui correspond à la direction de création du lien (0==nord,1==est,2==sud,3==ouest)
+    # * + hypothese + = > boolean qui correspond à l'état du lien, si il est créé ou non lors d'une hypothèse
+    # * + tabLien + = > le tableau de liens de la grille
     #
-    # === Retour
-    #
-    # rien
-    #
-    def creerLien(posTabTriangle,hypothese,tabLien)#ATTENTION : a gerer le croisement de lien ici avant creation.
+    def creerLien(posTabTriangle,hypothese,tabLien)#ATTENTION : à gérer le croisement de lien ici avant creation.
         if(self.tabTriangle[posTabTriangle]!=false)
             l=Lien.creer(self,self.tabVoisins[posTabTriangle],hypothese)
             
@@ -131,7 +127,7 @@ class Case
             end
             tabLien.push(l)
 
-            #ici on gere la suppression des triangles de la case si le nb de lien est max
+            #ici on gère la suppression des triangles de la case si le nombre de liens est max
             if(self.nbLienCase(tabLien)>=@etiquetteCase.to_i)
                 for i in 0..3 do
                     tabTriangle[i]=false
@@ -140,7 +136,7 @@ class Case
                     end
                 end
             end
-            #de meme ici mais pour l'autre case de ce lien
+            #de même ici mais pour l'autre case de ce lien
             if(tabVoisins[posTabTriangle].nbLienCase(tabLien)>=tabVoisins[posTabTriangle].etiquetteCase.to_i)
                 for i in 0..3 do
                     tabVoisins[posTabTriangle].tabTriangle[i]=false
