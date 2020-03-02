@@ -45,15 +45,15 @@ class AfficheurJeu < Gtk::Paned
 
 		@hypothese = Gtk::Stack.new()
         @boutonHypothese = Gtk::Button.new(:label => "Hypothèse")
-        @boutonHypothese.signal_connect("clicked") { |widget| @grille.commencerHypothese(); @hypothese.visible_child = @boxHypothese; @grille.queue_draw() }
+        @boutonHypothese.signal_connect("clicked") { |widget| @grille.commencerHypothese(); @hypothese.visible_child = @boxHypothese; @afficheurGrille.queue_draw() }
         @hypothese.add_named(@boutonHypothese, "Inactif")
 
         @boxHypothese = Gtk::Box.new(Gtk::Orientation.new(0), 0)
         @boutonValiderHypothese = Gtk::Button.new(:label => "Valider")
-        @boutonValiderHypothese.signal_connect("clicked") { |widget| @grille.validerHypothese(); @hypothese.visible_child = @boutonHypothese; @grille.queue_draw() }
+        @boutonValiderHypothese.signal_connect("clicked") { |widget| @grille.validerHypothese(); @hypothese.visible_child = @boutonHypothese; @afficheurGrille.queue_draw() }
         @boutonValiderHypothese.hexpand = true
         @boutonAnnulerHypothese = Gtk::Button.new(:label => "Annuler")
-        @boutonAnnulerHypothese.signal_connect("clicked") { |widget| @grille.annulerHypothese(); @hypothese.visible_child = @boutonHypothese; @grille.queue_draw() }
+        @boutonAnnulerHypothese.signal_connect("clicked") { |widget| @grille.annulerHypothese(); @hypothese.visible_child = @boutonHypothese; @afficheurGrille.queue_draw() }
         @boutonAnnulerHypothese.hexpand = true
 
         @boxHypothese.add(@boutonAnnulerHypothese)
