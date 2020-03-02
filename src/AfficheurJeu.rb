@@ -23,7 +23,7 @@ class AfficheurJeu < Gtk::Paned
 		super(Gtk::Orientation.new(0))
 
 		@grille = grille
-		@afficheurGrille = AfficheurGrille.new(grille, 7, 10, true)
+		@afficheurGrille = AfficheurGrille.new(grille, true)
 
 		boxVerticale = Gtk::Box.new(Gtk::Orientation.new(1), 0)
 		@timer = Gtk::Label.new("Timer")
