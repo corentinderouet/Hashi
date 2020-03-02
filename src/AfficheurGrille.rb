@@ -27,8 +27,6 @@ class AfficheurGrille < Gtk::DrawingArea
 	# === Parametres
 	#
 	# * +grille+ => Grille à afficher
-	# * +vWidth+ => Largeur virtuelle de la grille 
-	# * +vHeight+ => Hauteur virtuelle de la grille
 	# * +playable+ => Réagit au clics de souris ou non
 	def initialize(grille, playable)
 		super()
