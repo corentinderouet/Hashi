@@ -164,6 +164,8 @@ class SerGrille
 			fichierSource="./Grilles/grilles_site.txt"
 			fichierRecept="./Grilles/grilles_site_ser.txt"
 		end
+		fichierLec=File.open(fichierSource, "r")
+		fichierEcr=File.open(fichierRecept, "a+")
 		id=1
 		fichierLec.each_line do | ligne |
 			fichierEcr.write(id)
