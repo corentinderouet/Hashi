@@ -159,7 +159,43 @@ class Grille
     # Retourne la table des voisins, sinon break
     #
     def clicCercle(case1)#a modifier pour afficher toutes les cases reliées
-        return case1.tabVoisins
+        
+        # tabLien2=Array.new()
+
+        # for i in 0..3 do
+        #     if(case1.tabVoisins[i]!=false)
+        #         if(case1.nbLienEntreDeuxCases(@tabLien,i) != 0 )
+        #             c=0
+        #             #on push le ou les lien(s) si ils ne sont pas dans le tabLien2
+        #             @tabLien.each do  |lien|
+        #                 if((lien.case1.ligne == case1.ligne && lien.case1.colonne == case1.colonne) && (lien.case2.ligne == case1.tabVoisins[i].ligne && lien.case2.colonne == case1.tabVoisins[i].colonne ) )
+        #                     if( Utilitaire.index(tabLien2,lien)==-1 )#probleme ici
+        #                         tabLien2.push(lien)
+        #                         c +=1
+        #                     end
+        #                 elsif ((lien.case2.ligne == case1.ligne && lien.case2.colonne == case1.colonne) && (lien.case1.ligne == case1.tabVoisins[i].ligne && lien.case1.colonne == case1.tabVoisins[i].colonne ))
+        #                     if( Utilitaire.index(tabLien2,lien)==-1 )#probleme ici
+        #                         tabLien2.push(lien)
+        #                         c +=1
+        #                     end  
+        #                 end
+
+        #             end
+
+        #             if(c!=0)
+        #                 tabLien2+=clicCercle(case1.tabVoisins[i])
+        #             end
+        #         end
+
+        #     end
+        # end
+
+        # puts "#{tabLien2}"
+
+
+        # return tabLien2 
+        
+
     end
 
     # Méthode lors d'un dlic sur le triangle d'un cercle
@@ -224,9 +260,7 @@ class Grille
     def annulerHypothese()
         for i in 0..@tabLien.length-1 do
             if(@tabLien[i].hypothese==true)
-                ligne=((@tabLien[i].case1.ligne + @tabLien[i].case2.ligne)-( (@tabLien[i].case1.ligne + @tabLien[i].case2.ligne)%2 )   )/2
-                colonne=((@tabLien[i].case1.colonne + @tabLien[i].case2.colonne)-( (@tabLien[i].case1.colonne + @tabLien[i].case2.colonne)%2 )   )/2
-                self.supprimerLien(ligne,colonne)
+                self.supprimerLien(@tabLien[i])
             end
         end
         @hypothese=false
