@@ -122,7 +122,7 @@ class SerGrille
 				end	
 			end	
 			print("\n\n\n")
-			g=Grille.creer(tabCase,comptligne,comptcolonne)
+			g=Grille.creer(tabCase,comptligne,comptligne) #La grille étant carrée, comptligne représente la hauteur et la largeur
 			fichier.close
 
 			return g
@@ -163,7 +163,7 @@ class SerGrille
 			end
 			fichierSource="./Grilles/grilles_site.txt"
 			fichierRecept="./Grilles/grilles_site_ser.txt"
-
+		end
 		id=1
 		fichierLec.each_line do | ligne |
 			fichierEcr.write(id)
