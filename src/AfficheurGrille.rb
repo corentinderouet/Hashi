@@ -27,14 +27,12 @@ class AfficheurGrille < Gtk::DrawingArea
 	# === Parametres
 	#
 	# * +grille+ => Grille à afficher
-	# * +vWidth+ => Largeur virtuelle de la grille (TODO à voir pour l'obtenir directement depuis la grille)
-	# * +vHeight+ => Hauteur virtuelle de la grille (TODO à voir pour l'obtenir directement depuis la grille)
 	# * +playable+ => Réagit au clics de souris ou non
-	def initialize(grille, vWidth, vHeight, playable)
+	def initialize(grille, playable)
 		super()
 		@grille = grille
-		@vWidth = vWidth
-		@vHeight = vHeight
+		@vWidth = grille.largeur
+		@vHeight = grille.hauteur
 		@ratio = 1.0 * @vWidth / @vHeight
         self.signal_connect("draw") { |widget, cr| draw(cr) }
         self.signal_connect("button-press-event") { |widget, event| mouseClick(event); self.queue_draw() } if playable

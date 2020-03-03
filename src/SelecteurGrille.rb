@@ -21,9 +21,10 @@ class SelecteurGrille < Gtk::ScrolledWindow
 		3.times() do |x|
 			8.times do |y|
 				vBox = Gtk::Box.new(Gtk::Orientation.new(1), 0)
-				g = Grille.creer(SerGrille.deserialise(9).tabCase)
+                                res=SerGrille.deserialise(2,"")
+                                g = Grille.creer(res.tabCase,res.hauteur,res.largeur)
 				f = Gtk::Frame.new()
-				a = AfficheurGrille.new(g, 7, 10, false)
+				a = AfficheurGrille.new(g, false)
 				a.set_size_request(1,300)
 				a.expand = true
 				f.add(a)
