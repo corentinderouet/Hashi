@@ -86,6 +86,12 @@ class AfficheurJeu < Gtk::Paned
 
 		self.add1(@afficheurGrille)
 		self.add2(boxVerticale)
-		self.set_position(450)
+                self.set_wide_handle(true)
+		#self.set_position(1000)
+                #puts(self.allocation.width)
+                self.signal_connect("draw") do
+                        self.set_position(self.allocation.width*0.81)
+                        print(nil)
+               end
 	end
 end
