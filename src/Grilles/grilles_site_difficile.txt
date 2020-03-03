@@ -1,0 +1,90 @@
+1 2a2a2c1c   ccc3aa1c2cc3aa3cc1d1 cc2a3c c2a2a3a2
+ 2b4aa22a1c2 cc2b4d c3a2c3a3c c4b3cc 1c c12aa2 1 
+ 2aa4a21c  d ccc2a5b4c1c1a2c3a3a1ccc    c12aa2a2 
+2a3aa2 c c  c1c1c1a2c2c2a2a3c3a2a1c1c    c 2aa2a2
+2a3aa1 c1c 3b4ccc c d2c3a3a4c2c   c1c2aa1c 2aa2a2
+2a2aa2 c    c13a3b2ccc2a2a2ccc1a2a41c    d 2aa2a3
+2a2a2 1c1a2c c3a1c3b4c1a4a1c4b4c  cc d2aa22a4a1  
+2aa3a2 c  c1c1c1a2c3c3a2a2d2c1a3a3c3b2c  c 1a3aa2
+ 1a3aa22a1c2 cc1a3d c3a2c3a3c c3b2cc 2a2a22aa3b2 
+2aa2a2 c 2a1c2c c2a2d3a2c1a4c2a3a1c1c    c 2a2aa2
+ 1aa3a22aa2c cc 1c1 c2 c4aa3c 2d  cc c4bb32a3aa1 
+ 2 2aa22d c1 cd4b3c c4a2a3a3c2b5b3cc  c c12aa2 1 
+ 3bb3a21c    cc3b3a2c3a2a1c2c1a4a2cc  d  12aa4a1 
+ 3b3aa21c    ccc2b3a3c2a3a1c3a1c  cc  c1a22aa3a1 
+2a2a2 1c   c cc2aa6b42c 1d ccc c5b4c2a2c c2a2a2 1
+ 2b5a2aa21a3d4b3 c  d2d c c2a7b6a5a3c d c d c4b5a4b7b5c1a3a1c dc  c1a3a32aa3a2a1 
+2a2aa2aa2c1aa3b3 c2aa4a1c c  1d3a4b4  c2d   c2a4a4aa1cc c2bb5b5c 2aa1c d2aaa2a2 2
+ 2aa2aa3  c 2aa2d 1c c1 cd1c2a2c c2c3a2a4a3a3c2a2c3a2c1c c2d c1 c 1c2 c  2aa3aa2 
+2aa4a3a2 c  d c c 4bb4 c1c1c2bbb3c1c3a3a2a3a3c1c2aaa1c1c1c 3bb4 c c c  c 2a3a2  1
+2aa2  2a2c1 c  c1ccc 5b3cc22c d c1ccc2a5a3a3c4a2c   c2d c2aa1cc2 c 1aa2c  2aa2aa2
+2a3 3b3a2c d c   c4b7b4aa2cc1c1aa2cc2cc   cc2cc2aa1c1cc2aa4b6b51   c c d 1aa2 2a3
+ 2bb3 2a2    c1c c2a2a2c1 cc3b4a5aa3cc1c d1 c2cc5b4c ccc2d2a3a2c1c2c    2a3a3aa1 
+2aa2a2a2 c1aa2a2c 3a2aa1cc1c1aa3a3cc3aa1c cc2c1aa2 c1c2aa2aa5a2      d   2b3aa4a1
+ 1aaa2aa22aa4aa1 cc  d2aaa34bb5c   cc 1c2aa1cc c3bb4a42a3aa2c d     c3b41aa2a3a1 
+ 1aa2 1 12aa2c c cc  c4b7b4c1a3c d c4b2c3a6a3c1a2c d1c2 2a4 dccc c d 2c13b5b5aa2 
+ 2bb3 1a22a2 c1a2cc c c  c2c 2a3aa2c3aa3b2  cc2aa3a3a42c  c c dc2a1c 3b42a2a3aa1 
+ 1a2  1a22a1c    cc1a6b4aa43a1d c1 dc1a5a4c dc  c d2a43aa4b5a1cc1aa2a3b32a2aa2a1 
+2a2aa3a1 c3b4 c1a22c d c  cc2a4a3aa34b5a2a3 cc d2b4d 3c d  d2 d2a4aa4a1d 1a2aa2a3
+2a3a2aa1 c c2aa2a2c 1c    c3aa4b5bb5c 2a1c  d2 c1a3aa4c 2a2a2 c2aa2a1c c  2b3a3a2
+ 2a2aa2 11c2aa1c cc1c2bb5b43a3aa4a1cc    d  cc2a3a6bb42c1c c  cc1c1 c1a22a2  2a1 
+3a2a2 1a2a2d4b3c     c3d c3aa2aa3c4a4c2aaa1c2c d1c1a3b4c3b6a4a4b4c2a1c c1c d2   c 1c3a3c2aa3aa2c  cc 1aa2a3aa22aaa2a2a1  
+3aa2a2 1 2 d3aa2c c d13d  c3b6b4ccd  c  c1a3c5bb4aa4a2c2c     c ccc4a3aa2c c22d c1 cc 1cc5b5c c2aa31c d2a3aa1c 2a3 1aa2a2
+2a2a2aa2a1 c3a3a3aa3b32d c c    cc2 c 4b5b3c2aa2 c c c2 3bbb3 c 1c1c1aaaa4aa3c2aa4a1c  cc   d  c3b42a2a4aa2c c 2b3a2aa2 1
+  1a2aa3a2 2aa3a3 c1c1c 1c d 2cccc c5b5 cc2c3a2d c c2ccc3b6b5a2c3ccc   c  cd3c3aa1c2a2ddcc 1 cc  d31c c 1c1a3c 2a3aa3a2a2
+2a2a2aa2  1c2a2a1 c  c2c2a2aa5bb5c3c2aa2c  dcdcc1 cc  d2d1cc c3aa4c5b5c 1c  c2c d2aa3a1cc2a6bb5a2a4c  c  d   d2aa2  2 1a3
+ 2b3a2a2aa22a3b3a5b3 cc     d c cc1a3aa6b4a32a3c  c   c  dc3b4aa1c  d1c1aa2a32a5a6b4aa2cc c d2c1 ccc 3b4d1c c12aa2a3 2a2 
+2a2 2 2aa2 c1c d c1 c cc5b7b3c c12cd1c2a4a3ccc2c2c1c1c2c3a2c2c1c1c2c  cc4a4a4cc1a3cd c dc3a1cc5b7b51c  c1c d c 2aa3a2 3a2
+2aa2  1a2a2c  c 1a4b4cc2b5aa2c d22a1c1 c4a4c 2a4c cd cc c d4a3d c21c dd c5b5cc3b5d 1c d23a1c3aa4a3cc1a3a1 c  c2a2a2aa3aa2
+1 2 1 1a3a2c d c   c1c4b4 c1aa2c2c1aa5a3aa4c4b2 d c  d2c3bb8b6bb6c2c  d c  d2c3aa5b5aa3c2c2aa1c 1a4c1c   c   d2a3a2a3a2a3
+ 1a3aa3a3a2   c  c1c c2aa4a3ccc1cc  c d2c1c2c3a5b5c4b5ccd1c1c1c d33dc2c2a5a4dd4cc3a1d c33d2cc1a5b5cc2c1c    d12a2 2aa2a3 
+ 1 2a2aa2a21c c1aa3a1cc4b4aa1c  c2c1a4bb5aa3c3a2c  c 1c2c c2a1c c2c1 c 1a3a3c2aa6bb4a1c2  1d1 c1a3c  c2c c  c11a3a3a3aa2 
+ 2aa2a2a2 12c2aa2a1c cd1c 2a4a6b43a4 c d d c  d 4b4 d1c2a5 c2aa5c2c d 2c  d3cc d c4bb5d23b7a2c1 c3c  d1a2c 1c11a4a2a3aa2 
+ 2aa3aa2a1 1c1 c 2a4a2c2c c c d c2c4a6b6b8b4c1d d c d1c2a7b6a6b5c2  d c d c3c3a5b6b6a4d2d2a1c c d3c2c1a2 c 2c1 2a2aa3aa2 
+2a2  1a2aa2c1c 1a5b3 c2c2aa1d c ccc 1aa5a4a3c2aaa3c c1c2a4a2d1 cc3  d c3aa2cd1a7b5aa3a4d  d c1 c d3  3a2c c 2c1aa2a3a3aa2
+2aa2a2aa2a2c2bb4aa4a2cc   c  d cc2 2a4bb4 c2c1c1aa2aa3c2c2aa2aa2c2c3aa3aa1c1c2c1 c 2a5b4c2c c c c c1c3b4a2 c c 2a2a2aa2 1
+1a3 3b3a2aa1   d c1a4aa5b32a7b7b3d 1d cc d d1c3 c5a33b6 dc1c cd c  d 2c 2a2d c2a6bb5bbbb7b5c c1aa2a2 c dc 3aa2a1c 5b52 c 1aaa3 d cc c1aa2 c 5b42a3aa1c c c c 1a2aa3a3a2 1
+2aa2a2 1 1  1c2aa1c c c  c2c1aa4b5b7b3cc3a4aa4b3d c22c1d2 c c4a3cc2c2d c 1c c2cc3b7a4aa4 cc2c  d c  d 2cc2a2d 3bb4 c33b2c3aa3aaa3d 1a5b3 c   c3   c c c1aa2c1aa2 1 2a2aa2
+2a2a2a2aa2a1 c2b3a2aa2 1a22a5b4aa1c   c  d c   c2a2c2b6a5a3a2c c2  c d c  c 1c  4b8b4aa3aa31 c d2a2aaa1cc 4a4c1a4b5a32 d cc  c d cc d c2aa3a6b42a5b4aa2a1c c 1a2aa3b3a2 1
+2aa2 1 2a2  1c  c c1c c  cc2a6b3c1 c1a32c1d1a3aa6b3cc3c5a4a2 d c22d2d d c d ccc2cd 6b6b7a3cc c3 d c d c22a2c 3a3a7b3c 1a3aa3a1d1a32a1  2c2a4a1cc    d1c    c2aa2a4a3aa2a2
+2a3  1a2 1  1c d    c c 1c4b6aa3a2 c c2c1c  c1aa3a3c2cc3a4aa2a1c2c2cd c 2a2a3c2c1d c c   c2c3a5b3 c1aa3c2c1aaaa4a1 c3c3aa3b2c1aa2d2c1aa4a3aa5b5c2aa1d    d c2aa2a4a2aa4a2
+2aa4a2aaa2a1 c  d1aa2aa3b33bb7aa3a2aa1c   d 1c3aa2a31aa5 c1d    c   d 5b7b4aa3   d d c1c  c2aa7b6a4c3b2cc  d c d2a3b44bb6b7b5a2a1cc    d1aaa2a32a3bb5aa2aa1c 1a3bbb3a2aa2
+ 1aa2  1a3aa23aa3c1aa3c  cd  d4b4 dc4b4d 1dc d d1d c3 cd4a6b7a7b4c c2d c d d c2a5a6b6a6b7a3  d c d c d1c2a7b5a7b4 dc2c d1c d c 2cc3b4cc 3a4aa2c   c3bb2c1aa21aa3aa2a4bb2 
+ 2aa2a3aa4a1 1c3bb2c  d   c2c 1a6b3d4b3cc3aa1d c2d c2cc2aa6b6a5a4c1cc  c d1c d2a4c4b5a3c4b5  d1d c  cc c2a6a6a4aa2c 2c d d c1aa3 c4b8b7b6a1 c cc d c d   2a22a3 2a4a2aa1 
+ 1aa2a3a2a1  2aa3a1c1a3aa2c1 c  c  c  c2c c3b6bb5a3cc4a3c2c  c dc2d c2d2a2c d2c4 cc4a1c4b6c2d 2cc1a3c d2cd c1c  c3a4cc3a4a3aa2c c2c  c     c 2c2aa4bb3aa2 c1  1a3bb3aaa2 
+ 1a4a2a2  1a22a3d   c1aa2cc dd3bb5a1 c33b6dc  c2aa4d  d2c1a2c  d32a4a5a2a4bb4cc   d3a3a1  cc3aa4d c2a5b42d2 c5b3c1d cc3d 1c  cc5a32cd1a4aa2cd cc1d  c   c2 c2a4aa2 1a3aa2
+ 1 1 3b3a2a1 1c c c4b5b5a2c3b6b4d c d c2a2c c4a4a7b4  c1 cc1c d c1a5aa3cc3b8b4  d  c2c  d c2a7b3cc3aa6a3c d c1cc 1d c3b7a5b3c c4b4  d c2b6b7b3c1a5b4a1c d c1 1a3b3a2 3a2 
+2aa2  1 1aa2 c1 c  c1a2 c 2c1c  c  c c1c2c3bb6bb5a3c2c2a2 c  c c2cc  c c2a2 ccc3aa4a2c2aa2ccc 1c2a2c2aa32c c1c1a2c  cc3a3a5b5a6b3ccc   c d d c21c1aa3a5b5a2c 2aa2a2a2a2a2
+2a3b3aa2a2  1c2a4a3aa2c  c2c1d c 2c4bb5c2c5b4 d1c  dcc2c c 5b6aa42cc1 c c d 1ccc2aa5b4 d ccc2aa1c c 3 c22aa2a2 c c 2c  2b4bb6b5 cc2aa2a1 c d c2c 1a2aa3a4a2c2aa3b3aa2a2a2
+ 1a2a2a2a3a1 2a3a4a2a2c1a2c1c1d   c3a3ccc1cd1aa2c d22c c3a3bb6b4cc5b5a3a3 c  ccd c c d c1a32d c 3b5a4a2cc3a5bb5b4c c24a3c1 c dc1ccd1d2c c d1c1c2c2c2a3a4a3a2 2a3a2a2a2a1 
+ 2a2a2aa2a1  2c1a2aa2a2aa2d2a3b3      c4a2a2c1a5b5b5c1a2c3a2d c d3a1c1c c5a5b6c  c c 1d c d2aa5a3aa6b5a4   d    c2c1c3bb8bb5a2dcc2c  d  d  d1cc2aa4aa4aa4a2c 1aaa3b3aa2a2
+2a3b3a3b3a2a2a2a2c2a4a3a4a2a5b4a1c2c d c1d   d c1a3c4b7b3cd4bb5 c  c2c1c2a2dd  c 3aa4c1c2c1a4d  c c1 dc ccc  c5aa5a3c d3a4c3b4cd  d c3a4c d3a1dc4bb4 cc cc 3c  d2aa4bb5c 32 c3aa6b4 c  d2 dc 1c  c d 3aa4c d2  4b4c d c1 c2a4c  c d2a5b4c 4b4c3a1c d    cc c d2c1a3a4a2a1c2a3a3c2a2a2a2a2a2 1a2a2
+2a2a3a2a2a2a2a1  c   c2a3a3a4a4aa22   1c1c c1d d  cc 4bb4c1 cc5b8b3cc d  c3aa4cc d c22a6aa2c 1dc2a6a4c  d3aa2 cd3a1d d32a4d3bb2c2c  d1ddc1c3c1aa4b7bb5c2dcc1cc     d  c3a52c c2aa3aa6aa2c dc3a5a2 c  d2aa6b62c d c 4bb5c  d dc3b8b4 c 1c3a1d dc  d c c c1c1a4a52aa4a3a3a3a3a1  d  1a3b3a3b3a2a2a3
+2a3bbb3a2 1aa4aa2c2a3a3a2c    d  c2c1c c c4bb3a6bb4ccc2 c2cc 2a1c 2cc2cc cdc1 c  c d22cc2a2d2aa5aa3a4ccc2a3b7bb2d    c2c3aaa1c 2a7b4aa4c2c 2aa4 c d c  d2c2 c  d 1 d c1a4ccc c  d1aa4a3a3ccc4b7bb6aa4b5a2dc22c d  c 1c d cd2ccc 4aa3 c4a6b5dccc2 c 1c 2d c d2c21c c c1 c4b4a4a2c 2a2 2aa3a2a2a2a2
+2a2a2aa2a2a2 1  1c2b4a5bb5a1c c  cc  c d  d1a2 c1a32aa6b7aa5a3aa4a1c   d d1 c1c  c1a3 3a7b4c 2cc3b5a2c1d d  c cc2c c1c3c2 d1a3a2cc2 cc2d2aa5a4a3b3cc 2cc3 2 c d1a4b3c cc2c1d c d  c  c 2cc3c4a6b6aa6bb4 c2cd2c d c  d  c 1c1dc3b7a5bb6aa5aa4a43a1d c  c  d  c cc2b4 c1a4bb6bb3 c2a2aa2 1a2aa2aaa2
+2a2a2a2a2a2aaa1  c2a4aaa2 1aaa4bb32c d 1 c1aa2 c 2cc1 d c 4b4 c 3 dc3aa6a3 c d c d d2c1 d c 3b6a5a5a5c3c d 4bb3c d c d2d4b6 c 1c4b7b7b5c3c d c c2c1c1d c2c3a6a4a2c2ccc5a4c2c d c1a4cc3cd d2cc d c  d1cd2d 2cc4b8b7b3d c2c3aa32c d d c4a4a3aa1cc2a7b5a2c c1aa2a31  d    c 2aa2a1c 1a3  1a2   1a2a2
+3bbbb3a2a2 1 1  1c3b6bb4a1c c c 2c3c d  c  c c c d2d3a5aa4aa4b5b5a4cdc c1 c1aa2a2c1cc3c 1c 2a5bb3c1cc2c3aa5bb4d  c3a2cccc  c  d3aa2c2b3c2c1a3aa7b3aa3a3a3c4b5a2 d2a3aa3c c2c d c dc c  dc1cc3a7b6b6c 4bb6cc22c d c d1 c  d1ccc4b6a5a4aa5aa6b5c2c c d    d  c d2c1 c 4bb3a5bb4a3c2aa2   1a2a2aa2a2
+  2bb5a3a2a2aaa1 2aaa2d c1a4a4b5a2c 1 c2 c  d c d1cc c 2aa4aa7b4a3c22a6bbb3c  d1a2a3c  d   cc3b6a4a1cc1a6a3a3cc1c d  c2  d1c c2cc4b5aa2c2a3c1 cc1cc1aa5b4c2a4bb4c 2c   d ccc3aa2c3 c3a2a5a32cd 1c2d 2c   c cc1d c1c2 c3bbb4 c2a7b7b5aa4aa2 c 2  d d c  c  c 2 c1a5b5a3a1c1a2 c 1 1a3b3a2a2 1aa2  
+2aaa2aa2a2a2a2 1 c 3aa3aa3b4a1c c1c d  c    c  c cc2 5bb6a2a1c3a5b5cc c1 d    cd1c d23b5c 4aa3b3dc3a4c  dc c3bb5b5cc1c2  d3a3c  c1cc2c1c2a4c cc2a2cc2c3a4c1c1 c1c  c2c1c d2c3bb5a4aa3c4b5 dc4aa1c1c  c3c d 33d   ccc1a2d3a4 cd5b5a2c2a5b5c c 2dc d  c  d c1 c c2c d1a3aa4a3aa3a2 2a4a3bb3a2aa2a1 
+2a3a2a2a2aa2a3b2 c1c1aaa2aa2a5b4a22c2aa3aa5bb3d c cc3a1 c1 d  cd c 22c1aa2c d 1c3a2 cc2aa2a6b5 c2a3aa42aa2a1d c c  c 1d 2bb3a5a5a5a1c cd2aa2a2c d d2a4 c3c 2b3c4b8b5c d 2cc   c1c d c3b4 c23aa1c c 3a5b4bb4cc 2a6b5aa1c2aa1c22 c d c 3a2c 4b4cc c d c d  c d c22a4b5a3a4aa3a4a2c 1a2a2a2aa3b3a2a2
+3bb3a2a2a4a1  1a2c2aaaa1  d      c2c3a4aa4a5a4a3bb5c2d d  d c d    d2c2 d1a7b6b6aa5b6c4aa5a1d c c  d1d2d  c  d c1c1a3c3c5bb4aa5b3c2a2a2c2c1aaa2a2a4aaa2a3c3a2a3a2a2c 2bb3c2c   c   c3aaa1c3cc2a1c2bb3c 3aa3d2cc2b7b4aa4 d 1c3c1c  d c  d d c2c2 3bb5a6bb6b5a2c2c      d1aa2a3b3c2aa2a2a3 1aa2aaa2
+ 1  1a2aa2a2aa2a21c2bb4a3aa2a3bb2cc2a3 c1c3bb3a2aa4c  d cc1c 4b4aa1d2aa6a3c c d c4bb5   d c5b6b7a2d  c2a1d 2d c d  d  cc2b5 c3a4a4aa5aa3c  c 2a1c2b3 c 1c2aa4aa3a5a1c c c2   c  c d1a4a5a3c 1 c3a3 d  c d c21c 2d c 5bb6b8b4ccc c5b4 c  c d c2c3b4c1c 3b2c 3a2cc  c1c2aa2a3aa1 12aa3a3a2aa2a2aa1 
+2aa2 1a2 1a2aa2a2c  c1a2c3a5b4aa1c2a2c  c2d1d c   c  c2aa3c3c4a5aaa32a3aa1c2c2c d 1 cc2bb4a2c1cc d c cc   c  c c4b7b7b42a5b5aa6b4c c d c  d c 1d c1 c d c  d c c4a3aa4a4a32a7b5a3c    c   cc1d c cc3a3a3aa1ccc5a3 c1d c1aa3a42cd c 3b8b6bb2c dcc4b4aa1d c   3b5c2a3bb3a4a3a1   c2a2aa2a2a2a2a2aa2
+3b3a2a2  1a2a3a1 c3a2a1c3bb4a1c   2d1a2a3c  c1a5bb4c6b4a1c2a1c  c  d2d c1a3a2a5aa4aa4c4a6b5b4b2d  c  ccc1d c1aaa5bb6a1c2cc5b7bb5bb4 d3b5c1cc d  c  d dc d2a2c 3aa4aa6a4c d 2b6bb4 c  d c2a4   c  d c1a5b6b4c3bb6aa5a3a4a1c d2c  d  c1a2d1a3a4c2aa5a1c  c5b4a1c2   c1a3aa2c c1a2c 1a2 1a2aa2 1 1a2
+2a3aa2a2aaa3bbb2 c c3bb4aa3aa3a3b3c 2c1 c  c  c   c2 c1c c4b5a1c1aa4c 2a3a4d c1a5aa1d3bbbb2d2 c  d   d 2a2aa5bb6bb6a2a41c2bb3a2 c  c3b3ccc  2a1c c2b3c ccc3a3c  c 3b3a2 c22c d3aa5aa4a2aa2ccc 2c  d  d2b3aa3c2aa6bb7bb7a3a2 c4a2 d  c  d c1c 2d c d  c  d 1c1 c4b4a4aa3aa4aa2  c 1a2a2aaa2a2aa2a2
+ 1aa2 1 1 1a4a1 11a3 c c c   d   c  d 2a3a4b4a5a4a32a6aa2a2a2c1c d cc d 2a4b4c2c5b5 cc d c c d1c2d c 23b5a2 c d cc3a3 c 1aaaa4a7b4c  c c2aa2a1c1d c4bb6a3c 2a1 cc4a3c  d cc c1aa2cc1cc2a7b42a5a2aa3ccc2c d c  d2aa3c1c1c1 d c  dc2 d5b4a4bb7a32a5cd 3d2aaaa1d cc d1d c2c 2b3a5b33b5a4a3a3aa2a2a1 
+2aa2a2a2a2a2aa2aa2a2c 2a3a4a5b5aa4a3aa3cc c1c d d d  d c  dc2a3cc d d d  d c  d2  cc4b7b7a6bb6b6bb5c1 c2c1c d c    c  c3c 1c1c3a6b7b4a1c3a3d2aa3a3c2c1d c1a2d c3 2aa1ccdcc3a5bbb4 cc1c   c2d2c  c 2aaa3cc2a2a3cdc3a3c c 2 c2c    cc3cc dc c d 1c3a2a1c1c1c d2a4a4aa4c3b4a6b6b7b7b4c2b3 d2c2c1d c d c d4b2c 4c1d2cd c d 2a3c  c d3a3cc3a3a6bb3a5bb5a4c  1c    c    c 1c cc1aa3a2aa3a2a1c c1 c3bbbb3aa2a2a2a2 2aa2
+ 1a2aaa2 1aa2a2aa2a22a4a3a1c3bb5a4bb4b3cc d c1a3c  d c    c23b4 c  c4aa6b6a4aa3c 3aa5bb3d  c d d2 c21d  c2aa7bb5a7b5d ccc5a2cc1 d  c d c5b5c2d c3cc 3aa4b7a3c d2c6b4d1c      d c2a3ccd c4a5aa2aa1d c   c2d cc d1aaa4a6b7b6b4c4a3c 4aaa2d c d d c3c c3 c 1 c6b5a6a5a3dc 2d c c cd c d c1cd2 c5b7b4a2d c d 1c23c 3c d1a3a7b6b7aa3cc2 d4a6b4c d c d  c33c 2d c d1 d c d  cdd2aa5b4a4aa4a3a5bb3d3a2aa2a2aa2a2aaaa2a3
+2a2aaa2  1a2a2a2a2 1c4bb3 c 3a5b5a2a1c c2d  c c d d d1a2a4b4c4aa4a5a6b7a5b5b4a2c2c  c d c d   c c1c3cc3b7b7b6a5aa1c 1c1dc2c d c d c 3b6aa3a42c2a5b6b8b5 c d3bb2cc2a3a1c d d c dc 3b5c  c2a3a4a6b4a4c c d2  2c2a3a2c2b3c5b5a5c  c1c1c c2a1c1d c1dc2a5b5cc 5b4a6b7b3c32c c dc1 d c d c  ccc2 c d2aa5a6b6a5aa3c2c 3a5a1 c d c d  c2c2 c c2bb7b7b7b7bb4ccc c 2aa1d c d c  cc1c 2aaa2a5b4a4a3a1c1 2aa2a2a2a2a2a2a2a2 
+3b3a2a2a2a2a2aaaa1  c1a4a3a4a3a3aa4a4aa23a1d c1d c1c1 d1d  cc  d cc5b5c1c dcd3b52aa7b5cc d4a4b4c3c d   d d2c 3d2b4a2c4b62aa4 dc2 c4a1c1a2c dc 2c 3cc 3c  c 1a4a52 dc c2c dc2a5aa2c dc d4b3c2a4cc1d  c3b52a5c  c  c2ccd  c  c  d3bb6a3cc1c5bb7bb42a5b3 d dc4b3c1 d  cc1a2c 3 d1c  cc 5aa3c  c2 c 4b6aa3c d  c2aa4c 3aa1d  c4b8bb4   d1 c 3a6bb3c d 1c2aa7b3c1d c   c d c2c  d c1c4b4a2a3a4a2c3bb4 2a2 1a2a2a2a2a2
+ 1 1 2a3 2aa2aa2aa1  c c c d c 3b3aa2aa22c 3b6b6 c c2a2aaa1cd2aa2c d 2a3c1a3a2a34a1 c3b6aa3cc  c1a3cc3aa4a1c 1dc4a1c  d22d  c  c c2cd1a4aa5cc6bb6bb6a3a3d  c  d22d  c  d   c5bb7bb5cc4aa5aa5aa3cc  d  c2cc  d  c 2dc4aa6aa3cc5bb8b3c dd2d 1d  c22d  d c2 d2cd c5bb5cc5bb6a3c d c6b4c  d22c  c c3a5b3d c3aa3cc2a1c 1c1a3a5a4c   c3a2a3aa3a1c1c d2a4b5c1aaaa2aaa2c4b6a1c d2aa2a2aa2aa2c c  c d 1aa2aa2aa2a2 1  2a3
+ 2a2a2a2a2a2a2aa4aa21c1aaa2a2a5b4aa1d  cc3aa2aa3a1d c   d  ccc 4b3 c3a5a5a4b8bb42c d c 2d c d c d  cc4a5a4 c4b7b7b6a5aa4cd c d c  d c d1c  dc4b7b5a3aa6b6a3c3a2dc  d      c d  cc1c42aa5aa2a2a4a4aa2cc2d 2 c2aa4a2c1a2aa2cc31d cc  d c2aaaa2a2ccc3a4c1a7b6aa2a4b5a3c2a2d2a1d d    c d cc  c4a4a6a6b3aa5b6 c2  cc d1d1c    c d 2c2a2c 2c3c4aa3b4a3 c3c1a5bb4c2d1aaaa2aa3dc  c  c1c4b3a2aa1 c22aa2  1 2a2a2a2aaa2 
+2a2aaa2  1a2a2a2a2 1c4bb3 c 3a5b5a2a1c c2d  c c d d d1a2a4b4c4aa4a5a6b7a5b5b4a2c2c  c d c d   c c1c3cc3b7b7b6a5aa1c 1c1dc2c d c d c 3b6aa3a42c2a5b6b8b5 c d3bb2cc2a3a1c d d c dc 3b5c  c2a3a4a6b4a4c c d2  2c2a3a2c2b3c5b5a5c  c1c1c c2a1c1d c1dc2a5b5cc 5b4a6b7b3c32c c dc1 d c d c  ccc2 c d2aa5a6b6a5aa3c2c 3a5a1 c d c d  c2c2 c c2bb7b7b7b7bb4ccc c 2aa1d c d c  cc1c 2aaa2a5b4a4a3a1c1 2aa2a2a2a2a2a2a2a2 
+2aaa2aaaa2aaaa2aaa1 c2a5b5aa3b5a3aa3a2a2cc d d    d c 1c   cc4b7a6b5aa6b4 cc3a2c2c d c d1 c c 2cd c2c4a6b5a4c2c 2 cc6b4c2d c c c2dc c c1d c2c6b3 c 1cd2a4a5a5a2c2d2bb5aa2d  c d c2a3c4bb2c2bb5aa4b7b3c c2  4b5a5bb4aa1c  c2cc1 d c d  c2aa4aa2d22c d c 5b2cc2 c 3a4cc2a6a4 c2a3cd c d c23a1d d 2c1c2d 4b8b4cc  d 3 c1c2cd c d c22aa3 c 4a4cc5b5a6a3c     c d d1cc c d c21a2aa3a5b5a2c 3b6b3c 1aa2a2a2a2a2  1a2a2
+ 1 1  2aa2aaa2  1a2 1c c  c 1aa2 c    c c5b6bb5aaa1c c 2a1c12d c  c2b5b6a3 c1a3cc3a6b2c  c d c c  cc3a2d1a3aa4a6b6a4aa2cc2c3a2aa2c1c d1c   ccdc     ccc3a4c4a2a32d5b5aa1c1cc c2d   cc3d d3bb5a2c 1c4aa2c2c3a4c  c2a4aa2c  ccc3a1c5b2cc1c2bb5b2c2cc1a3d1a3ccc      cc2c  c3a1c1c3a4aa4b5cc5bb5a5b6a3c2d  c dccd  c d d c1d6bb4a5cc4a3c 4a6b4a3d    d21c d2 c c1aaa4a2aa4c c 2c c 2aa2aa2a1 c1 2aa2 2aaa2aa2aaaa2 
+2b4 1  1aa2aa2 2a2a2  d1c3aa2aaa1c c   c2a5c2d 2a5b6b6b6bb3cc dccd c d d c c 1c24b4cc5b6b5a4a3 c c2cc2a2cc2c     c 4b3c22c1a3cdc1a3aa3 c  ccc3a1cc3c  c1 c c1a3ccc1a4cc2aa2c c c  c22c  d1c 1aa4a5b6bb5cc5bb7a4aaa1c2c1c  d22d  d c2a4b4dcc3a1dcc4a1d cc c cd2cc2b5ccc  d 3c1c 1dcc4a1cc2c1a3 d1c1  d1cd1a2cc3a2aa6a4aaa4a2d 1a42c    d c 1aa2a5aa2dc2aa4b7b5bbb4a1c  c2c   c c     c1a3a1c 2a2a2 1  1aa3a3b3a2 
+ 2aa3bb3a3b3aaaa2a1 1c 2aa3b5b5aa2a4a5b3c2 c    c d    d d c3c 2a2aa3a5a4aa6b7a4d3aa3b3aa1c d  c d d3c1aa2a3aa6b7bb5a7b5c3aa4a1c 1d c  c1d c2c  d1a2 c5a4a1cc4a3c3bb7b4aa3d c1a2cc c3aa2c c  c3 c   c1 cc 1cc 3a2cc 4b6b6aa32 cc2 c2cc1 c1d d  cc 2cc 2dc3aa2c3a5bb42 c1c c3cc 2a5a2aa3cc 5b4 ccc2 c d2aa1d22 d c 2c1c c dc2aa4cc 5a3 c2a5a6b4cc2 c2c d c c  d d  c1d 2c2a5b4a3aa5b5aa3a3 c1 2b3aaaa3b3a3bb3aa2 
+2aa2a2aa2 1 1 1 1  1c 3a3aa2c c c c c  cc1d c2 c3b6b7b6b6a1c2c6b4d c  c d c d1a3c3d c4a3aa4a6b6a5a1c2d6b4c1aa2c c d c  cc3d c4bb3cc 2a5b6aa3cc4a4c1 cc5bb3a2d  c2cc1d2c c2d 1a2c5bb4c2cc4cc 1c3aa1ccc  c2c1cdc2aa4a1  c2c1a3c3a2d2aa1c2a3a4c2a2c2c1a4aa2a4c c d3a3c2cc 1a3aa1dc2c 3c d1cc4aa1c   d1d1 c5b6a3cd 3a5b5a6a5aa4d c c2d d c d d c  d3a2 cc3a6b4a7b5 c3b7b5bb5c  c   d c 1c c c  d2aa2 1a3 2aa2 1 2aa3
+2a2aa2aaa2a2aa2a2a1 c3aa5bb4aa4a4bb5a2a22d 1d  c1 d c  d2b3cc3 c3aa2c d c  d  c22c c  2a4a7b6aa5aa3cc3a3a1c2c2d d1 c  c32c    cd2dd 2c c1a2dc4bb5a4dcd5aa4b5a3a42c  d d3c3d3bb2c1c1cc4b4d 2c3c3c1aa3c1c22c1d4aa4d3c3a1 c2a3cc1c2c  d3d1c4b2c  c23a3a5bb6c5a3d2b5bb4cc2a1c  d1d cd     c22c  c  d d c3a3b5b4cc3aa5aa5a7b6b3  c c32c  d  c d c1c 1c 2dc4b2d  c d 1c1 c1 c31c1a5bb5b5aa3aa3aa2c 2a2aa3b3a2aaa3b3aa2
+2a2 1 1 1a2a2a2aa2a2c1c c c1a4a5b4a3aa2c2cc c 4b4d d c2c2 cccc4b4 c d4b6a2d1d c2c2c c 3a4a1c1a4a5b4c2c1 c c1a4a3a2aaa1c2c2aa5b6a2d1a2aa3aa4c2a1 c d c3a2aa1c  d2 2aa3a5b7b5a3aa4bb5c c2bb3a2d d c     c21c     c3a6b6a2aa1ccc4bb5aa4a1c d2a5bb4c2c  d1 c1a5b5c d  c2c3aa5c c  c1c4b6aa3c2c  d2a3aa2c1c c 1c2c3a2d    1a3a3 c c2ccc c6b3a2a2a1c 4b5cc2c 1d1a2a3b3a3 c dc2c2aa4a3b3a2a1c c d1c2a2aa3b3a3b3a2 2a4a2
+ 1a2a3b3a2a2a2 2a3b32a2a2a2a2a3a3c c   cc4b4a4a1  c d3b4aa2c2d c d3aa2c 5a4b4 c2c4a6b5d  c2 d c d cc2c d c4bb4c 6b5a6a3cc4b7a5a2 c2 d c d cc2c d d c cc d c d c2c3a7b8b6b4c 4a6b8b4c2c d d c1c2 c d d cccc d d cc2c c d d c2c4b6a6a3cc3a5b8b6a3c2c c d c2cc c d c c2cc 3 d cc2c 2a4 c 2cc2 d 5b5cc3aa3c 1 c3cc d c dc3c  d4bbb4d2c 3a4b4cd3bb5c1a2c3c2aa2a4a2d   c2a1c1cc     d1a4a3b5b3a3a22a2a2a4a2a2a2a2a2a1 
