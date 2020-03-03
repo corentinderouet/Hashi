@@ -217,6 +217,7 @@ class AfficheurGrille < Gtk::DrawingArea
 		end
 
     	# Affichage bordure cercle
+	    triangles?(c) ? cr.set_source_rgb(0, 0, 0) : cr.set_source_rgb(0.5, 0.5, 0.5)
 	    cr.arc(getX(x), getY(y), scale(0.3), 0, 2*Math::PI)
 	    cr.fill()
 	    # Affichage partie balnche cercle
@@ -224,9 +225,14 @@ class AfficheurGrille < Gtk::DrawingArea
 	    cr.arc(getX(x), getY(y), scale(0.28), 0, 2*Math::PI)
 	    cr.fill()
 	    #Affichage numéro
-	    cr.set_source_rgb(0, 0, 0)
+	    triangles?(c) ? cr.set_source_rgb(0, 0, 0) : cr.set_source_rgb(0.5, 0.5, 0.5)
 	    cr.move_to(getX(x) - scale(0.14), getY(y) + scale(0.18))
 	    cr.show_text(n.to_s())
+    end
+
+    def triangles?(c)
+        c.tabTriangle.each() { |x| return true if x }
+        return false
     end
 
     # Dessin d'un lien
@@ -272,35 +278,30 @@ class AfficheurGrille < Gtk::DrawingArea
     		y = c.ligne
 
     		if (getVX(event.x) > x - 0.3) && (getVX(event.x) < x + 0.3) && (getVY(event.y) > y - 0.3) && (getVY(event.y) < y + 0.3)
-    			puts("clic case")
-    			@grille.clicCercle(c)
+    			p @grille.clicCercle(c)
     			return
     		end
 
     		#haut
     		if c.tabTriangle[0] && (getVX(event.x) > x - 0.1) && (getVX(event.x) < x + 0.1) && (getVY(event.y) > y - 0.5) && (getVY(event.y) < y - 0.3)
-    			puts("clic triangle haut")
     			@grille.clicTriangle(c,0)
     			return
     		end
 
     		#bas
     		if c.tabTriangle[2] && (getVX(event.x) > x - 0.1) && (getVX(event.x) < x + 0.1) && (getVY(event.y) > y + 0.3) && (getVY(event.y) < y + 0.5)
-    			puts("clic triangle bas")
     			@grille.clicTriangle(c,2)
     			return
     		end
 
     		#gauche
     		if c.tabTriangle[3] && (getVX(event.x) > x - 0.5) && (getVX(event.x) < x - 0.3) && (getVY(event.y) > y - 0.1) && (getVY(event.y) < y + 0.1)
-    			puts("clic triangle gauche")
     			@grille.clicTriangle(c,3)
     			return
     		end
 
     		#droite
     		if c.tabTriangle[1] && (getVX(event.x) > x + 0.3) && (getVX(event.x) < x + 0.5) && (getVY(event.y) > y - 0.1) && (getVY(event.y) < y + 0.1)
-    			puts("clic triangle droite")
     			@grille.clicTriangle(c,1)
     			return
     		end
@@ -327,13 +328,11 @@ class AfficheurGrille < Gtk::DrawingArea
 
     		if y1 == y2
     			if (getVX(event.x) > x1 + 0.4) && (getVX(event.x) < x2 - 0.4) && (getVY(event.y) > y1 - marge) && (getVY(event.y) < y1 + marge)
-    				puts("clic lien")
     				@grille.clicLien(l)
     				return
     			end
     		else
     			if (getVX(event.x) > x1 - marge) && (getVX(event.x) < x1 + marge) && (getVY(event.y) > y1 + 0.4) && (getVY(event.y) < y2 - 0.4)
-    				puts("clic lien")
     				@grille.clicLien(l)
     				return
     			end
