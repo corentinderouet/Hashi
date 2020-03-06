@@ -51,7 +51,7 @@ class Lien
 
     # Affiche les informations d'un lien
     #
-    def afficherLien()
-        puts("( #{@case1.etiquetteCase} , #{@case2.etiquetteCase} , #{self.hypothese} )")
+    def to_s()
+        return "(Lien : [#{@case1.ligne},#{@case1.colonne}]-[#{@case2.ligne},#{@case2.colonne}], #{self.hypothese})\n"
     end
 end

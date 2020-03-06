@@ -278,7 +278,11 @@ class AfficheurGrille < Gtk::DrawingArea
     		y = c.ligne
 
     		if (getVX(event.x) > x - 0.3) && (getVX(event.x) < x + 0.3) && (getVY(event.y) > y - 0.3) && (getVY(event.y) < y + 0.3)
-    			p @grille.clicCercle(c)
+				tabLien2=Array.new()
+				@grille.clicCercle(c,tabLien2)
+				tabLien2.each do |l|
+					puts "#{l}"
+				end
     			return
     		end
 
