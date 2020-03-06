@@ -5,21 +5,32 @@ require_relative "SelecteurGrille"
 class AfficheurSelection < Gtk::Box
 
 	# Constructeur
-	def initialize()
+        #
+        # === Paramètres
+        #
+        # * +fenetre+ - Fenetre principale
+	def initialize(fenetre)
 		super(Gtk::Orientation.new(0), 0)
 
 		boxHorizontale = Gtk::Box.new(Gtk::Orientation.new(0), 0)
 		self.add(boxHorizontale)
 
 		stackDif = Gtk::Stack.new()
+                boxVerticale = Gtk::Box.new(Gtk::Orientation.new(1), 0)
 		sideDif = Gtk::StackSidebar.new()
 		sideDif.stack = stackDif
+                sideDif.vexpand = true
+                boxVerticale.add(sideDif)
 
-		boxHorizontale.add(sideDif)
+                retour = Gtk::Button.new(label: "Retour")
+                retour.signal_connect("clicked") { fenetre.finSelection(nil) }
+                boxVerticale.add(retour)
+
+		boxHorizontale.add(boxVerticale)
 		boxHorizontale.add(stackDif)
 
 		["Facile", "Moyen", "Difficile"].each() do |dif|
-			stackDif.add_titled(SelecteurGrille.new(), dif, dif)
-		end
+			stackDif.add_titled(SelecteurGrille.new(fenetre, dif.downcase[0]), dif, dif)
+	        end
 	end
 end
