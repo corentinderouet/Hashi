@@ -1,4 +1,4 @@
-#Test de base de donnée 
+#Test de base de données
 require "rubygems"
 require "active_record"
 require_relative "Migration"
