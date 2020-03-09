@@ -1,9 +1,15 @@
 require "gtk3"
 require_relative "SelectionUtilisateur"
 
+# Widget de connexion
 class Connexion < Gtk::Box
 
-	def initialize()
+        # Constructeur
+        #
+        # === Paramètres
+        #
+        # * +fenetre+ - Fenetre principale
+	def initialize(fenetre)
 		super(Gtk::Orientation.new(1), 0)
 
 		self.margin = 15
@@ -25,7 +31,7 @@ class Connexion < Gtk::Box
 		e.margin_top = 20
 		inscription.add(e)
 		c = Gtk::Button.new(label: "Valider")
-                c.signal_connect("clicked") { |widget| puts("Création de #{e.text} !") }
+                c.signal_connect("clicked") { |widget| fenetre.inscription(e.text) }
 		c.margin_top = 20
 		inscription.add(c)
 
