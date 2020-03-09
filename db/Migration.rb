@@ -49,7 +49,7 @@ class Migration < ActiveRecord::Migration[4.2]
 			t.string :mode_jeu
 		end
 
-		create_table :joue do |t|
+		create_table :joues do |t|
 			t.belongs_to :joueurs
 			t.belongs_to :grilleDb
 			t.integer :score

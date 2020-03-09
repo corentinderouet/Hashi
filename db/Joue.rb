@@ -3,4 +3,5 @@ require 'active_record'
 class Joue < ActiveRecord::Base
 	belongs_to :joueur
 	belongs_to :grilleDb
+
 end
