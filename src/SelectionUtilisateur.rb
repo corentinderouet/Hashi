@@ -1,6 +1,12 @@
 class SelectionUtilisateur < Gtk::ScrolledWindow
 
-	def initialize(utilisateurs)
+        # Constructeur
+        #
+        # === Paramètres
+        #
+        # * +utilisateurs+ - Liste des utilisateurs
+        # * +fenetre+ - Fenetre principale
+	def initialize(utilisateurs, fenetre)
 		super()
 		self.set_policy(Gtk::PolicyType::NEVER, Gtk::PolicyType::AUTOMATIC)
 		self.expand = true
@@ -25,6 +31,7 @@ class SelectionUtilisateur < Gtk::ScrolledWindow
 
                 utilisateurs.each() do |u|
                     l = Gtk::Button.new(label: u)
+                    l.signal_connect("clicked") { fenetre.inscription(u) }
                     #l.expand = true
                     l.signal_connect("clicked") { |widget| puts("Connexion de #{u}") }
                     l.set_size_request(150, 70)
