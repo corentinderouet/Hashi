@@ -217,11 +217,8 @@ class Grille
     # * +pos+ => entier correspondant la position du lien de deux cases
     #
     def clicTriangle(case1,pos)
-        l=case1.creerLien(pos,@hypothese,@tabLien)
-        @pile.empiler(Action.creer("ajout",l))
-        @pile.afficherPile()
+        case1.creerLien(pos,@hypothese,@tabLien)
         self.actuCroisement()
-
     end
 
     # actualise les triangles de chaques cases pour empecher les croisements de liens
@@ -271,8 +268,9 @@ class Grille
             end
 
         end
-
-
+        l=case1.creerLien(pos,@hypothese,@tabLien)
+        @pile.empiler(Action.creer("ajout",l))
+        @pile.afficherPile()
     end
 
 
