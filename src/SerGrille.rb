@@ -99,29 +99,29 @@ class SerGrille
 				s=fichier.readchar()
 				comptcolonne+=1
 				if(s==";") 
-					puts("  ")
+					#puts("  ")
 					comptligne+=1
 					comptcolonne=-1
 				elsif(s=="D")
-					print("==")
+					#print("==")
 				elsif(s=="H") 
-					print("--")
+					#print("--")
 				elsif(s=="V") 
-					print("| ")
+					#print("| ")
 				elsif (s=="E") 
-					print("||")
+					#print("||")
 				elsif (s=="_") 
-					print("  ")
+					#print("  ")
 				elsif(s=="$") 
 					sortie=1
 				else
-					print(s)
+					#print(s)
 					c=Case.creer(comptligne,comptcolonne,s)
 					tabCase.push(c)
-					print(" ")
+					#print(" ")
 				end	
 			end	
-			print("\n\n\n")
+			#print("\n\n\n")
 			g=Grille.creer(tabCase,comptligne,comptligne) #La grille étant carrée, comptligne représente la hauteur et la largeur
 			fichier.close
 
