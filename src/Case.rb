@@ -107,6 +107,31 @@ class Case
     end
 
 
+    def lienPasseEntreDeuxCases(tabLien,posTabTriangle)
+        if(@tabTriangle[posTabTriangle]!=false)
+            tabLien.each do  |lien|
+                if( (@ligne>lien.case1.ligne && @ligne<lien.case2.ligne) || (@ligne<lien.case1.ligne && @ligne>lien.case2.ligne) )
+                    if(posTabTriangle==1 && lien.case1.colonne-lien.case2.colonne==0 && lien.case1.colonne>@colonne && lien.case1.colonne< @tabVoisins[posTabTriangle].colonne)
+                        return true
+                    end
+                    if(posTabTriangle==3 && lien.case1.colonne-lien.case2.colonne==0 && lien.case1.colonne<@colonne && lien.case1.colonne> @tabVoisins[posTabTriangle].colonne)
+                        return true
+                    end
+                end
+                if( (@colonne>lien.case1.colonne && @colonne<lien.case2.colonne) || (@colonne<lien.case1.colonne && @colonne>lien.case2.colonne) )
+                    if(posTabTriangle==0 && lien.case1.ligne-lien.case2.ligne==0 && lien.case1.ligne<@ligne && lien.case1.ligne> @tabVoisins[posTabTriangle].ligne)
+                        return true
+                    end
+                    if(posTabTriangle==2 && lien.case1.ligne-lien.case2.ligne==0 && lien.case1.ligne>@ligne && lien.case1.ligne< @tabVoisins[posTabTriangle].ligne)
+                        return true
+                    end
+                end
+            end
+        end
+        return false
+    end
+
+
     # Création d'un lien à partir de cette case dans une certaine direction
     #
     # === Paramètres
@@ -126,25 +151,6 @@ class Case
                 self.tabVoisins[posTabTriangle].tabTriangle[(posTabTriangle + 2)%4] = false
             end
             tabLien.push(l)
-
-            #ici on gère la suppression des triangles de la case si le nombre de liens est max
-            if(self.nbLienCase(tabLien)>=@etiquetteCase.to_i)
-                for i in 0..3 do
-                    tabTriangle[i]=false
-                    if(tabVoisins[i]!=false)
-                        tabVoisins[i].tabTriangle[(i+2)%4]=false
-                    end
-                end
-            end
-            #de même ici mais pour l'autre case de ce lien
-            if(tabVoisins[posTabTriangle].nbLienCase(tabLien)>=tabVoisins[posTabTriangle].etiquetteCase.to_i)
-                for i in 0..3 do
-                    tabVoisins[posTabTriangle].tabTriangle[i]=false
-                    if(tabVoisins[posTabTriangle].tabVoisins[i]!=false)
-                        tabVoisins[posTabTriangle].tabVoisins[i].tabTriangle[(i+2)%4]=false
-                    end
-                end
-            end
 
             return l
         else
