@@ -93,6 +93,7 @@ class SerGrille
 				end
 			end
 
+
 			#affichage primaire de la grille après désériaisation + création du tableau de case
 			sortie=0
 			while sortie==0 do
@@ -123,8 +124,14 @@ class SerGrille
 			end	
 			print("\n\n\n")
 			g=Grille.creer(tabCase,comptligne,comptligne,nil) #La grille étant carrée, comptligne représente la hauteur et la largeur
-			fichier.close
+			
+			g.tabLien
 
+
+
+
+
+			fichier.close
 			return g
 		else
 			puts("Id non trouvé")
