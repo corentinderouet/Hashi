@@ -13,17 +13,22 @@ class Pile
       end
 
       def empiler(c)
-          @pile.push(c)
+          @pile.unshift(c)
       end
 
       def depiler()
-          @pile.pop()
+          @pile.shift()
+      end
+
+      def estVide()
+          return @pile.length()==0
       end
 
       def afficherPile()
-          @pile.each do |l|
-              puts(l)
-          end
+            puts("\nAffichage pile :")
+            @pile.each do |l|
+                puts(l)
+            end
       end
 
       def sommet()
