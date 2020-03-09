@@ -217,21 +217,21 @@ class AfficheurGrille < Gtk::DrawingArea
 		end
 
     	# Affichage bordure cercle
-	    triangles?(c) ? cr.set_source_rgb(0, 0, 0) : cr.set_source_rgb(0.5, 0.5, 0.5)
+	    saturee?(c) ? cr.set_source_rgb(0.5, 0.5, 0.5) : cr.set_source_rgb(0, 0, 0)
 	    cr.arc(getX(x), getY(y), scale(0.3), 0, 2*Math::PI)
 	    cr.fill()
 	    # Affichage partie balnche cercle
-	    cr.set_source_rgb(1, 1, 1)
+	    saturee?(c) ? cr.set_source_rgb(0.75, 0.75, 0.75) : cr.set_source_rgb(1, 1, 1)
 	    cr.arc(getX(x), getY(y), scale(0.28), 0, 2*Math::PI)
 	    cr.fill()
 	    #Affichage numéro
-	    triangles?(c) ? cr.set_source_rgb(0, 0, 0) : cr.set_source_rgb(0.5, 0.5, 0.5)
+	    saturee?(c) ? cr.set_source_rgb(0.5, 0.5, 0.5) : cr.set_source_rgb(0, 0, 0)
 	    cr.move_to(getX(x) - scale(0.14), getY(y) + scale(0.18))
 	    cr.show_text(n.to_s())
     end
 
-    def triangles?(c)
-        c.tabTriangle.each() { |x| return true if x }
+    def saturee?(c)
+        return true if c.nbLienCase(@grille.tabLien) >= c.etiquetteCase.to_i()
         return false
     end
 
