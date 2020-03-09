@@ -29,7 +29,7 @@ class SelecteurGrille < Gtk::ScrolledWindow
                                 n = x*8+y+1
 				vBox = Gtk::Box.new(Gtk::Orientation.new(1), 0)
                                 res=SerGrille.deserialise(n, dif)
-                                g = Grille.creer(res.tabCase,res.hauteur,res.largeur)
+                                g = Grille.creer(res.tabCase,res.hauteur,res.largeur, nil)
 				f = Gtk::Frame.new()
 				a = AfficheurGrille.new(g, false)
 				a.set_size_request(1,300)
@@ -48,7 +48,7 @@ class SelecteurGrille < Gtk::ScrolledWindow
         # Methodé appellée lors d'un clic sur une grille
         def onClick(n, dif)
             res = SerGrille.deserialise(n, dif)
-            g = Grille.creer(res.tabCase,res.hauteur,res.largeur)
+            g = Grille.creer(res.tabCase,res.hauteur,res.largeur, nil)
             @fenetre.finSelection(g)
         end 
 end
