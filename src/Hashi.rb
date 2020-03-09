@@ -2,6 +2,8 @@ require "gtk3"
 
 require_relative "AfficheurJeu"
 require_relative "AfficheurSelection"
+require_relative "Connexion"
+require_relative "Classement"
 require_relative "Menu"
 require_relative "SerGrille"
 
@@ -15,7 +17,8 @@ class Hashi < Gtk::Window
         self.signal_connect('destroy') { Gtk.main_quit }
     
         @menu = Menu.new(self)
-        self.lancerMenu()
+
+        self.lancerConnexion()
 
         self.show_all()
         Gtk.main()
@@ -25,6 +28,46 @@ class Hashi < Gtk::Window
     def refresh()
         self.add(@courant)
         self.show_all()
+    end
+    
+    # Lancement de la connexion
+    def lancerConnexion()
+        @courant = Connexion.new(self)
+        self.refresh()
+    end
+
+    # Connexion
+    #
+    # === Paramètres
+    #
+    # * +usr+ - Utilisateur sélectionné
+    def connexion(usr)
+        self.remove(@courant)
+        puts("Utilisateur connecté: #{usr}")
+        self.lancerMenu()
+    end
+
+    # Lancement du classement
+    def lancerClassement()
+        @courant = Classement.new(self)
+        self.refresh()
+    end
+
+    # Fin du classement
+    def finClassement()
+        self.remove(@courant)
+        self.lancerMenu()
+    end
+
+    # Inscription
+    #
+    # === Paramètres
+    #
+    # * +usr+ - Utilisateur à créer
+    def inscription(usr)
+        self.remove(@courant)
+        puts("Utilisateur créé: #{usr}")
+        self.lancerMenu()
     end
 
     # Lancement du menu
@@ -42,8 +85,12 @@ class Hashi < Gtk::Window
         self.remove(@courant)
         if action == "entrainement" || action == "classe"
             self.lancerSelection()
-        elsif action == "deconnexion" || action == "quitter"
+        elsif action == "classement"
+            self.lancerClassement()
+        elsif action == "quitter"
             Gtk.main_quit()
+        elsif action == "deconnexion"
+            self.lancerConnexion()
         else
             self.lancerMenu()
         end
