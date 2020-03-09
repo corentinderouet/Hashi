@@ -19,6 +19,9 @@ class Grille
     # Méthode d'accès en lecture/écriture de @hypothese
     attr_accessor :hypothese
 
+    # Méthode d'accès en lecture/écriture de @grilleRes
+    attr_accessor :grilleRes
+
     attr_reader :hauteur
 
     attr_reader :largeur
@@ -34,15 +37,15 @@ class Grille
     # * +hauteur+ => le nombre maximal des lignes de la grille
     # * +largeur+ => le nombre maximal des colonnes de la grille
     #
-    def initialize(tab,hauteur,largeur)
+    def initialize(tab,hauteur,largeur,grilleRes)
         @hypothese=false
         @tabLien=Array.new()
         @tabCase=Array.new()
         @tabCase=tab
         @hauteur=hauteur
         @largeur=largeur
+        @grilleRes=grilleRes
         @pile=Pile.creer()
-
 
 
         for i in 0..@tabCase.length-1 do
@@ -81,8 +84,8 @@ class Grille
     # * +hauteur+ => le nombre maximal des lignes de la grille
     # * +largeur+ => le nombre maximal des colonnes de la grille
     #
-    def Grille.creer(tab,hauteur,largeur)
-        new(tab,hauteur,largeur)
+    def Grille.creer(tab,hauteur,largeur,grilleRes)
+        new(tab,hauteur,largeur,grilleRes)
     end
 
     # Méthode d'affichage de la table des cases
@@ -90,6 +93,21 @@ class Grille
     def tabCaseAfficher()
         for i in 0..@tabCase.length-1
             puts(tabCase[i])
+        end
+    end
+
+    # Méthode qui trouve une case selon ses coordonnées
+    #
+    # === Paramètres
+    #
+    # * +ligne+ => la position dans la grille
+    # * +colonne+ => la position dans la grille
+    #
+    def caseIci(ligne, colonne)
+        @tabCase.each do |c|
+            if(c.ligne==ligne && c.colonne==colonne)
+                return c
+            end
         end
     end
 
@@ -105,8 +123,9 @@ class Grille
         y=Utilitaire.index(@tabCase,@tabLien[i].case2)
         #on peut remplacer par l.case1 et l.case2 au lieu des indices
         @tabLien.delete_at(i)
-
-
+      
+        self.actuCroisement()
+      
         for j in 0..3 do
 
             #ici on gère l'ajout des triangles de la case
@@ -126,8 +145,6 @@ class Grille
             end
 
         end
-
-
 
     end
 
@@ -157,49 +174,39 @@ class Grille
     # === Paramètres
     #
     # * +case1+ => la case du clic
+    # * +tabLien2+ => le tableau qui va contenir les liens à mettre en surbrillance
     #
     # === Retour
+    #rien
     #
-    # Retourne la table des voisins, sinon break
-    #
-    def clicCercle(case1)#a modifier pour afficher toutes les cases reliées
+    def clicCercle(case1,tabLien2)#a modifier pour afficher toutes les cases reliées
+        for i in 0..3 do
+            if(case1.tabVoisins[i]!=false)
+                if(case1.nbLienEntreDeuxCases(@tabLien,i) != 0 )
+                    c=0
+                    #on push le ou les lien(s) si ils ne sont pas dans le tabLien2
+                    @tabLien.each do  |lien|
+                        if((lien.case1.ligne == case1.ligne && lien.case1.colonne == case1.colonne) && (lien.case2.ligne == case1.tabVoisins[i].ligne && lien.case2.colonne == case1.tabVoisins[i].colonne ) )
+                            if( Utilitaire.index(tabLien2,lien)==-1 )#probleme ici
+                                tabLien2.push(lien)
+                                c +=1
+                            end
+                        elsif ((lien.case2.ligne == case1.ligne && lien.case2.colonne == case1.colonne) && (lien.case1.ligne == case1.tabVoisins[i].ligne && lien.case1.colonne == case1.tabVoisins[i].colonne ))
+                            if( Utilitaire.index(tabLien2,lien)==-1 )#probleme ici
+                                tabLien2.push(lien)
+                                c +=1
+                            end  
+                        end
 
-        # tabLien2=Array.new()
+                    end
 
-        # for i in 0..3 do
-        #     if(case1.tabVoisins[i]!=false)
-        #         if(case1.nbLienEntreDeuxCases(@tabLien,i) != 0 )
-        #             c=0
-        #             #on push le ou les lien(s) si ils ne sont pas dans le tabLien2
-        #             @tabLien.each do  |lien|
-        #                 if((lien.case1.ligne == case1.ligne && lien.case1.colonne == case1.colonne) && (lien.case2.ligne == case1.tabVoisins[i].ligne && lien.case2.colonne == case1.tabVoisins[i].colonne ) )
-        #                     if( Utilitaire.index(tabLien2,lien)==-1 )#probleme ici
-        #                         tabLien2.push(lien)
-        #                         c +=1
-        #                     end
-        #                 elsif ((lien.case2.ligne == case1.ligne && lien.case2.colonne == case1.colonne) && (lien.case1.ligne == case1.tabVoisins[i].ligne && lien.case1.colonne == case1.tabVoisins[i].colonne ))
-        #                     if( Utilitaire.index(tabLien2,lien)==-1 )#probleme ici
-        #                         tabLien2.push(lien)
-        #                         c +=1
-        #                     end
-        #                 end
-
-        #             end
-
-        #             if(c!=0)
-        #                 tabLien2+=clicCercle(case1.tabVoisins[i])
-        #             end
-        #         end
-
-        #     end
-        # end
-
-        # puts "#{tabLien2}"
-
-
-        # return tabLien2
-
-
+                    if(c!=0)
+                        clicCercle(case1.tabVoisins[i],tabLien2)
+                    end
+                end
+            end
+        end
+        return 
     end
 
     # Méthode lors d'un dlic sur le triangle d'un cercle
@@ -210,10 +217,62 @@ class Grille
     # * +pos+ => entier correspondant la position du lien de deux cases
     #
     def clicTriangle(case1,pos)
+        case1.creerLien(pos,@hypothese,@tabLien)
+        self.actuCroisement()
+    end
+
+    # actualise les triangles de chaques cases pour empecher les croisements de liens
+    #
+    def actuCroisement()
+
+        @tabCase.each do |c|
+            if(c.etiquetteCase.to_i() > c.nbLienCase(@tabLien) )
+                for i in 0..3 do
+                    if(c.tabVoisins[i]!=false)
+                        c.tabTriangle[i]=true
+                    else
+                        c.tabTriangle[i]=false
+                    end
+                end
+            end
+
+            for i in 0..3 do
+                if(c.tabTriangle[i]==true)
+                    if(c.nbLienEntreDeuxCases(@tabLien,i)<=1 && c.etiquetteCase.to_i() > c.nbLienCase(@tabLien))
+                        c.tabTriangle[i]=true
+                    else
+                        c.tabTriangle[i]=false
+                    end
+                end
+            end
+
+
+            for i in 0..3 do
+                if(c.tabTriangle[i]==true)
+                    if(c.lienPasseEntreDeuxCases(@tabLien,i)==false && c.etiquetteCase.to_i() > c.nbLienCase(@tabLien) && c.nbLienEntreDeuxCases(@tabLien,i)<=1)
+                        c.tabTriangle[i]=true
+                    else
+                        c.tabTriangle[i]=false
+                    end
+                end
+            end
+
+
+        end
+
+        @tabCase.each do |c|
+            for i in 0..3 do
+                if(c.tabVoisins[i]!=false && c.tabVoisins[i].tabTriangle[(i+2)%4]==false)
+                    c.tabTriangle[i]=false
+                end
+            end
+
+        end
         l=case1.creerLien(pos,@hypothese,@tabLien)
         @pile.empiler(Action.creer("ajout",l))
         @pile.afficherPile()
     end
+
 
     # Méthode lors du clic sur un lien pour supprimer ce dernier
     #
@@ -264,6 +323,20 @@ class Grille
             end
         end
         return nil
+    end
+
+
+    def verification()
+        #revien d'action en action au dernier etat correct et renvoi le nb d'erreur
+
+    end
+
+    def refaire()
+        self.annulerHypothese()
+        @tabLien.each do |lien|
+            self.supprimerLien(lien)
+        end
+        #a rajouter plus tard remise a 0 des actions
     end
 
     # Méthode pour annuler une hypothèse

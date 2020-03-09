@@ -6,8 +6,9 @@ require_relative "Lien"
 require_relative "Grille"
 
 SerGrille.transformeSerial("m")
+
 res=SerGrille.deserialise(2,"m")
-g = Grille.creer(res.tabCase,res.hauteur,res.largeur)
+g = Grille.creer(res.tabCase,res.hauteur,res.largeur,res)
 puts(g.hauteur, g.largeur)
 a = AfficheurJeu.new(g)
 
