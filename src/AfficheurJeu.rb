@@ -13,17 +13,38 @@ class AfficheurJeu < Gtk::Paned
 	# @aidePos => Bouton aide position
  	# @aideTech => Bouton aide technique
  	# @pause => Bouton pause
+        # @menu => Menu de droite
 
 	# Constructeur
 	#
 	# === Parametres
 	#
 	# * +grille+ => Grille à afficher
-	def initialize(grille)
+        # * +fenetre+ => Fenetre principale
+	def initialize(grille, fenetre)
 		super(Gtk::Orientation.new(0))
+                @paused = false
 
 		@grille = grille
 		@afficheurGrille = AfficheurGrille.new(grille, true)
+                
+                @menu = Gtk::Box.new(Gtk::Orientation.new(1), 0)
+                @menu.spacing = 5
+                c = Gtk::Label.new("")
+                c.expand = true
+                @menu.add(c)
+                @boutonContinuer = Gtk::Button.new(:label => "Continuer")
+                @boutonContinuer.signal_connect("clicked") { |widget| self.remove(@menu); self.add1(@afficheurGrille); self.show_all(); @paused = false }
+                @boutonRegles = Gtk::Button.new(:label => "Règles")
+                @boutonQuitter = Gtk::Button.new(:label => "Quitter")
+                @boutonQuitter.signal_connect("clicked") { |widget| fenetre.finJeu() }
+                @menu.add(@boutonContinuer)
+                @menu.add(@boutonRegles)
+                @menu.add(@boutonQuitter)
+
+                c = Gtk::Label.new("")
+                c.expand = true
+                @menu.add(c)
 
 		boxVerticale = Gtk::Box.new(Gtk::Orientation.new(1), 0)
 		@timer = Gtk::Label.new("Timer")
@@ -33,15 +54,15 @@ class AfficheurJeu < Gtk::Paned
 		@annuler = Gtk::Button.new(:label => "Annuler")
 		@annuler.margin_top = 15
         boxVerticale.add(@annuler)
-        @annuler.signal_connect("clicked") { |widget| @grille.annuler() }
+        @annuler.signal_connect("clicked") { |widget| @grille.annuler(); @afficheurGrille.queue_draw() }
 
 		@refaire = Gtk::Button.new(:label => "Refaire")
         boxVerticale.add(@refaire)
-        @refaire.signal_connect("clicked") { |widget| @grille.refaire() }
+        @refaire.signal_connect("clicked") { |widget| @grille.refaire(); @afficheurGrille.queue_draw() }
 
 		@verif = Gtk::Button.new(:label => "Vérification")
         boxVerticale.add(@verif)
-        @verif.signal_connect("clicked") { |widget| @grille.verification() }
+        @verif.signal_connect("clicked") { |widget| @grille.verification(); @afficheurGrille.queue_draw() }
 
 		@hypothese = Gtk::Stack.new()
         @boutonHypothese = Gtk::Button.new(:label => "Hypothèse")
@@ -82,7 +103,7 @@ class AfficheurJeu < Gtk::Paned
 		boxVerticale.add(box)
 		@pause = Gtk::Button.new(:label => "Pause")
         boxVerticale.add(@pause)
-        @pause.signal_connect("clicked") { |widget| @grille.pause() }
+        @pause.signal_connect("clicked") { |widget| self.remove(@afficheurGrille); self.add1(@menu); self.show_all(); @paused = true }
 
 		self.add1(@afficheurGrille)
 		self.add2(boxVerticale)
@@ -90,7 +111,7 @@ class AfficheurJeu < Gtk::Paned
 		#self.set_position(1000)
                 #puts(self.allocation.width)
                 self.signal_connect("draw") do
-                        self.set_position(self.allocation.width*0.81)
+                        self.set_position(self.allocation.width* (@paused ? 1 : 0.80))
                         print(nil)
                end
 	end

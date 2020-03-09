@@ -1,14 +1,14 @@
 require_relative "Lien"
 
 
-# Une case du jeu avec des position ligne et colonne contenant une etiquette 
+# Une case du jeu avec des position ligne et colonne contenant une etiquette
 # correspondant au nombre de lien possible sur cette case
 class Case
 
     # @ligne => entier correspondnant à la ligne de la case dans la grille
     # @colonne => entier correspondnant à la colonne de la case dans la grille
     # @etiquetteCase => entier correspondnant au nombre de lien total possible sur cette case
-    # @tabVoisins => tableau(0 a 3) des cases voisines 
+    # @tabVoisins => tableau(0 a 3) des cases voisines
     # @tabTriangle => tableau(0 a 3) contenant des booleans correspondant a la possibilitée ou non de créer un lien dans une direction
 
     # Méthode d'acces en lecture de @ligne
@@ -143,7 +143,7 @@ class Case
     def creerLien(posTabTriangle,hypothese,tabLien)#ATTENTION : à gérer le croisement de lien ici avant creation.
         if(self.tabTriangle[posTabTriangle]!=false)
             l=Lien.creer(self,self.tabVoisins[posTabTriangle],hypothese)
-            
+
             c=self.nbLienEntreDeuxCases(tabLien,posTabTriangle)
 
             if(c==1)
@@ -152,7 +152,7 @@ class Case
             end
             tabLien.push(l)
 
-
+            return l
         else
             puts('impossible de creer un lien entre ' "#{@etiquetteCase}"' et ' "#{self.tabVoisins[posTabTriangle].etiquetteCase}"' deja existant')
         end

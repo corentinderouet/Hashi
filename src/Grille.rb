@@ -1,6 +1,8 @@
 require_relative "Case"
 require_relative "Utilitaire"
 require_relative "SerGrille"
+require_relative "Pile"
+require_relative "Action"
 
 #Classe représentant une Grille
 # Une grille peut :
@@ -43,6 +45,7 @@ class Grille
         @hauteur=hauteur
         @largeur=largeur
         @grilleRes=grilleRes
+        @pile=Pile.creer()
 
 
         for i in 0..@tabCase.length-1 do
@@ -120,11 +123,28 @@ class Grille
         y=Utilitaire.index(@tabCase,@tabLien[i].case2)
         #on peut remplacer par l.case1 et l.case2 au lieu des indices
         @tabLien.delete_at(i)
-
-        
-
-        
+      
         self.actuCroisement()
+      
+        for j in 0..3 do
+
+            #ici on gère l'ajout des triangles de la case
+            if(@tabCase[x].tabVoisins[j]!=false && @tabCase[x].nbLienEntreDeuxCases(@tabLien,j)!=2 )
+                @tabCase[x].tabTriangle[j]=true
+            end
+            if(@tabCase[x].tabVoisins[j]!=false && @tabCase[x].nbLienEntreDeuxCases(@tabLien,j)!=2 )
+                @tabCase[x].tabVoisins[j].tabTriangle[(j+2)%4]=true
+            end
+
+            #de même ici mais pour l'autre case de ce lien
+            if(@tabCase[y].tabVoisins[j]!=false && @tabCase[y].nbLienEntreDeuxCases(@tabLien,j)!=2 )
+                @tabCase[y].tabTriangle[j]=true
+            end
+            if(@tabCase[y].tabVoisins[j]!=false && @tabCase[y].nbLienEntreDeuxCases(@tabLien,j)!=2 )
+                @tabCase[y].tabVoisins[j].tabTriangle[(j+2)%4]=true
+            end
+
+        end
 
     end
 
@@ -160,8 +180,6 @@ class Grille
     #rien
     #
     def clicCercle(case1,tabLien2)#a modifier pour afficher toutes les cases reliées
-
-
         for i in 0..3 do
             if(case1.tabVoisins[i]!=false)
                 if(case1.nbLienEntreDeuxCases(@tabLien,i) != 0 )
@@ -186,7 +204,6 @@ class Grille
                         clicCercle(case1.tabVoisins[i],tabLien2)
                     end
                 end
-
             end
         end
         return 
@@ -251,11 +268,9 @@ class Grille
             end
 
         end
-
-
-
-        
-
+        l=case1.creerLien(pos,@hypothese,@tabLien)
+        @pile.empiler(Action.creer("ajout",l))
+        @pile.afficherPile()
     end
 
 
@@ -266,12 +281,15 @@ class Grille
     # * +l+ => le lien qui a été cliqué
     #
     def clicLien(l)
+        @pile.empiler(Action.creer("suppression",l))
         self.supprimerLien(l)
+        @pile.afficherPile()
     end
 
     # Méthode pour commencer à faire une hypothèse
     #
     def commencerHypothese()
+        @pile.empiler("debutHypothese")
         @hypothese=true
     end
 
@@ -283,6 +301,8 @@ class Grille
                 @tabLien[i].hypothese=false
             end
         end
+        @pile.empiler("hypotheseValidee")
+        @pile.afficherPile()
         @hypothese=false
     end
 
@@ -322,13 +342,42 @@ class Grille
     # Méthode pour annuler une hypothèse
     #
     def annulerHypothese()
+        @pile.empiler("hypotheseAnnulee")
+        @pile.afficherPile()
         for i in 0..@tabLien.length-1 do
+            if(@tabLien[i] != nil)
             if(@tabLien[i].hypothese==true)
                 self.supprimerLien(@tabLien[i])
             end
+          end
         end
+
         @hypothese=false
 
     end
 
+    def annuler()
+        a = @pile.sommet()
+        if(a.action == "ajout")
+            self.supprimerLien(a.lien)
+        end
+        if(a.action == "suppression")
+            self.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2))
+        end
+        if(a.action == "hypotheseValidee")
+            @pile.depiler()
+        end
+        # if(a.action == "debutHypothese")
+        #     while a.action !="hypotheseValidee"
+        #         @pile.depiler()
+        #     end
+        # end
+    end
+
+    def refaire()
+        for i in 0..@tabLien.length-1 do
+            self.clicLien(@tabLien[i])
+        end
+        @pile = Pile.creer()
+    end
 end
