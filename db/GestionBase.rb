@@ -23,20 +23,20 @@ end
 
 def recupDifficulte(idGrille)
 	grille= GrilleDb.find(idGrille)
-	return Difficulte.find(grille.difficulte_id)
+	return Difficulte.find_by_niveau(grille.niveau)
 end
 
 def recupMode(idGrille)
 	grille= GrilleDb.find(idGrille)
-	return Mode.find(grille.mode_id)
+	return Mode.find_by_mode_jeu(grille.mode_jeu)
 end
 
 def recupScoreTotal(idJoueur)
- #==> somme de tous les scores du joueur (int)
+	return Joue.where([ "joueurs_id = ?", idJoueur ]).sum(:score)
 end
 
 def recupNbGrillesJouees(idJoueur)
- #==> nombre de grilles jouées par le joueur (int)
+	return Joue.where([ "joueurs_id = ?", idJoueur ]).count
 end
 
 def sauvegarderGrille(idJoueur, grilleDb)
@@ -44,7 +44,7 @@ def sauvegarderGrille(idJoueur, grilleDb)
 end
 
 def recupGrilles(idJoueur)
- #==> toutes les grilles jouées par le joueur (liste de grilleDb)
+	return Joue.where([ "joueurs_id = ?", idJoueur ])
 end
 
 

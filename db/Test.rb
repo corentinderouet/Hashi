@@ -20,9 +20,15 @@ Mode.create( :mode_jeu => "Aventure")
 unJoueur = ajouterJoueur("corentin")
 unJoueur2 = ajouterJoueur("alexis")
 
-GrilleDb.create()#:grilleSer => "VKJZLIJEC", :grilleSolution => "fheijfzei")#, :difficute_id => 1, :mode_id => 1)
-puts Mode.find_by_mode_jeu("Classe").id
-#grille2=recupDifficulte(grille.id)
-#grille3=recupMode(grille.id)
-#puts(grille2)
-#puts(grille3)
+grille=GrilleDb.create(:grilleSer => "1__5___;", :grilleSolution => "1__5HHH", :niveau =>"Facile", :mode_jeu => "Classe")
+grille4=GrilleDb.create(:grilleSer => "1__5___;", :grilleSolution => "1__5HHH", :niveau =>"Difficile", :mode_jeu => "Entrainement")
+
+Joue.create( :joueurs_id => 1, :grilleDb_id => 1, :score => 2521)
+Joue.create( :joueurs_id => 1, :grilleDb_id => 2, :score => 3210)
+
+puts(recupJoueur("corentin"))
+puts(recupDifficulte(grille.id))
+puts(recupMode(grille4.id))
+puts(recupScoreTotal(1))
+puts(recupNbGrillesJouees(1))
+puts(recupGrilles(1))
