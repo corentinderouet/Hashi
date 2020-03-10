@@ -4,6 +4,7 @@ require_relative "AfficheurJeu"
 require_relative "AfficheurSelection"
 require_relative "Connexion"
 require_relative "Classement"
+require_relative "Aventure"
 require_relative "Menu"
 require_relative "SerGrille"
 
@@ -87,6 +88,8 @@ class Hashi < Gtk::Window
             self.lancerSelection()
         elsif action == "classement"
             self.lancerClassement()
+        elsif action == "aventure"
+            self.lancerAventure()
         elsif action == "quitter"
             Gtk.main_quit()
         elsif action == "deconnexion"
@@ -94,6 +97,18 @@ class Hashi < Gtk::Window
         else
             self.lancerMenu()
         end
+    end
+
+    # Lancement de l'aventure
+    def lancerAventure()
+        @courant = Aventure.new(self)
+        self.refresh()
+    end
+
+    # Fin du jeu
+    def finAventure()
+        self.remove(@courant)
+        self.lancerMenu()
     end
 
     # Lancement du jeu
@@ -132,11 +147,11 @@ class Hashi < Gtk::Window
         end
     end
 end
-css = "* { background-color: #f00; }"
-css_provider = Gtk::CssProvider.new()
-css_provider.load_from_data(css)
-context = Gtk::StyleContext.new()
-context.add_provider(css_provider, nil)#Gtk::STYLE_PROVIDER_PRIORITY_APPLICATION)
+#css = "* { background-color: #f00; }"
+#css_provider = Gtk::CssProvider.new()
+#css_provider.load_from_data(css)
+#context = Gtk::StyleContext.new()
+#context.add_provider(css_provider, nil)#Gtk::STYLE_PROVIDER_PRIORITY_APPLICATION)
 SerGrille.transformeSerial("f")
 SerGrille.transformeSerial("m")
 SerGrille.transformeSerial("d")
