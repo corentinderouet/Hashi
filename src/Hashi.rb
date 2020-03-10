@@ -47,6 +47,17 @@ class Hashi < Gtk::Window
         self.lancerMenu()
     end
 
+    # Inscription
+    #
+    # === Paramètres
+    #
+    # * +usr+ - Utilisateur à créer
+    def inscription(usr)
+        self.remove(@courant)
+        puts("Utilisateur créé: #{usr}")
+        self.lancerMenu()
+    end
+    
     # Lancement du classement
     def lancerClassement()
         @courant = Classement.new(self)
@@ -56,17 +67,6 @@ class Hashi < Gtk::Window
     # Fin du classement
     def finClassement()
         self.remove(@courant)
-        self.lancerMenu()
-    end
-
-    # Inscription
-    #
-    # === Paramètres
-    #
-    # * +usr+ - Utilisateur à créer
-    def inscription(usr)
-        self.remove(@courant)
-        puts("Utilisateur créé: #{usr}")
         self.lancerMenu()
     end
 
