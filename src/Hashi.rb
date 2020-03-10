@@ -16,6 +16,10 @@ class Hashi < Gtk::Window
         super("Hashi")
         self.set_default_size(700, 700)
         self.signal_connect('destroy') { Gtk.main_quit }
+        
+        css_provider = Gtk::CssProvider.new()
+        css_provider.load_from_path("../assets/Matcha-dark-aliz/gtk-3.0/gtk.css")
+        Gtk::StyleContext.add_provider_for_screen(self.screen(), css_provider)
     
         @menu = Menu.new(self)
 
@@ -147,11 +151,6 @@ class Hashi < Gtk::Window
         end
     end
 end
-#css = "* { background-color: #f00; }"
-#css_provider = Gtk::CssProvider.new()
-#css_provider.load_from_data(css)
-#context = Gtk::StyleContext.new()
-#context.add_provider(css_provider, nil)#Gtk::STYLE_PROVIDER_PRIORITY_APPLICATION)
 SerGrille.transformeSerial("f")
 SerGrille.transformeSerial("m")
 SerGrille.transformeSerial("d")
