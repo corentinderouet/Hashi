@@ -8,8 +8,8 @@ class Migration < ActiveRecord::Migration[4.2]
 		    drop_table :joueurs
 		end
 	
-		if ActiveRecord::Base.connection.table_exists?(:grilleDbs)
-		    drop_table :grilleDbs
+		if ActiveRecord::Base.connection.table_exists?(:grille_dbs)
+		    drop_table :grille_dbs
 		end
 	
 		if ActiveRecord::Base.connection.table_exists?(:difficultes)
@@ -27,18 +27,20 @@ class Migration < ActiveRecord::Migration[4.2]
 			drop_table :joues
 		end
 
-		if ActiveRecord::Base.connection.table_exists?(:phrasesAventures)
+		if ActiveRecord::Base.connection.table_exists?(:phrases_aventures)
 		
-			drop_table :phrasesAventures
+			drop_table :phrases_aventures
 		end
 		
 		create_table :joueurs do |t|
 			t.string :pseudo
 		end
 
-		create_table :grilleDbs do |t|
+		create_table :grille_dbs do |t|
 			t.text :grilleSer
 			t.text :grilleSolution
+			t.string :niveau
+			t.string :mode_jeu
 		end
 		
 		create_table :difficultes do |t|
@@ -49,13 +51,13 @@ class Migration < ActiveRecord::Migration[4.2]
 			t.string :mode_jeu
 		end
 
-		create_table :joue do |t|
+		create_table :joues do |t|
 			t.belongs_to :joueurs
-			t.belongs_to :grilleDb
+			t.belongs_to :grille_dbs
 			t.integer :score
 		end
 
-		create_table :phrasesAventures do |t|
+		create_table :phrases_aventures do |t|
 			t.string :texteBot
 			t.integer :idZoneScore
 		end
