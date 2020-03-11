@@ -15,14 +15,22 @@ class Menu < Gtk::Box
 
 		boxHorizontale = Gtk::Box.new(Gtk::Orientation.new(0), 0)
 		boxHorizontale.homogeneous = true
-		boxHorizontale.spacing = 10
 		boxHorizontale.margin_top = 10
+		c = Gtk::Label.new("")
+		c.hexpand = true
+		boxHorizontale.add(c)
                 b = Gtk::Button.new(label: "Didacticiel")
                 b.signal_connect("clicked") { fenetre.finMenu("didacticiel") }
 		boxHorizontale.add(b)
+		c = Gtk::Label.new("")
+		c.hexpand = true
+		boxHorizontale.add(c)
                 b = Gtk::Button.new(label: "Classement")
                 b.signal_connect("clicked") { fenetre.finMenu("classement") }
 		boxHorizontale.add(b)
+		c = Gtk::Label.new("")
+		c.hexpand = true
+		boxHorizontale.add(c)
 		self.add(boxHorizontale)
 
                 l = Gtk::Label.new("")

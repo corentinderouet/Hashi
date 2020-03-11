@@ -19,6 +19,7 @@ class AfficheurGrille < Gtk::DrawingArea
 	# @ratio => Ratio de la résolution actuelle
 	# @vX => Nombre de pixel par coordonnée réelle horizontale
 	# @vY => Nombre de pixel par coordonnée réelle verticale
+        # @surbrillance => Liens à mettre en surbrillance
 
 	private
 
@@ -256,6 +257,10 @@ class AfficheurGrille < Gtk::DrawingArea
     		cr.set_source_rgb(0, 0, 0)
     	end
 
+        if @surbrillance.include?(l)
+            cr.set_source_rgb(0.8,0.2,0.2)
+        end
+
     	if lienHorizontal(l)
     		cr.rectangle(getX(x1), getY(y1)-scale(epaisseur/2)+scale(offset), getX(x2)-getX(x1), scale(epaisseur))
     	else
@@ -273,16 +278,13 @@ class AfficheurGrille < Gtk::DrawingArea
     def mouseClick(event)
     	#puts(event.x, event.y)
     	#puts(getVX(event.x), getVY(event.y))
+        @surbrillance = Array.new()
     	@grille.tabCase.each() do |c|
     		x = c.colonne
     		y = c.ligne
 
     		if (getVX(event.x) > x - 0.3) && (getVX(event.x) < x + 0.3) && (getVY(event.y) > y - 0.3) && (getVY(event.y) < y + 0.3)
-				tabLien2=Array.new()
-				@grille.clicCercle(c,tabLien2)
-				tabLien2.each do |l|
-					puts "#{l}"
-				end
+			@grille.clicCercle(c, @surbrillance)
     			return
     		end
 

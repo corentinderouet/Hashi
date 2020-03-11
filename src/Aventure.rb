@@ -22,13 +22,17 @@ class Aventure < Gtk::DrawingArea
 	private
 
 	# Constructeur
-	def initialize()
+        #
+        # === Paramètres
+        #
+        # * +fenetre+ - Fenetre principale
+	def initialize(fenetre)
 		super()
 		@vWidth = 100
 		@vHeight = 100
 		@ratio = 1.0 * @vWidth / @vHeight
                 self.signal_connect("draw") { |widget, cr| draw(cr) }
-                self.signal_connect("button-press-event") { |widget, event| mouseClick(event); self.queue_draw() }
+                self.signal_connect("button-press-event") { |widget, event| mouseClick(event); self.queue_draw(); fenetre.finAventure() }
                 self.events = :all_events_mask
 	end
 
