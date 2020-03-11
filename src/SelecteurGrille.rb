@@ -25,8 +25,8 @@ class SelecteurGrille < Gtk::ScrolledWindow
 		grid.margin = 20
 
 		3.times() do |x|
-			8.times do |y|
-                                n = x*8+y+1
+			10.times do |y|
+                                n = x+y*3+1
 				vBox = Gtk::Box.new(Gtk::Orientation.new(1), 0)
                                 res=SerGrille.deserialise(n, dif)
                                 g = Grille.creer(res.tabCase,res.hauteur,res.largeur, nil)
@@ -36,7 +36,7 @@ class SelecteurGrille < Gtk::ScrolledWindow
 				a.expand = true
 				f.add(a)
 				vBox.add(f)
-				vBox.add(Gtk::Label.new("Grille x"))
+				vBox.add(Gtk::Label.new("Grille n°#{n}"))
 				vBox.signal_connect("button-press-event") { self.onClick(n, dif) }
 				grid.attach(vBox, x, y, 1, 1)
 			end
