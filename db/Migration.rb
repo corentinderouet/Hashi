@@ -53,7 +53,7 @@ class Migration < ActiveRecord::Migration[4.2]
 
 		create_table :joues do |t|
 			t.belongs_to :joueurs
-			t.belongs_to :grilleDb
+			t.belongs_to :grille_dbs
 			t.integer :score
 		end
 
