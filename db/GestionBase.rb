@@ -126,8 +126,24 @@ class GestionBase
 	#	return Joue.where([ "joueurs_id = ?", idJoueur ]).count
 	end
 	
+	# Sauvegarde la grilles jouée par le joueur ou la créée si elle n'existe pas
+	#
+	# === Paramètres
+	#
+	# * +idJoueur+ => L'Id du joueur dont on veut récupérer la grille déjà commencées
+	# * +grilleDb+ => L'objet grille à enregistrer
+	#
+	# === Retour
+	#
+	# Aucun retour (Enregistrement dans la base)
+	#
 	def GestionBase.sauvegarderGrille(idJoueur, grilleDb)
-	#==> void (doit avoir la nouvelle grille sérialisée)
+		begin			
+			raise ("raise changerScore") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, idGrilleDb ])).count != 1)
+			joue.update(score: score)
+		rescue
+			Joue.create( :joueurs_id => idJoueur, :grille_dbs_id => grilleDb.id)
+		end
 	end
 	
 	# Récupère les grilles jouées par le joueur
@@ -156,6 +172,28 @@ class GestionBase
 			puts "recupGrilles ==> Joueur d'id #{idJoueur} n'existe pas dans la base"
 		ensure
 			return grilles
+		end
+	end
+
+	# Modifie le score de la grille d'un Joueur
+	#
+	# === Paramètres
+	#
+	# * +idJoueur+ => L'Id du Joueur dont on veut modifier le scre de l'une des grilles
+	# * +idGrilleDb+ => L'objet grille dont on veut modifier le score
+	# * +score+ => Le score du Joueur sur la grille en question
+	#
+	# === Retour
+	#
+	# Aucun : modifie le score de la grille du joueur
+	#
+	def GestionBase.changeScore(idJoueur, idGrilleDb, score)
+
+		begin			
+			raise ("raise changerScore") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, idGrilleDb ])).count != 1)
+			joue.update(score: score)
+		rescue
+			puts "changeScore ==> La grille d'id #{idGrilleDb} du joueur d'id #{idJoueur} n'existe pas dans la base"
 		end
 	end
 end

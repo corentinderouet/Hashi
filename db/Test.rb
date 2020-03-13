@@ -22,16 +22,16 @@ class TestBase
 		unJoueur = GestionBase.ajouterJoueur("corentin")
 		unJoueur2 = GestionBase.ajouterJoueur("alexis")
 		
-		grille=GrilleDb.create(:grilleSer => "1__5___;", :grilleSolution => "1__5HHH", :niveau =>"Facile", :mode_jeu => "Classe")
-		GrilleDb.create(:grilleSer => "1__5___;", :grilleSolution => "1__5HHH", :niveau =>"Moyen", :mode_jeu => "Classe")
-		GrilleDb.create(:grilleSer => "1__5___;", :grilleSolution => "1__5HHH", :niveau =>"Difficile", :mode_jeu => "Classe")
+		grille=GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>"Facile", :mode_jeu => "Classe")
+		GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>"Moyen", :mode_jeu => "Classe")
+		GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>"Difficile", :mode_jeu => "Classe")
 		
-		grille4=GrilleDb.create(:grilleSer => "1__5___;", :grilleSolution => "1__5HHH", :niveau =>"Difficile", :mode_jeu => "Entrainement")
+		grille4=GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>"Difficile", :mode_jeu => "Entrainement")
 		
-		Joue.create( :joueurs_id => 1, :grille_dbs_id => 1, :score => 2521)
-		Joue.create( :joueurs_id => 1, :grille_dbs_id => 4, :score => 3210)
-		Joue.create( :joueurs_id => 1, :grille_dbs_id => 3, :score => 1)
-		Joue.create( :joueurs_id => 1, :grille_dbs_id => 2, :score => 2)
+		Joue.create( :joueurs_id => 1, :grille_dbs_id => 1,:grilleSer => "1__5___;",  :score => 2521)
+		Joue.create( :joueurs_id => 1, :grille_dbs_id => 4,:grilleSer => "1__5___;",  :score => 3210)
+		Joue.create( :joueurs_id => 1, :grille_dbs_id => 3,:grilleSer => "1__5___;",  :score => 1)
+		Joue.create( :joueurs_id => 1, :grille_dbs_id => 2,:grilleSer => "1__5___;",  :score => 2)
 		
 		puts(GestionBase.recupJoueur("corentin"))
 		puts "|#{GestionBase.recupJoueur("robin") == nil}|"
@@ -48,6 +48,9 @@ class TestBase
 		puts "Nil?"
 		puts "|#{GestionBase.recupGrilles(2) == nil}|"
 		puts "|#{GestionBase.recupGrilles(3) == nil}|"
+		puts (GestionBase.changeScore(1, 1, 50))
+		puts(GestionBase.recupScoreTotal(1))
+		puts (GestionBase.changeScore(2, 1, 650))
 		#tab=Joue.where([ "joueurs_id = ?", 1 ]).select {|joue| GestionBase.recupMode(GrilleDb.find(joue.grille_dbs_id).id)}# == "Classe"}
 		#puts "Tableau"
 		#puts tab

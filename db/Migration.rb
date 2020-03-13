@@ -37,7 +37,6 @@ class Migration < ActiveRecord::Migration[4.2]
 		end
 
 		create_table :grille_dbs do |t|
-			t.text :grilleSer
 			t.text :grilleSolution
 			t.string :niveau
 			t.string :mode_jeu
@@ -54,6 +53,7 @@ class Migration < ActiveRecord::Migration[4.2]
 		create_table :joues do |t|
 			t.belongs_to :joueurs
 			t.belongs_to :grille_dbs
+			t.text :grilleSer
 			t.integer :score
 		end
 
