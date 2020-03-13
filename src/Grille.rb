@@ -1,4 +1,5 @@
 require_relative "Case"
+require_relative "Aides"
 require_relative "Utilitaire"
 require_relative "SerGrille"
 require_relative "Pile"
@@ -474,4 +475,89 @@ class Grille
         @pile.vider()
         @pileRedo.vider()
     end
+
+    #methode pour les aides
+    #si niveau ==1,2 ou 3 prend une aide au niveau correspondante sinon aide de niveau aléatoire, si tableau aide vide, retourne aide niveau sup
+    #
+
+    def obtenirAide(niveau) 
+        aides1=Array.new() #aide qui utilise l'etiquette de la case et sa postion dans la grille
+        aides2=Array.new() #aide qui utilise l'etiquette de la case et sa liste de ses voisins
+        aides3=Array.new() #aide qui utilise l'etiquette de la case et sa liste de ses voisins ainsi que toute l'archipelle
+
+
+        #on génere les aides par rapport a la grille actuel ici
+
+        for @tabCase do |c|
+            if(c==nil) #condition
+                aides1.push(Aides.creer(c," desc "))
+            end
+            if(c==nil) #condition
+                aides1.push(Aides.creer(c," desc "))
+            end
+
+
+
+
+
+
+        end
+
+
+
+        #on retourne une aides en fonction du niveau ici
+
+        if(niveau==1 && aides1.length==0)
+            niveau+=1
+        end
+        if(niveau==2 && aides2.length==0)
+            niveau+=1
+        end
+        if(niveau==3 && aides3.length==0)
+            return Aides.creer(@tabCase[0],"Aucune aide disponible")
+        end
+
+        case(niveau)
+            when 1
+                return aides1[rand(0..(aides1.length-1) )]
+            when 2
+                return aides2[rand(0..(aides2.length-1) )]
+            when 3
+                return aides3[rand(0..(aides3.length-1) )]
+            else
+                alea=rand(1..3)
+
+                if(alea==1 && aides1.length==0)
+                    alea+=1
+                end
+                if(alea==2 && aides2.length==0)
+                    alea+=1
+                end
+                if(alea==3 && aides3.length==0)
+                    return Aides.creer(@tabCase[0],"Aucune aide disponible")
+                end
+
+                case(alea)
+                    when 1
+                        return aides1[rand(0..(aides1.length-1) )]
+                    when 2
+                        return aides2[rand(0..(aides2.length-1) )]
+                    when 3
+                        return aides3[rand(0..(aides3.length-1) )]
+                end
+        end
+    end
+
+
+
+
+
+
+
+
+
+
+
+
+
 end
