@@ -26,6 +26,7 @@ class Grille
 
     attr_reader :largeur
 
+
     # Rend la méthode new privée
     private_class_method :new
 
@@ -46,6 +47,7 @@ class Grille
         @largeur=largeur
         @grilleRes=grilleRes
         @pile=Pile.creer()
+        @pileRedo=Pile.creer()
 
 
         for i in 0..@tabCase.length-1 do
@@ -219,8 +221,8 @@ class Grille
     def clicTriangle(case1,pos)
         l=case1.creerLien(pos,@hypothese,@tabLien)
         @pile.empiler(Action.creer("ajout",l))
-        @pile.afficherPile()
-        
+        #@pile.afficherPile()
+        @pileRedo.vider()
         self.actuCroisement()
     end
 
@@ -285,7 +287,8 @@ class Grille
     def clicLien(l)
         @pile.empiler(Action.creer("suppression",l))
         self.supprimerLien(l)
-        @pile.afficherPile()
+        @pileRedo.vider()
+        #@pile.afficherPile()
     end
 
     # Méthode pour commencer à faire une hypothèse
@@ -304,11 +307,11 @@ class Grille
             end
         end
         @pile.empiler(Action.creer("hypotheseValidee",nil) )
-        @pile.afficherPile()
+        #@pile.afficherPile()
         @hypothese=false
     end
 
-    # Méthode permettant de savoir si un lien est le même qu'un autre
+    # Méthode permettant de savoir si un lien est entre les même case qu'un autre (ATTENTION : retourne nil s'il est le seul)
     #
     # === Paramètres
     #
@@ -333,13 +336,8 @@ class Grille
 
     end
 
-    def refaire()
-        self.annulerHypothese()
-        @tabLien.each do |lien|
-            self.supprimerLien(lien)
-        end
-        #a rajouter plus tard remise a 0 des actions
-    end
+
+
 
     # Méthode pour annuler une hypothèse
     #
@@ -366,12 +364,16 @@ class Grille
     end
 
 
-
+    # Méthode pour annuler une action (Undo)
+    #
     def annuler()
 
         if( !@pile.estVide() )
             a = @pile.sommet()
-            puts("Sommet pile : #{a}")
+
+            @pileRedo.empiler(a) #quand on depile en Undo on doit empiler en Redo
+
+            #puts("Sommet pile : #{a}")
 
             if(a.action == "ajout")
                 @pile.depiler()
@@ -387,6 +389,7 @@ class Grille
 
                 @pile.depiler()
                 a = @pile.sommet()
+                @pileRedo.empiler(a)
                 while(a.action != "debutHypothese")
                     if(a.action == "ajout")
                         self.supprimerLien( a.lien )
@@ -398,6 +401,7 @@ class Grille
 
                     @pile.depiler()
                     a = @pile.sommet()
+                    @pileRedo.empiler(a)
                 end
                 @pile.depiler()
             end
@@ -406,17 +410,64 @@ class Grille
 
         end
 
-        @pile.afficherPile()
+        #@pile.afficherPile()
     end
 
+
+    # Méthode pour refaire une action (Redo)
+    #
     def refaire()
-        for i in 0..@tabLien.length-1 do
-            self.clicLien(@tabLien[i])
+
+        
+        if( !@pileRedo.estVide() )
+            a = @pileRedo.sommet()
+            @pile.empiler(a)    #quand on depile en Redo on doit empiler en Undo
+            #puts("Sommet pile : #{a}")
+
+            if(a.action == "ajout")
+                @pileRedo.depiler()
+                a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
+                
+            end
+
+            if(a.action == "suppression")
+                @pileRedo.depiler()
+                self.supprimerLien( a.lien )
+            end
+
+            if(a.action == "hypotheseValidee")
+
+                @pileRedo.depiler()
+                a = @pileRedo.sommet()
+                @pile.empiler(a)
+                while(a.action != "debutHypothese")
+                    if(a.action == "ajout")
+                        a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
+                    end
+        
+                    if(a.action == "suppression")
+                        self.supprimerLien( a.lien )
+                    end
+
+                    @pileRedo.depiler()
+                    a = @pileRedo.sommet()
+                    @pile.empiler(a)
+                end
+                @pileRedo.depiler()
+            end
+
+
+
         end
-        @pile = Pile.creer()
+
+        #@pileRedo.afficherPile()
+
     end
 
-    def renitialiser()
+
+    # Méthode pour réénitialiser tout la grille et les actions (en gros nouveau départ)
+    #
+    def reenitialiser()
         for i in 0..@tabLien.length-1 do
             self.clicLien(@tabLien[i])
         end
