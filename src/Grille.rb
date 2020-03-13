@@ -344,19 +344,23 @@ class Grille
     # Méthode pour annuler une hypothèse
     #
     def annulerHypothese() #pas encore fonctionnelle
-        @pile.empiler(Action.creer("hypotheseAnnulee",nil) )
-        @pile.afficherPile()
 
-        tab=Marshal.load(Marshal.dump(@tabLien))
-        
-
-        tab.each do |l|
-
-            if(l.hypothese==true)
-                self.supprimerLien(l)
+        a = @pile.sommet()
+        while(a.action != "debutHypothese")
+            if(a.action == "ajout")
+                self.supprimerLien( a.lien )
             end
 
+            if(a.action == "suppression")
+                a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
+            end
+
+            @pile.depiler()
+            a = @pile.sommet()
         end
+        @pile.depiler()
+        
+        
 
         @hypothese=false
     end
@@ -384,7 +388,6 @@ class Grille
                 @pile.depiler()
                 a = @pile.sommet()
                 while(a.action != "debutHypothese")
-                    puts("Sommet pile : #{a}")
                     if(a.action == "ajout")
                         self.supprimerLien( a.lien )
                     end
@@ -400,24 +403,6 @@ class Grille
             end
 
 
-            if(a.action == "hypotheseAnnulee")
-
-                @pile.depiler()
-                a = @pile.sommet()
-                while(a.action != "debutHypothese")
-                    if(a.action == "ajout")
-                        a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
-                    end
-        
-                    if(a.action == "suppression")
-                        self.supprimerLien( lienSimilaire(a.lien) )
-                    end
-
-                    @pile.depiler()
-                    a = @pile.sommet()
-                end
-                @pile.depiler()
-            end
 
         end
 
