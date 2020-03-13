@@ -35,12 +35,6 @@ class Migration < ActiveRecord::Migration[4.2]
 		create_table :joueurs do |t|
 			t.string :pseudo
 		end
-
-		create_table :grille_dbs do |t|
-			t.text :grilleSolution
-			t.string :niveau
-			t.string :mode_jeu
-		end
 		
 		create_table :difficultes do |t|
 			t.string :niveau
@@ -48,6 +42,12 @@ class Migration < ActiveRecord::Migration[4.2]
 
 		create_table :modes do |t|
 			t.string :mode_jeu
+		end
+
+		create_table :grille_dbs do |t|
+			t.belongs_to :difficultes
+			t.belongs_to :modes
+			t.text :grilleSolution
 		end
 
 		create_table :joues do |t|

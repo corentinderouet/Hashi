@@ -57,7 +57,7 @@ class GestionBase
 	#
 	def GestionBase.recupDifficulte(idGrille)
 		grille= GrilleDb.find(idGrille)
-		return Difficulte.find_by_niveau(grille.niveau)
+		return Difficulte.find(grille.difficultes_id).niveau
 	end
 	
 	# Récupère le mode de jeu de la grille via son Id
@@ -72,7 +72,7 @@ class GestionBase
 	#
 	def GestionBase.recupMode(idGrille)
 		grille= GrilleDb.find(idGrille)
-		return Mode.find_by_mode_jeu(grille.mode_jeu)
+		return Mode.find(grille.modes_id).mode_jeu
 	end
 	
 	# Récupère le score total du joueur sur les grilles qu'il a joué (uniquement en mode classé)
@@ -139,8 +139,8 @@ class GestionBase
 	#
 	def GestionBase.sauvegarderGrille(idJoueur, grilleDb)
 		begin			
-			raise ("raise changerScore") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, idGrilleDb ])).count != 1)
-			joue.update(score: score)
+			raise ("raise sauvegarderGrille") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
+			
 		rescue
 			Joue.create( :joueurs_id => idJoueur, :grille_dbs_id => grilleDb.id)
 		end
