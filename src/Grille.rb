@@ -347,7 +347,8 @@ class Grille
         @pile.empiler(Action.creer("hypotheseAnnulee",nil) )
         @pile.afficherPile()
 
-        tab=@tabLien
+        tab=Marshal.load(Marshal.dump(@tabLien))
+        
 
         tab.each do |l|
 
@@ -358,8 +359,9 @@ class Grille
         end
 
         @hypothese=false
-
     end
+
+
 
     def annuler()
 
@@ -369,7 +371,7 @@ class Grille
 
             if(a.action == "ajout")
                 @pile.depiler()
-                self.supprimerLien( lienSimilaire(a.lien) )
+                self.supprimerLien( a.lien )
             end
 
             if(a.action == "suppression")
@@ -382,8 +384,9 @@ class Grille
                 @pile.depiler()
                 a = @pile.sommet()
                 while(a.action != "debutHypothese")
+                    puts("Sommet pile : #{a}")
                     if(a.action == "ajout")
-                        self.supprimerLien( lienSimilaire(a.lien) )
+                        self.supprimerLien( a.lien )
                     end
         
                     if(a.action == "suppression")
@@ -397,30 +400,24 @@ class Grille
             end
 
 
-            # if(a.action == "hypotheseAnnulee")
+            if(a.action == "hypotheseAnnulee")
 
-            #     @pile.depiler()
-            #     a = @pile.sommet()
-            #     while(a.action != "debutHypothese")
-            #         if(a.action == "ajout")
-            #             self.supprimerLien( lienSimilaire(a.lien) )
-            #         end
+                @pile.depiler()
+                a = @pile.sommet()
+                while(a.action != "debutHypothese")
+                    if(a.action == "ajout")
+                        a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
+                    end
         
-            #         if(a.action == "suppression")
-            #             a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),false,@tabLien)
-            #         end
+                    if(a.action == "suppression")
+                        self.supprimerLien( lienSimilaire(a.lien) )
+                    end
 
-            #         @pile.depiler()
-            #         a = @pile.sommet()
-            #     end
-            #     @pile.depiler()
-            # end
-
-            # if(a.action == "debutHypothese")
-            #     while a.action !="hypotheseValidee"
-            #         @pile.depiler()
-            #     end
-            # end
+                    @pile.depiler()
+                    a = @pile.sommet()
+                end
+                @pile.depiler()
+            end
 
         end
 
@@ -428,6 +425,13 @@ class Grille
     end
 
     def refaire()
+        for i in 0..@tabLien.length-1 do
+            self.clicLien(@tabLien[i])
+        end
+        @pile = Pile.creer()
+    end
+
+    def renitialiser()
         for i in 0..@tabLien.length-1 do
             self.clicLien(@tabLien[i])
         end
