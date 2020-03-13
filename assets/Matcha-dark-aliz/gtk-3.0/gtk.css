@@ -1,3 +1,7 @@
+frame {
+	background-color: rgb(43,43,43);
+}
+
 @keyframes header_ripple_effect {
   from {
     background-image: radial-gradient(circle farthest-corner at center, #1a1a1a 0%, transparent 0%);
@@ -4272,11 +4276,17 @@ paned .sidebar.left, paned .sidebar.right, paned .sidebar.left:dir(rtl), paned .
 
 stacksidebar row {
   padding: 4px 4px;
+  background-color: #2b2b2b;
 }
 
 stacksidebar row > label {
   padding-left: 6px;
   padding-right: 6px;
+  color: #cbbfbf;
+  outline-color: alpha(currentColor,0.3);
+  outline-style: dashed;
+  outline-offset: -3px;
+  outline-width: 1px;
 }
 
 stacksidebar row.needs-attention > label {
