@@ -14,6 +14,7 @@ class Carte < Gtk::DrawingArea
 	# Les méthodes getX, getY, getVX, getVY sont là pour passer entre ces deux systèmes
 
 	# @image => Carte du monde
+        # @ic => Contexte de dessin de la carte du monde
 	# @zoom => Zoom une fois affichée
         # @factZoom => Facteur de zoom
 	# @dX => Décalage de l'affichage en x
@@ -95,6 +96,15 @@ class Carte < Gtk::DrawingArea
         cr.paint()
     end
     
+    # Dessin d'un rectangle
+    #
+    # === Paramètres
+    #
+    # * +x+ - Position en x du rectangle
+    # * +y+ - Position en y du rectangle
+    # * +w+ - Largeur du rectangle
+    # * +h+ - Hauteur du rectangle
+    # * +a+ - Courbure des bords du rectangle
     def drawRectangle(x, y, w, h, a)
         radius = h / 10.0  / a
         degrees = Math::PI / 180.0;
@@ -113,6 +123,14 @@ class Carte < Gtk::DrawingArea
         @ic.stroke()
     end
 
+    # Dessin d'une étoile
+    #
+    # === Paramètres
+    #
+    # * +x+ - Position en x de l'étoile
+    # * +y+ - Position en y de l'étoile
+    # * +s+ - Taille de l'étoile
+    # * +c+ - Couleur de l'étoile
     def drawEtoile(x, y, s, c)
         @ic.new_sub_path()
         @ic.move_to(x + s/2, y-2)
@@ -128,6 +146,15 @@ class Carte < Gtk::DrawingArea
         @ic.fill()
     end
 
+    # Dessin d'une etiquette
+    #
+    # === Paramètres
+    #
+    # * +x+ - Position en x de l'étiquette
+    # * +y+ - Position en y de l'étiquette
+    # * +w+ - Largeur du rectangle
+    # * +h+ - Hauteur du rectangle
+    # * +s+ - Nombre d'étoiles
     def drawEtiquette(x, y, w, h, s)
         drawRectangle(x, y, w, h, 1.0)
         3.times() do |i| 

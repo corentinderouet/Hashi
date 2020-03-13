@@ -23,10 +23,12 @@ class Aventure < Gtk::Stack
             self.show_all()
         end
 
+        # Fonction appellé par le monde après le chois du continent
         def choix(continent)
             self.set_visible_child(@europe)
         end
 
+        # Fonction appellé les continents pour revenir au monde
         def retour()
             self.set_visible_child(@monde)
         end
