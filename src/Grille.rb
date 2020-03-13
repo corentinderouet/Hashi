@@ -123,9 +123,9 @@ class Grille
         y=Utilitaire.index(@tabCase,@tabLien[i].case2)
         #on peut remplacer par l.case1 et l.case2 au lieu des indices
         @tabLien.delete_at(i)
-      
+
         self.actuCroisement()
-      
+
         for j in 0..3 do
 
             #ici on gère l'ajout des triangles de la case
@@ -195,7 +195,7 @@ class Grille
                             if( Utilitaire.index(tabLien2,lien)==-1 )#probleme ici
                                 tabLien2.push(lien)
                                 c +=1
-                            end  
+                            end
                         end
 
                     end
@@ -206,7 +206,7 @@ class Grille
                 end
             end
         end
-        return 
+        return
     end
 
     # Méthode lors d'un dlic sur le triangle d'un cercle
@@ -220,7 +220,7 @@ class Grille
         l=case1.creerLien(pos,@hypothese,@tabLien)
         @pile.empiler(Action.creer("ajout",l))
         @pile.afficherPile()
-        
+
         self.actuCroisement()
     end
 
@@ -271,8 +271,8 @@ class Grille
             end
 
         end
-        
-        
+
+
     end
 
 
@@ -327,9 +327,40 @@ class Grille
         return nil
     end
 
+    def lememeLien(l,tab)
+      tab.each do |lien|
+          if((lien.case1==l.case1 && lien.case2==l.case2) || (lien.case1==l.case2 && lien.case2==l.case1))
+              return lien
+          end
+      end
+      return nil
+    end
+
 
     def verification()
-        #revien d'action en action au dernier etat correct et renvoi le nb d'erreur
+        #revien d'action en action au dernier etat correct
+        unePile= Marshal.load(Marshal.dump(@pile))
+        pileInverser=Pile.creer()
+        pileCorrect=Pile.creer()
+
+        unePile.each do |action|
+            pileInverser.empiler(action)
+        end
+
+        i=0
+        while(i!=1 && pileInverser.sommet() !=nil)
+            a= pileInverser.depiler()
+            if(a.action =="ajout")
+                if(self.lememeLien(a.lien,@grilleRes.tabLien) != nil)
+                    pileCorrect.empiler(a)
+                else
+                    i +=1
+                end
+            end
+        end
+        @pile.vider()
+        @pile=pileCorrect
+
 
     end
 
@@ -385,7 +416,7 @@ class Grille
                     if(a.action == "ajout")
                         self.supprimerLien( lienSimilaire(a.lien) )
                     end
-        
+
                     if(a.action == "suppression")
                         a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
                     end
@@ -405,7 +436,7 @@ class Grille
             #         if(a.action == "ajout")
             #             self.supprimerLien( lienSimilaire(a.lien) )
             #         end
-        
+
             #         if(a.action == "suppression")
             #             a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),false,@tabLien)
             #         end
