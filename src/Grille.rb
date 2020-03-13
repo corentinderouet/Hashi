@@ -471,6 +471,7 @@ class Grille
         for i in 0..@tabLien.length-1 do
             self.clicLien(@tabLien[i])
         end
-        @pile = Pile.creer()
+        @pile.vider()
+        @pileRedo.vider()
     end
 end
