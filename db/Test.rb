@@ -26,8 +26,15 @@ class TestBase
 		fichiers = ['f', 'm', 'd']
 
 		fichiers.each do |difficulte|
+			SerGrille.transformeSerial2(difficulte)
 			tabGrille = SerGrille.deserialiseVide(difficulte)
-			idDifficulte = Difficulte.find_by_niveau(difficulte)
+			if(difficulte == 'f')
+				idDifficulte = 1
+			elsif (difficulte == 'm')
+				idDifficulte = 2
+			else
+				idDifficulte = 3
+			end
 			tabGrille.each { |grille| GrilleDb.create(:grilleSolution => grille, :difficultes_id => idDifficulte, :modes_id => 3) }
 		end
 		#grille=GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>1, :mode_jeu => 3)

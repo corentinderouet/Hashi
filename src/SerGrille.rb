@@ -1,4 +1,3 @@
-
 # Permet d'interagir avec les fichiers texte
 class SerGrille
 	# Transformation des grilles sous format texte en format Grille
@@ -142,18 +141,36 @@ class SerGrille
 		# Choix des fichiers à ouvrir 
 
 		if(difficulte=="f")
-			fichierSource="./Grilles/grilles_site_ser_facile.txt"
+			if File.exist?("Grilles")
+  				fichierSource="./Grilles/grilles_site_ser_facile.txt"
+  			else
+  				fichierSource="../src/Grilles/grilles_site_ser_facile.txt"
+			end			
 		elsif(difficulte=="m")
-			fichierSource="./Grilles/grilles_site_ser_moyen.txt"
+			if File.exist?("Grilles")
+  				fichierSource="./Grilles/grilles_site_ser_moyen.txt"
+  			else
+  				fichierSource="../src/Grilles/grilles_site_ser_moyen.txt"
+			end		
 		elsif (difficulte=="d")
-			fichierSource="./Grilles/grilles_site_ser_difficile.txt"
+			if File.exist?("Grilles")
+  				fichierSource="./Grilles/grilles_site_ser_diffcile.txt"
+  			else
+  				fichierSource="../src/Grilles/grilles_site_ser_difficile.txt"
+			end		
 		else
-			fichierSource="./Grilles/grilles_site_ser.txt"
+			if File.exist?("Grilles")
+  				fichierSource="./Grilles/grilles_site_ser.txt"
+  			else
+  				fichierSource="../src/Grilles/grilles_site_ser.txt"
+			end		
 		end
-
+		fichier=File.open(fichierSource, "r")
 		tabGrille=[]
+		comptligne = 0
+		comptcolonne = 0
 		# Parcours n°1 pour créer les cases et la grille
-		fichierSource.each_line do | ligne |
+		fichier.each_line do | ligne |
 			tabCase=[]	
 			ligne=ligne.split("")
 			ligne.pop
@@ -161,7 +178,7 @@ class SerGrille
 			comptligne = 0
 			comptcolonne = 0
 
-			ligne.each do | s |
+			ligne.each do | s | 
 				if(s==";") 
 					comptligne += 1
 					comptcolonne = -1
@@ -170,23 +187,24 @@ class SerGrille
 				end
 				comptcolonne+=1
 			end	
-			tabGrille.push( Grille.creer(tabCase, comptligne, comptligne, nil) ) #La grille étant carrée, comptligne représente la hauteur et la largeur
+			if( comptligne != 0)
+				tabGrille.push( Grille.creer(tabCase, comptligne, comptligne, nil) ) #La grille étant carrée, comptligne représente la hauteur et la largeur
+			end
 		end
-
 		indice = 0
 
+		tabLienHTmp = Array.new(comptligne)
 		# Parcours n°2 pour créer les liens
-		fichierSource.each_line do | ligne |
+		fichier.each_line do | ligne |
 			grille = tabGrille[indice]
 
 			tabLienVTmp = Array.new(comptligne)
 
-			ligne.each do | s |
-				tabLienHTmp = Array.new(comptligne)
+			ligne.each_char do | s |
 
 				if(s==";") 
 					comptligne += 1
-					comptcolonne = -1
+					comptcolonne = 0
 
 				# Si numéro ==> enregistre le chiffre dans la table horizontale tabLienHTmp, et crée un lien vertical si nécessaire
 				elsif(s =~ /[[:digit:]]/)
@@ -241,10 +259,9 @@ class SerGrille
 
 			# Mise à jour de la grille
 			tabGrille[indice] = grille
+			indice += 1
 		end
-
-		fichierSource.close
-
+		fichier.close
 		return tabGrille
 	end
 	# Transformation des grilles sous format texte prise sur internet en format texte avec notre convention d'écriture
@@ -326,29 +343,61 @@ def SerGrille.transformeSerial2(difficulte)
 		
 		# Choix des fichiers à ouvrir et supression des anciens fichiers
 		if(difficulte=="f")then
-			if (File.exist?("./Grilles/grilles_site_ser_facile.txt"))
-				File.delete "./Grilles/grilles_site_ser_facile.txt"
+			if File.exist?("Grilles")
+				if (File.exist?("./Grilles/grilles_site_ser_facile.txt"))
+					File.delete "./Grilles/grilles_site_ser_facile.txt"
+				end
+				fichierSource="./Grilles/grilles_site_facile.txt"
+				fichierRecept="./Grilles/grilles_site_ser_facile.txt"
+			else
+				if (File.exist?("../src/Grilles/grilles_site_ser_facile.txt"))
+					File.delete "../src/Grilles/grilles_site_ser_facile.txt"
+				end
+				fichierSource="../src/Grilles/grilles_site_facile.txt"
+				fichierRecept="../src/Grilles/grilles_site_ser_facile.txt"
 			end
-			fichierSource="./Grilles/grilles_site_facile.txt"
-			fichierRecept="./Grilles/grilles_site_ser_facile.txt"
 		elsif(difficulte=="m")
-			if (File.exist?("./Grilles/grilles_site_ser_moyen.txt"))
-				File.delete "./Grilles/grilles_site_ser_moyen.txt"
+			if File.exist?("Grilles")
+				if (File.exist?("./Grilles/grilles_site_ser_moyen.txt"))
+					File.delete "./Grilles/grilles_site_ser_moyen.txt"
+				end
+				fichierSource="./Grilles/grilles_site_moyen.txt"
+				fichierRecept="./Grilles/grilles_site_ser_moyen.txt"
+			else
+				if (File.exist?("../src/Grilles/grilles_site_ser_moyen.txt"))
+					File.delete "../src/Grilles/grilles_site_ser_moyen.txt"
+				end
+				fichierSource="../src/Grilles/grilles_site_moyen.txt"
+				fichierRecept="../src/Grilles/grilles_site_ser_moyen.txt"
 			end
-			fichierSource="./Grilles/grilles_site_moyen.txt"
-			fichierRecept="./Grilles/grilles_site_ser_moyen.txt"
 		elsif (difficulte=="d")then
-			if (File.exist?("./Grilles/grilles_site_ser_difficile.txt"))
-				File.delete "./Grilles/grilles_site_ser_difficile.txt"
+			if File.exist?("Grilles")
+				if (File.exist?("./Grilles/grilles_site_ser_difficile.txt"))
+					File.delete "./Grilles/grilles_site_ser_difficile.txt"
+				end
+				fichierSource="./Grilles/grilles_site_difficile.txt"
+				fichierRecept="./Grilles/grilles_site_ser_difficile.txt"
+			else
+				if (File.exist?("../src/Grilles/grilles_site_ser_difficile.txt"))
+					File.delete "../src/Grilles/grilles_site_ser_difficile.txt"
+				end
+				fichierSource="../src/Grilles/grilles_site_difficile.txt"
+				fichierRecept="../src/Grilles/grilles_site_ser_difficile.txt"
 			end
-			fichierSource="./Grilles/grilles_site_difficile.txt"
-			fichierRecept="./Grilles/grilles_site_ser_difficile.txt"
 		else
-			if (File.exist?("./Grilles/grilles_site_ser.txt"))
-				File.delete "./Grilles/grilles_site_ser.txt"
+			if File.exist?("Grilles")
+				if (File.exist?("./Grilles/grilles_site_ser.txt"))
+					File.delete "./Grilles/grilles_site_ser.txt"
+				end
+				fichierSource="./Grilles/grilles_site.txt"
+				fichierRecept="./Grilles/grilles_site_ser.txt"
+			else
+				if (File.exist?("../src/Grilles/grilles_site_ser.txt"))
+					File.delete "../src/Grilles/grilles_site_ser.txt"
+				end
+				fichierSource="../src/Grilles/grilles_site.txt"
+				fichierRecept="../src/Grilles/grilles_site_ser.txt"
 			end
-			fichierSource="./Grilles/grilles_site.txt"
-			fichierRecept="./Grilles/grilles_site_ser.txt"
 		end
 		fichierLec=File.open(fichierSource, "r")
 		fichierEcr=File.open(fichierRecept, "a+")
