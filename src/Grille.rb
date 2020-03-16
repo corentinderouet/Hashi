@@ -515,23 +515,14 @@ class Grille
 
         #on génere les aides par rapport a la grille actuel ici
 
-        for @tabCase do |c|
-            if(c==nil) #condition
-                aides1.push(Aides.creer(c," desc "))
-            end
-            if(c==nil) #condition
-                aides1.push(Aides.creer(c," desc "))
-            end
-
-
-
-
-
-
-        end
-
-
-
+#	for @tabCase.each do |c|
+#	    if(c==nil) #condition
+#		aides1.push(Aides.creer(c," desc "))
+#	    end
+#            if(c==nil) #condition
+#                aides1.push(Aides.creer(c," desc "))
+#            end
+#	end
         #on retourne une aides en fonction du niveau ici
 
         if(niveau==1 && aides1.length==0)
