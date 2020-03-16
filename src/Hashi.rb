@@ -17,10 +17,13 @@ class Hashi < Gtk::Window
         self.set_default_size(700, 700)
         self.signal_connect('destroy') { Gtk.main_quit }
         
+    
+        css_provider = Gtk::CssProvider.new()
+        css_provider.load_from_path("../assets/FlatColor/gtk-3.20/gtk.css")
+        Gtk::StyleContext.add_provider_for_screen(self.screen(), css_provider)
         css_provider = Gtk::CssProvider.new()
         css_provider.load_from_path("../assets/Matcha-dark-aliz/gtk-3.0/gtk.css")
         Gtk::StyleContext.add_provider_for_screen(self.screen(), css_provider)
-    
         @menu = Menu.new(self)
 
         self.lancerConnexion()

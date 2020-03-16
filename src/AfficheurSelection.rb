@@ -16,6 +16,8 @@ class AfficheurSelection < Gtk::Box
 		self.add(boxHorizontale)
 
 		stackDif = Gtk::Stack.new()
+                stackDif.set_transition_type(Gtk::Stack::TransitionType::SLIDE_UP_DOWN);
+                stackDif.set_transition_duration(500);
                 boxVerticale = Gtk::Box.new(Gtk::Orientation.new(1), 0)
 		sideDif = Gtk::StackSidebar.new()
 		sideDif.stack = stackDif
