@@ -32,6 +32,10 @@ class Pile
       end
 
       def sommet()
-          return @pile[0]
+            return @pile[0]
+      end
+
+      def vider()
+            @pile=Array.new()
       end
 end
