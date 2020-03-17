@@ -1,11 +1,11 @@
 require "gtk3"
 
-require_relative "AfficheurJeu"
-require_relative "AfficheurSelection"
-require_relative "Connexion"
-require_relative "Classement"
-require_relative "Aventure"
-require_relative "Menu"
+require_relative "ui/AfficheurJeu"
+require_relative "ui/AfficheurSelection"
+require_relative "ui/Connexion"
+require_relative "ui/Classement"
+require_relative "ui/Aventure"
+require_relative "ui/Menu"
 require_relative "SerGrille"
 
 # Fenêtre principale du jeu
