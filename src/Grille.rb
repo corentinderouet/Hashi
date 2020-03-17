@@ -1,4 +1,5 @@
 require_relative "Case"
+require_relative "Aides"
 require_relative "Utilitaire"
 require_relative "SerGrille"
 require_relative "Pile"
@@ -26,6 +27,7 @@ class Grille
 
     attr_reader :largeur
 
+
     # Rend la méthode new privée
     private_class_method :new
 
@@ -46,6 +48,7 @@ class Grille
         @largeur=largeur
         @grilleRes=grilleRes
         @pile=Pile.creer()
+        @pileRedo=Pile.creer()
 
 
         for i in 0..@tabCase.length-1 do
@@ -123,9 +126,9 @@ class Grille
         y=Utilitaire.index(@tabCase,@tabLien[i].case2)
         #on peut remplacer par l.case1 et l.case2 au lieu des indices
         @tabLien.delete_at(i)
-      
+
         self.actuCroisement()
-      
+
         for j in 0..3 do
 
             #ici on gère l'ajout des triangles de la case
@@ -195,7 +198,7 @@ class Grille
                             if( Utilitaire.index(tabLien2,lien)==-1 )#probleme ici
                                 tabLien2.push(lien)
                                 c +=1
-                            end  
+                            end
                         end
 
                     end
@@ -206,7 +209,7 @@ class Grille
                 end
             end
         end
-        return 
+        return
     end
 
     # Méthode lors d'un dlic sur le triangle d'un cercle
@@ -219,8 +222,8 @@ class Grille
     def clicTriangle(case1,pos)
         l=case1.creerLien(pos,@hypothese,@tabLien)
         @pile.empiler(Action.creer("ajout",l))
-        @pile.afficherPile()
-        
+        #@pile.afficherPile()
+        @pileRedo.vider()
         self.actuCroisement()
     end
 
@@ -271,8 +274,8 @@ class Grille
             end
 
         end
-        
-        
+
+
     end
 
 
@@ -285,7 +288,8 @@ class Grille
     def clicLien(l)
         @pile.empiler(Action.creer("suppression",l))
         self.supprimerLien(l)
-        @pile.afficherPile()
+        @pileRedo.vider()
+        #@pile.afficherPile()
     end
 
     # Méthode pour commencer à faire une hypothèse
@@ -304,11 +308,11 @@ class Grille
             end
         end
         @pile.empiler(Action.creer("hypotheseValidee",nil) )
-        @pile.afficherPile()
+        #@pile.afficherPile()
         @hypothese=false
     end
 
-    # Méthode permettant de savoir si un lien est le même qu'un autre
+    # Méthode permettant de savoir si un lien est entre les même case qu'un autre (ATTENTION : retourne nil s'il est le seul)
     #
     # === Paramètres
     #
@@ -327,49 +331,85 @@ class Grille
         return nil
     end
 
+    def lememeLien(l,tab)
+      tab.each do |lien|
+          if((lien.case1==l.case1 && lien.case2==l.case2) || (lien.case1==l.case2 && lien.case2==l.case1))
+              return lien
+          end
+      end
+      return nil
+    end
+
 
     def verification()
-        #revien d'action en action au dernier etat correct et renvoi le nb d'erreur
+        #revien d'action en action au dernier etat correct
+        unePile= Marshal.load(Marshal.dump(@pile))
+        pileInverser=Pile.creer()
+        pileCorrect=Pile.creer()
 
-    end
-
-    def refaire()
-        self.annulerHypothese()
-        @tabLien.each do |lien|
-            self.supprimerLien(lien)
+        unePile.each do |action|
+            pileInverser.empiler(action)
         end
-        #a rajouter plus tard remise a 0 des actions
+
+        i=0
+        while(i!=1 && pileInverser.sommet() !=nil)
+            a= pileInverser.depiler()
+            if(a.action =="ajout")
+                if(self.lememeLien(a.lien,@grilleRes.tabLien) != nil)
+                    pileCorrect.empiler(a)
+                else
+                    i +=1
+                end
+            end
+        end
+        @pile.vider()
+        @pile=pileCorrect
+
+
     end
+
+
+
 
     # Méthode pour annuler une hypothèse
     #
     def annulerHypothese() #pas encore fonctionnelle
-        @pile.empiler(Action.creer("hypotheseAnnulee",nil) )
-        @pile.afficherPile()
 
-        tab=@tabLien
-
-        tab.each do |l|
-
-            if(l.hypothese==true)
-                self.supprimerLien(l)
+        a = @pile.sommet()
+        while(a.action != "debutHypothese")
+            if(a.action == "ajout")
+                self.supprimerLien( a.lien )
             end
 
+            if(a.action == "suppression")
+                a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
+            end
+
+            @pile.depiler()
+            a = @pile.sommet()
         end
+        @pile.depiler()
+        
+        
 
         @hypothese=false
-
     end
 
+
+    # Méthode pour annuler une action (Undo)
+    #
     def annuler()
 
         if( !@pile.estVide() )
             a = @pile.sommet()
-            puts("Sommet pile : #{a}")
+
+            @pileRedo.empiler(a) #quand on depile en Undo on doit empiler en Redo
+
+            #puts("Sommet pile : #{a}")
 
             if(a.action == "ajout")
                 @pile.depiler()
-                self.supprimerLien( lienSimilaire(a.lien) )
+                self.supprimerLien( a.lien )
             end
 
             if(a.action == "suppression")
@@ -381,56 +421,161 @@ class Grille
 
                 @pile.depiler()
                 a = @pile.sommet()
+                @pileRedo.empiler(a)
                 while(a.action != "debutHypothese")
                     if(a.action == "ajout")
-                        self.supprimerLien( lienSimilaire(a.lien) )
+                        self.supprimerLien( a.lien )
                     end
-        
+
                     if(a.action == "suppression")
                         a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
                     end
 
                     @pile.depiler()
                     a = @pile.sommet()
+                    @pileRedo.empiler(a)
                 end
                 @pile.depiler()
             end
 
+        end
 
-            # if(a.action == "hypotheseAnnulee")
+        #@pile.afficherPile()
+    end
 
-            #     @pile.depiler()
-            #     a = @pile.sommet()
-            #     while(a.action != "debutHypothese")
-            #         if(a.action == "ajout")
-            #             self.supprimerLien( lienSimilaire(a.lien) )
-            #         end
+
+    # Méthode pour refaire une action (Redo)
+    #
+    def refaire()
+
         
-            #         if(a.action == "suppression")
-            #             a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),false,@tabLien)
-            #         end
+        if( !@pileRedo.estVide() )
+            a = @pileRedo.sommet()
+            @pile.empiler(a)    #quand on depile en Redo on doit empiler en Undo
+            #puts("Sommet pile : #{a}")
 
-            #         @pile.depiler()
-            #         a = @pile.sommet()
-            #     end
-            #     @pile.depiler()
-            # end
+            if(a.action == "ajout")
+                @pileRedo.depiler()
+                a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
+                
+            end
 
-            # if(a.action == "debutHypothese")
-            #     while a.action !="hypotheseValidee"
-            #         @pile.depiler()
-            #     end
-            # end
+            if(a.action == "suppression")
+                @pileRedo.depiler()
+                self.supprimerLien( a.lien )
+            end
+
+            if(a.action == "hypotheseValidee")
+
+                @pileRedo.depiler()
+                a = @pileRedo.sommet()
+                @pile.empiler(a)
+                while(a.action != "debutHypothese")
+                    if(a.action == "ajout")
+                        a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
+                    end
+        
+                    if(a.action == "suppression")
+                        self.supprimerLien( a.lien )
+                    end
+
+                    @pileRedo.depiler()
+                    a = @pileRedo.sommet()
+                    @pile.empiler(a)
+                end
+                @pileRedo.depiler()
+            end
 
         end
 
-        @pile.afficherPile()
+        #@pileRedo.afficherPile()
+
     end
 
-    def refaire()
+
+    # Méthode pour réénitialiser tout la grille et les actions (en gros nouveau départ)
+    #
+    def reenitialiser()
         for i in 0..@tabLien.length-1 do
             self.clicLien(@tabLien[i])
         end
-        @pile = Pile.creer()
+        @pile.vider()
+        @pileRedo.vider()
     end
+
+    #methode pour les aides
+    #si niveau ==1,2 ou 3 prend une aide au niveau correspondante sinon aide de niveau aléatoire, si tableau aide vide, retourne aide niveau sup
+    #
+
+    def obtenirAide(niveau) 
+        aides1=Array.new() #aide qui utilise l'etiquette de la case et sa postion dans la grille
+        aides2=Array.new() #aide qui utilise l'etiquette de la case et sa liste de ses voisins
+        aides3=Array.new() #aide qui utilise l'etiquette de la case et sa liste de ses voisins ainsi que toute l'archipelle
+
+
+        #on génere les aides par rapport a la grille actuel ici
+
+#	for @tabCase.each do |c|
+#	    if(c==nil) #condition
+#		aides1.push(Aides.creer(c," desc "))
+#	    end
+#            if(c==nil) #condition
+#                aides1.push(Aides.creer(c," desc "))
+#            end
+#	end
+        #on retourne une aides en fonction du niveau ici
+
+        if(niveau==1 && aides1.length==0)
+            niveau+=1
+        end
+        if(niveau==2 && aides2.length==0)
+            niveau+=1
+        end
+        if(niveau==3 && aides3.length==0)
+            return Aides.creer(@tabCase[0],"Aucune aide disponible")
+        end
+
+        case(niveau)
+            when 1
+                return aides1[rand(0..(aides1.length-1) )]
+            when 2
+                return aides2[rand(0..(aides2.length-1) )]
+            when 3
+                return aides3[rand(0..(aides3.length-1) )]
+            else
+                alea=rand(1..3)
+
+                if(alea==1 && aides1.length==0)
+                    alea+=1
+                end
+                if(alea==2 && aides2.length==0)
+                    alea+=1
+                end
+                if(alea==3 && aides3.length==0)
+                    return Aides.creer(@tabCase[0],"Aucune aide disponible")
+                end
+
+                case(alea)
+                    when 1
+                        return aides1[rand(0..(aides1.length-1) )]
+                    when 2
+                        return aides2[rand(0..(aides2.length-1) )]
+                    when 3
+                        return aides3[rand(0..(aides3.length-1) )]
+                end
+        end
+    end
+
+
+
+
+
+
+
+
+
+
+
+
+
 end
