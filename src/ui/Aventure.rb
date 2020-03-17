@@ -2,6 +2,11 @@ require "gtk3"
 
 require_relative "Monde"
 require_relative "Europe"
+require_relative "Afrique"
+require_relative "Asie"
+require_relative "Oceanie"
+require_relative "AmeriqueNord"
+require_relative "AmeriqueSud"
 
 # Widget Gtk permettant d'afficher l'aventure
 class Aventure < Gtk::Stack
@@ -19,8 +24,18 @@ class Aventure < Gtk::Stack
         @fenetre = fenetre
         @monde = Monde.new(self)
         @europe = Europe.new(self)
+        @afrique = Afrique.new(self)
+        @asie = Asie.new(self)
+        @oceanie = Oceanie.new(self)
+        @ameriqueNord = AmeriqueNord.new(self)
+        @ameriqueSud = AmeriqueSud.new(self)
         self.add_named(@monde, "monde")
         self.add_named(@europe, "europe")
+        self.add_named(@afrique, "afrique")
+        self.add_named(@asie, "asie")
+        self.add_named(@oceanie, "oceanie")
+        self.add_named(@ameriqueNord, "ameriqueNord")
+        self.add_named(@ameriqueSud, "ameriqueSud")
         @dernier = self.visible_child_name()
         puts(@dernier)
         self.show_all()
@@ -28,9 +43,7 @@ class Aventure < Gtk::Stack
 
     # Fonction appellé par le monde après le chois du continent
     def choix(continent)
-        if continent == "europe"
-            self.set_visible_child_name(continent)
-        end
+        self.set_visible_child_name(continent)
     end
 
     # Lancement d'une grille

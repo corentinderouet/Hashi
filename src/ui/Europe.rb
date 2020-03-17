@@ -23,10 +23,10 @@ class Europe < Carte
         @factZoom = 1.5
         res=SerGrille.deserialise(8, "m")
         g = Grille.creer(res.tabCase,res.hauteur,res.largeur, nil)
-        ajouterEtiquette(Etiquette.new(2250, 1380, 90, 30, 1, g)) #France
-        ajouterEtiquette(Etiquette.new(2170, 1320, 90, 30, 2, g)) #Angleterre
-        ajouterEtiquette(Etiquette.new(2180, 1490, 90, 30, 3, g)) #Espagne
-        ajouterEtiquette(Etiquette.new(2340, 1160, 90, 30, 0, g)) #Nord
+        ajouterEtiquette(Etiquette.new(2250, 1380, 90, 30, 1, g))
+        ajouterEtiquette(Etiquette.new(2170, 1320, 90, 30, 2, g))
+        ajouterEtiquette(Etiquette.new(2180, 1490, 90, 30, 3, g))
+        ajouterEtiquette(Etiquette.new(2340, 1160, 90, 30, 0, g))
         ajouterEtiquette(Etiquette.new(2440, 1340, 90, 30, 3, g))
         ajouterEtiquette(Etiquette.new(2400, 1500, 90, 30, 1, g))
         ajouterEtiquette(Etiquette.new(2620, 1250, 90, 30, 3, g))

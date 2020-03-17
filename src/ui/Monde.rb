@@ -82,10 +82,10 @@ class Monde < Carte
             s = "oceanie"
             # Amérique du nord
         elsif x > 380 && y > 900 && x < 380+1300 && y < 900+950
-            s = "amerique du nord"
+            s = "ameriqueNord"
             # Amérique du sud
         elsif x > 1150 && y > 1870 && x < 1150+700 && y < 1870+950
-            s = "amerique du sud"
+            s = "ameriqueSud"
         end
         if s
             puts(s)
