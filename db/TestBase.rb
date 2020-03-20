@@ -64,6 +64,7 @@ class TestBase
 		GestionBase.recupGrilles(1).each do |grilleDb|
 			grille = YAML.load(grilleDb.grilleSolution)
 			puts "Hauteur: #{grille.hauteur}, largeur: #{grille.largeur}"
+			puts "Solution: Hauteur: #{grille.grilleRes.hauteur}, largeur: #{grille.grilleRes.largeur}"
 		end
 		GestionBase.recupJoueurAll
 		

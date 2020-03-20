@@ -192,9 +192,12 @@ p joue
 						grille = grilleDb.grilleSolution
 #puts "Joue:  #{joue == nil}"
 #p grille
-						grille = YAML.load(grille)
-#p grille
-						grille = Grille.new(grille.tabCase, grille.hauteur, grille.largeur, grille)
+						grille2 = YAML.load(grille)
+#puts "Grille2: "
+#puts grille2
+						grille = Grille.creer(grille2.tabCase, grille2.hauteur, grille2.largeur, grille2)
+#puts "Grille: "
+#puts grille
 #						grille.tabLien.each { |lien| grille.supprimerLien(lien) }
 						grilleDb.grilleSolution = YAML.dump(grille)
 						grilles.push(grilleDb)
