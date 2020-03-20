@@ -42,7 +42,6 @@ class Grille
     def initialize(tab,hauteur,largeur,grilleRes)
         @hypothese=false
         @tabLien=Array.new()
-        @tabCase=Array.new()
         @tabCase=tab
         @hauteur=hauteur
         @largeur=largeur
@@ -88,6 +87,10 @@ class Grille
     # * +largeur+ => le nombre maximal des colonnes de la grille
     #
     def Grille.creer(tab,hauteur,largeur,grilleRes)
+        new(tab,hauteur,largeur,grilleRes)
+    end
+    def Grille.creerRes(tab,hauteur,largeur)
+        grilleRes = nil
         new(tab,hauteur,largeur,grilleRes)
     end
 
