@@ -18,9 +18,9 @@ class Classement < Gtk::Box
         stack = Gtk::Stack.new()
         switcher = Gtk::StackSwitcher.new()
         switcher.stack = stack
-        stack.add_titled(ListeClassement.new(), "Facile", "Facile")
-        stack.add_titled(ListeClassement.new(), "Moyen", "Moyen")
-        stack.add_titled(ListeClassement.new(), "Difficile", "Difficile")
+        stack.add_titled(ListeClassement.new(1), "Facile", "Facile")
+        stack.add_titled(ListeClassement.new(2), "Moyen", "Moyen")
+        stack.add_titled(ListeClassement.new(3), "Difficile", "Difficile")
         stack.margin_top = 15
 
         bouton = Gtk::Button.new(label: "Retour")
