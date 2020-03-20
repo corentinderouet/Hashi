@@ -42,6 +42,7 @@ class Grille
     def initialize(tab,hauteur,largeur,grilleRes)
         @hypothese=false
         @tabLien=Array.new()
+        @tabCase=Array.new()
         @tabCase=tab
         @hauteur=hauteur
         @largeur=largeur
@@ -89,10 +90,6 @@ class Grille
     def Grille.creer(tab,hauteur,largeur,grilleRes)
         new(tab,hauteur,largeur,grilleRes)
     end
-    def Grille.creerRes(tab,hauteur,largeur)
-        grilleRes = nil
-        new(tab,hauteur,largeur,grilleRes)
-    end
 
     # Méthode d'affichage de la table des cases
     #
@@ -131,26 +128,6 @@ class Grille
         @tabLien.delete_at(i)
 
         self.actuCroisement()
-
-        for j in 0..3 do
-
-            #ici on gère l'ajout des triangles de la case
-            if(@tabCase[x].tabVoisins[j]!=false && @tabCase[x].nbLienEntreDeuxCases(@tabLien,j)!=2 )
-                @tabCase[x].tabTriangle[j]=true
-            end
-            if(@tabCase[x].tabVoisins[j]!=false && @tabCase[x].nbLienEntreDeuxCases(@tabLien,j)!=2 )
-                @tabCase[x].tabVoisins[j].tabTriangle[(j+2)%4]=true
-            end
-
-            #de même ici mais pour l'autre case de ce lien
-            if(@tabCase[y].tabVoisins[j]!=false && @tabCase[y].nbLienEntreDeuxCases(@tabLien,j)!=2 )
-                @tabCase[y].tabTriangle[j]=true
-            end
-            if(@tabCase[y].tabVoisins[j]!=false && @tabCase[y].nbLienEntreDeuxCases(@tabLien,j)!=2 )
-                @tabCase[y].tabVoisins[j].tabTriangle[(j+2)%4]=true
-            end
-
-        end
 
     end
 
@@ -506,26 +483,62 @@ class Grille
         @pileRedo.vider()
     end
 
-    #methode pour les aides
-    #si niveau ==1,2 ou 3 prend une aide au niveau correspondante sinon aide de niveau aléatoire, si tableau aide vide, retourne aide niveau sup
-    #
 
+    #methode pour les aides
+    #
+    # === Paramètres
+    #
+    # * +niveau+ => un entier correspondant au niveau de complexité de l'aide retourné
+    # si niveau ==1,2 ou 3 prend une aide au niveau correspondante sinon aide de niveau aléatoire, si tableau aide vide, retourne aide niveau sup
+    #
+    # === Retour
+    #
+    # Retourne un objet Aides
+    #
     def obtenirAide(niveau) 
         aides1=Array.new() #aide qui utilise l'etiquette de la case et sa postion dans la grille
-        aides2=Array.new() #aide qui utilise l'etiquette de la case et sa liste de ses voisins
-        aides3=Array.new() #aide qui utilise l'etiquette de la case et sa liste de ses voisins ainsi que toute l'archipelle
+        aides2=Array.new() #aide qui utilise l'etiquette de la case et sa liste de voisins
+        aides3=Array.new() #aide qui utilise l'etiquette de la case et sa liste de voisins ainsi que toute l'archipelle
 
 
-        #on génere les aides par rapport a la grille actuel ici
+        #on génere les aides par rapport a la grille actuel ici, on va push toutes les aides possibles dans les tableaux correspondant à leurs difficultés
 
-#	for @tabCase.each do |c|
-#	    if(c==nil) #condition
-#		aides1.push(Aides.creer(c," desc "))
-#	    end
-#            if(c==nil) #condition
-#                aides1.push(Aides.creer(c," desc "))
-#            end
-#	end
+        @tabCase.each do |c|    
+            #if( c.nbVoisinsDispo()==1 && ( (c.etiquetteCase.to_i==1 && c.nbLienCase(@tabLien)<1) || (c.etiquetteCase.to_i==2 && c.nbLienCase(@tabLien)<2) ) ) 
+               # aides2.push( Aides.creer(c," Si une case possède 1 voisins et a une étiquette de 2 ou moins, il est possible de créer 1 lien ou plus ") )
+            #end
+
+            if( c.nbLienCase(@tabLien)==0 && ( (c.nbVoisinsDispo()==1 && c.etiquetteCase.to_i==2 && c.nbLienCase(@tabLien)<2) || (c.nbVoisinsDispo()==2 && c.etiquetteCase.to_i==4 && c.nbLienCase(@tabLien)<4) || (c.nbVoisinsDispo()==3 && c.etiquetteCase.to_i==6 && c.nbLienCase(@tabLien)<6) || (c.nbVoisinsDispo()==4 && c.etiquetteCase.to_i==8 && c.nbLienCase(@tabLien)<8) ) ) 
+                aides1.push( Aides.creer(c," Si une case possède une etiquette pair et un nombre de voisins étant la moitier de l'étiquette, il est possible de créer 2 liens vers chaques voisins ") )
+            end#a modif
+
+            if( c.nbVoisinsDispo()==1 && c.etiquetteCase.to_i>c.nbLienCase(@tabLien) ) 
+                aides1.push( Aides.creer(c," Si une case possède 1 voisin et a une etiquette supérieur au nombre de lien déja créer, il est possible de créer 1 lien au moins vers ce voisin ") )
+            end
+
+            if( c.nbVoisinsDispo()==2 && c.etiquetteCase.to_i==3 && c.nbLienCase(@tabLien)==0 ) 
+                aides2.push( Aides.creer(c," Si une case possède 2 voisins et a une etiquette de 3, il est possible de créer 1 lien au moins vers chaques voisins ") )
+            end#a modif
+
+            if( c.nbVoisinsDispo()==3 && c.etiquetteCase.to_i==5 && c.nbLienCase(@tabLien)<3 ) 
+                aides2.push( Aides.creer(c," Si une case possède 3 voisins et a une etiquette de 5, il est possible de créer 1 lien au moins vers chaques voisins ") )
+            end
+
+            if( c.nbVoisinsDispo()==4 && c.etiquetteCase.to_i==7 && c.nbLienCase(@tabLien)<4 ) 
+                aides2.push( Aides.creer(c," Si une case possède 4 voisins et a une etiquette de 7, il est possible de créer 1 lien au moins vers chaques voisins ") )
+            end
+
+            if( c.nbVoisinsDispo()==2 && (c.etiquetteCase.to_i==2 || c.etiquetteCase.to_i==3) && c.nbLienCase(@tabLien)==0 && c.voisinsDispoEtiDe1()==true ) 
+                aides2.push( Aides.creer(c," Si une case ayant une etiquette de 2 ou 3 possède 2 voisins dont un ayant une etiquette de 1, il est possible de créer l'etiquette-1 lien(s) vers l'autre voisin ") )
+            end
+
+           # if( c.nbVoisinsDispo()==2 && ((c.etiquetteCase.to_i==2 && c.nbLienCase(@tabLien)==0) || (c.etiquetteCase.to_i==3 && c.nbLienCase(@tabLien)==0))  && c.auMoinsUnVoisinDispoUnLienRestant(@tabLien)==true ) 
+                #aides3.push( Aides.creer(c," Si une case possède 2 voisins et a une etiquette de 2 ou 3, il est possible de déterminer où créer un lien en fonction du nombre de lien déja présent sur ses voisins  ") )
+            #end
+            
+            
+
+        end
         #on retourne une aides en fonction du niveau ici
 
         if(niveau==1 && aides1.length==0)
@@ -535,7 +548,7 @@ class Grille
             niveau+=1
         end
         if(niveau==3 && aides3.length==0)
-            return Aides.creer(@tabCase[0],"Aucune aide disponible")
+            return Aides.creer(@tabCase[0],"Aucune aide disponible pour le moment")
         end
 
         case(niveau)
@@ -546,7 +559,7 @@ class Grille
             when 3
                 return aides3[rand(0..(aides3.length-1) )]
             else
-                alea=rand(1..3)
+                alea=1
 
                 if(alea==1 && aides1.length==0)
                     alea+=1
@@ -555,7 +568,7 @@ class Grille
                     alea+=1
                 end
                 if(alea==3 && aides3.length==0)
-                    return Aides.creer(@tabCase[0],"Aucune aide disponible")
+                    return Aides.creer(@tabCase[0],"Aucune aide disponible pour le moment")
                 end
 
                 case(alea)
