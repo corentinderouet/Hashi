@@ -1,4 +1,3 @@
-
 # Permet d'interagir avec les fichiers texte
 class SerGrille
 	# Transformation des grilles sous format texte en format Grille
@@ -151,14 +150,12 @@ class SerGrille
 			fichierSource="../src/Grilles/grilles_site_ser.txt"
 		end
 
-		comptligne = 0
-		comptcolonne = 0
-
 		fichier=File.open(fichierSource, "r")
 		tabGrille=[]
+		comptligne = 0
+		comptcolonne = 0
 		# Parcours n°1 pour créer les cases et la grille
 		fichier.each_line do | ligne |
-#puts ligne
 			tabCase=[]	
 			ligne=ligne.split("")
 			ligne.pop
@@ -166,7 +163,7 @@ class SerGrille
 			comptligne = 0
 			comptcolonne = 0
 
-			ligne.each do | s |
+			ligne.each do | s | 
 				if(s==";") 
 					comptligne += 1
 					comptcolonne = -1
@@ -175,23 +172,24 @@ class SerGrille
 				end
 				comptcolonne+=1
 			end	
-			tabGrille.push( Grille.creer(tabCase, comptligne, comptligne, nil) ) #La grille étant carrée, comptligne représente la hauteur et la largeur
+			if( comptligne != 0)
+				tabGrille.push( Grille.creer(tabCase, comptligne, comptligne, nil) ) #La grille étant carrée, comptligne représente la hauteur et la largeur
+			end
 		end
-
 		indice = 0
 
+		tabLienHTmp = Array.new(comptligne)
 		# Parcours n°2 pour créer les liens
 		fichier.each_line do | ligne |
 			grille = tabGrille[indice]
 
 			tabLienVTmp = Array.new(comptligne)
 
-			ligne.each do | s |
-				tabLienHTmp = Array.new(comptligne)
+			ligne.each_char do | s |
 
 				if(s==";") 
 					comptligne += 1
-					comptcolonne = -1
+					comptcolonne = 0
 
 				# Si numéro ==> enregistre le chiffre dans la table horizontale tabLienHTmp, et crée un lien vertical si nécessaire
 				elsif(s =~ /[[:digit:]]/)
@@ -246,6 +244,7 @@ class SerGrille
 
 			# Mise à jour de la grille
 			tabGrille[indice] = grille
+			indice += 1
 		end
 
 		fichier.close

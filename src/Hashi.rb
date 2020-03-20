@@ -1,12 +1,13 @@
 require "gtk3"
 
-require_relative "AfficheurJeu"
-require_relative "AfficheurSelection"
-require_relative "Connexion"
-require_relative "Classement"
-require_relative "Aventure"
-require_relative "Menu"
+require_relative "ui/AfficheurJeu"
+require_relative "ui/AfficheurSelection"
+require_relative "ui/Connexion"
+require_relative "ui/Classement"
+require_relative "ui/Aventure"
+require_relative "ui/Menu"
 require_relative "SerGrille"
+require_relative "../db/GestionBase"
 
 # Fenêtre principale du jeu
 class Hashi < Gtk::Window
@@ -17,10 +18,13 @@ class Hashi < Gtk::Window
         self.set_default_size(700, 700)
         self.signal_connect('destroy') { Gtk.main_quit }
         
+    
+        css_provider = Gtk::CssProvider.new()
+        css_provider.load_from_path("../assets/FlatColor/gtk-3.20/gtk.css")
+        Gtk::StyleContext.add_provider_for_screen(self.screen(), css_provider)
         css_provider = Gtk::CssProvider.new()
         css_provider.load_from_path("../assets/Matcha-dark-aliz/gtk-3.0/gtk.css")
         Gtk::StyleContext.add_provider_for_screen(self.screen(), css_provider)
-    
         @menu = Menu.new(self)
 
         self.lancerConnexion()
@@ -58,9 +62,14 @@ class Hashi < Gtk::Window
     #
     # * +usr+ - Utilisateur à créer
     def inscription(usr)
-        self.remove(@courant)
-        puts("Utilisateur créé: #{usr}")
-        self.lancerMenu()
+        if (GestionBase.ajouterJoueur(usr)) 
+          self.remove(@courant)
+          puts("Utilisateur créé: #{usr}")
+          self.lancerMenu()
+          return true
+        else
+          return false
+        end
     end
     
     # Lancement du classement
@@ -151,6 +160,8 @@ class Hashi < Gtk::Window
         end
     end
 end
+
+ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: '../db/base.sqlite')
 SerGrille.transformeSerial("f")
 SerGrille.transformeSerial("m")
 SerGrille.transformeSerial("d")
