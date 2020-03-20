@@ -94,11 +94,11 @@ class AfficheurJeu < Gtk::Paned
         @aidePos = Gtk::Button.new(:label => "Position")
         @aidePos.margin_top = 5
         box.add(@aidePos)
-        @aidePos.signal_connect("clicked") { |widget| @grille.aidePos() }
+        @aidePos.signal_connect("clicked") { |widget| @grille.obtenirAide(0) }
 
         @aideTech = Gtk::Button.new(:label => "Technique")
         box.add(@aideTech)
-        @aideTech.signal_connect("clicked") { |widget| @grille.aideTech() }
+        @aideTech.signal_connect("clicked") { |widget| @grille.obtenirAide(0) }
 
         boxVerticale.add(box)
         @pause = Gtk::Button.new(:label => "Pause")

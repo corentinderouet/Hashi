@@ -7,6 +7,7 @@ require_relative "ui/Classement"
 require_relative "ui/Aventure"
 require_relative "ui/Menu"
 require_relative "SerGrille"
+require_relative "../db/GestionBase"
 
 # Fenêtre principale du jeu
 class Hashi < Gtk::Window
@@ -61,9 +62,14 @@ class Hashi < Gtk::Window
     #
     # * +usr+ - Utilisateur à créer
     def inscription(usr)
-        self.remove(@courant)
-        puts("Utilisateur créé: #{usr}")
-        self.lancerMenu()
+        if (GestionBase.ajouterJoueur(usr)) 
+          self.remove(@courant)
+          puts("Utilisateur créé: #{usr}")
+          self.lancerMenu()
+          return true
+        else
+          return false
+        end
     end
     
     # Lancement du classement
@@ -154,6 +160,8 @@ class Hashi < Gtk::Window
         end
     end
 end
+
+ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: '../db/base.sqlite')
 SerGrille.transformeSerial("f")
 SerGrille.transformeSerial("m")
 SerGrille.transformeSerial("d")
