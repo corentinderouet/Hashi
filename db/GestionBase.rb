@@ -161,10 +161,35 @@ class GestionBase
 	
 		begin
 			Joueur.find(idJoueur)
-			grilles = Array.new
-			joue = Joue.where([ "joueurs_id = ?", idJoueur ])
+			grilles = Array.new #GrilleDb.all
+#			joue = Joue.where([ "joueurs_id = ?", idJoueur ])
 			begin
-				joue.each { |joue| grilles.push(GrilleDb.find(joue.grille_dbs_id)) }
+				GrilleDb.all.each do |grilleDb|
+#puts grille.id
+#joue = nil
+					begin
+						joue = Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])
+					rescue
+						joue = nil
+					end
+#joue.each { |j| puts "Joue: #{j}" }
+					if (joue != nil && !joue.empty?)
+p joue
+						grilles.push(joue.grilleSer)
+					else
+#						grille = grilleDb.grilleSolution
+#						grilleDb.grilleSolution = YAML.load(grilleDb.grilleSolution)
+						grille = grilleDb.grilleSolution
+#puts "Joue:  #{joue == nil}"
+#p grille
+						grille = YAML.load(grille)
+#p grille
+						grille.tabLien.each { |lien| grille.supprimerLien(lien) }
+						grilleDb.grilleSolution = YAML.dump(grille)
+						grilles.push(grilleDb)
+					end					
+				end
+				joue.map { |joue| grilles.push(GrilleDb.find(joue.grille_dbs_id)) }
 			rescue
 				puts "recupGrilles ==> Problème récupération grille depuis joue"
 			end

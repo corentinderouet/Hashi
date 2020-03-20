@@ -7,9 +7,9 @@ class GrilleDb < ActiveRecord::Base
 	belongs_to :difficulte
 	belongs_to :mode
 
-	serialize :grilleSolution, Grille
+#	serialize :grilleSolution, Grille
 
 	def to_s
-		"<Grille> difficulte : '#{niveau}', mode : '#{mode_jeu}'"
+		"<Grille> difficulte : #{difficultes_id}, mode : #{modes_id}"
 	end
 end

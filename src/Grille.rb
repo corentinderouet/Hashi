@@ -26,9 +26,6 @@ class Grille
 
     attr_reader :largeur
 
-    # Rend la méthode new privée
-    private_class_method :new
-
     # Initialisation de la grille
     #
     # === Paramètres
