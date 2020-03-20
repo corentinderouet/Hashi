@@ -195,7 +195,7 @@ p joue
 						grille = YAML.load(grille)
 #p grille
 						grille.tabLien.each { |lien| grille.supprimerLien(lien) }
-						grilleDb.grilleSolution = YAML.dump(grille)
+						grilleDb.grilleSolution = grille#YAML.dump(grille)
 						grilles.push(grilleDb)
 					end					
 				end
