@@ -66,9 +66,12 @@ class Hashi < Gtk::Window
           self.remove(@courant)
           puts("Utilisateur créé: #{usr}")
           self.lancerMenu()
-          return true
         else
-          return false
+          d = Gtk::MessageDialog.new()
+          d.text = "Un utilisateur avec ce nom existe déjà"
+          d.message_type = :info
+          d.run
+          d.destroy
         end
     end
     

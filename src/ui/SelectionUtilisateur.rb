@@ -31,9 +31,7 @@ class SelectionUtilisateur < Gtk::ScrolledWindow
 
         utilisateurs.each() do |u|
             l = Gtk::Button.new(label: u)
-            l.signal_connect("clicked") { fenetre.inscription(u) }
-            #l.expand = true
-            l.signal_connect("clicked") { |widget| puts("Connexion de #{u}") }
+            l.signal_connect("clicked") { fenetre.connexion(u) }
             l.set_size_request(150, 70)
             grid.attach(l, x, y, 1, 1)
             x += 1
