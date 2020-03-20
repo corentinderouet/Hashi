@@ -16,9 +16,11 @@ class TestBase
 		# Réinitialise la base
 		Migration.migrate(:up)
 
-		Difficulte.create( :niveau => "Facile")
-		Difficulte.create( :niveau => "Moyen")
-		Difficulte.create( :niveau => "Difficile")
+		fichiers = ["Facile", "Moyen", "Difficile"]
+
+#		Difficulte.create( :niveau => "Facile")
+#		Difficulte.create( :niveau => "Moyen")
+#		Difficulte.create( :niveau => "Difficile")
 		Mode.create( :mode_jeu => "Entrainement")
 		Mode.create( :mode_jeu => "Classe")
 		Mode.create( :mode_jeu => "Aventure")
@@ -26,16 +28,16 @@ class TestBase
 		unJoueur = GestionBase.ajouterJoueur("corentin")
 		unJoueur2 = GestionBase.ajouterJoueur("alexis")
 		
-		fichiers = ['f', 'm', 'd']
-
 		# Ajoute toutes les grilles de différentes difficultés à la base
 		fichiers.each do |difficulte|
+			Difficulte.create( :niveau => difficulte )
 			SerGrille.transformeSerial2(difficulte)
 			tabGrille = SerGrille.deserialiseVide(difficulte)
-			idDifficulte = Difficulte.find_by_niveau(difficulte)
+			idDifficulte = Difficulte.find_by_niveau(difficulte).id
+			puts "diff: #{idDifficulte}"
 #puts tabGrille
 			tabGrille.each do |grille|
-				puts grille
+				puts "Grille: #{grille}, tabLien: "
 #				puts YAML.dump(grille)
 				GrilleDb.create(:grilleSolution => YAML.dump(grille), :difficultes_id => idDifficulte, :modes_id => 3)
 			end
@@ -61,10 +63,10 @@ class TestBase
 		# puts(GestionBase.recupScoreTotal(1))
 		# puts(GestionBase.recupNbGrillesJouees(1))
 		# puts "Joueur 4 nb: #{GestionBase.recupNbGrillesJouees(4) == nil}"
-		GestionBase.recupGrilles(1).each do |grilleDb|
+		GestionBase.recupGrilles(1, 3).each do |grilleDb|
 			grille = YAML.load(grilleDb.grilleSolution)
-			puts "Hauteur: #{grille.hauteur}, largeur: #{grille.largeur}"
-			puts "Solution: Hauteur: #{grille.grilleRes.hauteur}, largeur: #{grille.grilleRes.largeur}"
+			puts "Hauteur: #{grille.hauteur}, largeur: #{grille.largeur}, tabLien: #{grille.tabLien}"
+			puts "Solution: Hauteur: #{grille.grilleRes.hauteur}, largeur: #{grille.grilleRes.largeur}, tabLien: "
 		end
 		GestionBase.recupJoueurAll
 		
