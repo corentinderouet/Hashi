@@ -30,7 +30,7 @@ class Connexion < Gtk::Box
         boxHorizontale.set_hexpand(true)
 
         connexion = Gtk::Box.new(Gtk::Orientation.new(1), 0)
-        connexion.add(SelectionUtilisateur.new(["Roger", "Gilbert", "Martine", "Alphonse","Roger", "Gilbert", "Martine", "Alphonse","Roger", "Gilbert", "Martine", "Alphonse" ,"Roger", "Gilbert", "Martine", "Alphonse"   ], fenetre))
+        connexion.add(SelectionUtilisateur.new(fenetre))
 
         inscription = Gtk::Box.new(Gtk::Orientation.new(1), 0)
         c = Gtk::Label.new("Nom d'utilisateur :")
