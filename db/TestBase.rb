@@ -13,6 +13,9 @@ require_relative "../src/SerGrille"
 
 class TestBase
 	def TestBase.test1
+		# Réinitialise la base
+		Migration.migrate(:up)
+
 		Difficulte.create( :niveau => "Facile")
 		Difficulte.create( :niveau => "Moyen")
 		Difficulte.create( :niveau => "Difficile")
@@ -25,27 +28,29 @@ class TestBase
 		
 		fichiers = ['f', 'm', 'd']
 
+		# Ajoute toutes les grilles de différentes difficultés à la base
 		fichiers.each do |difficulte|
 			SerGrille.transformeSerial2(difficulte)
 			tabGrille = SerGrille.deserialiseVide(difficulte)
-			if(difficulte == 'f')
-				idDifficulte = 1
-			elsif (difficulte == 'm')
-				idDifficulte = 2
-			else
-				idDifficulte = 3
+			idDifficulte = Difficulte.find_by_niveau(difficulte)
+#puts tabGrille
+			tabGrille.each do |grille|
+				puts grille
+#				puts YAML.dump(grille)
+				GrilleDb.create(:grilleSolution => YAML.dump(grille), :difficultes_id => idDifficulte, :modes_id => 3)
 			end
-			tabGrille.each { |grille| GrilleDb.create(:grilleSolution => grille, :difficultes_id => idDifficulte, :modes_id => 3) }
 		end
 		#grille=GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>1, :mode_jeu => 3)
 		#GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>2, :mode_jeu => 3)
 		#GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>3, :mode_jeu => 3)
 		
 		#grille4=GrilleDb.create(:grilleSolution => "1__5HHH", :niveau_id =>3, :mode_jeu => 2)
+	end
 
-
+	def TestBase.test2
+#		grille1 = GestionBase.recupGrilles(1).first
 		# Joue.create( :joueurs_id => 1, :grille_dbs_id => 1,:grilleSer => nil,  :score => 2521)
-		# Joue.create( :joueurs_id => 1, :grille_dbs_id => 4,:grilleSer => "1__5___;",  :score => 3210)
+#		Joue.create( :joueurs_id => 1, :grille_dbs_id => 4,:grilleSer => grille1,  :score => 3210)
 		# Joue.create( :joueurs_id => 1, :grille_dbs_id => 3,:grilleSer => "1__5___;",  :score => 1)
 		# Joue.create( :joueurs_id => 1, :grille_dbs_id => 2,:grilleSer => "1__5___;",  :score => 2)
 		
@@ -56,7 +61,11 @@ class TestBase
 		# puts(GestionBase.recupScoreTotal(1))
 		# puts(GestionBase.recupNbGrillesJouees(1))
 		# puts "Joueur 4 nb: #{GestionBase.recupNbGrillesJouees(4) == nil}"
-		# puts(GestionBase.recupGrilles(1))
+		GestionBase.recupGrilles(1).each do |grilleDb|
+			grille = YAML.load(grilleDb.grilleSolution)
+			puts "Hauteur: #{grille.hauteur}, largeur: #{grille.largeur}"
+		end
+		GestionBase.recupJoueurAll
 		
 		# puts GestionBase.recupScoreTotal(1)
 		# puts "Grilles: "
@@ -77,4 +86,4 @@ class TestBase
 	end
 end
 
-TestBase.test1
+TestBase.test2
