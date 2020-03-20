@@ -64,4 +64,4 @@ class Migration < ActiveRecord::Migration[4.2]
 	end
 end
 
-Migration.migrate(:up)
+#Migration.migrate(:up)

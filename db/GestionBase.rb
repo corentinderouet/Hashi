@@ -10,7 +10,7 @@ require_relative "PhrasesAventure"
 
 # Classe permettant la récupérations d'informations de la Base de données vers le programme grâce au joueur ou aux grilles
 class GestionBase
-	# Ajoute un joueur à la base de donnée
+	# Ajoute un joueur à la base de données
 	#
 	# === Paramètres
 	#
@@ -31,7 +31,7 @@ class GestionBase
 		return retour != nil
 	end
 	
-	# Récupère un joueur de la base de donnée via son pseudo
+	# Récupère un joueur de la base de données via son pseudo
 	#
 	# === Paramètres
 	#
@@ -43,6 +43,16 @@ class GestionBase
 	#
 	def GestionBase.recupJoueur(pseudo)
 		return Joueur.find_by_pseudo(pseudo)
+	end
+
+	# Récupère tous les joueur de la base de données
+	#
+	# === Retour
+	#
+	# Un tableau de joueurs
+	#
+	def GestionBase.recupJoueurAll
+		return Joueur.all
 	end
 	
 	# Récupère la difficulté d'une grille via son Id
@@ -85,12 +95,12 @@ class GestionBase
 	#
 	# Le score total du joueur, ou nil si le joueur n'existe pas
 	#
-	def GestionBase.recupScoreTotal(idJoueur)
+	def GestionBase.recupScoreTotal(idJoueur, idDifficulte)
 		score = nil
 	
 		begin
 			Joueur.find(idJoueur)
-			grilles = Joue.where([ "joueurs_id = ?", idJoueur ]).select{ |joue| recupMode(GrilleDb.find(joue.grille_dbs_id).id).mode_jeu == "Classe"}
+			grilles = Joue.where([ "joueurs_id = ?", idJoueur ]).select{ |joue| recupMode(GrilleDb.find(joue.grille_dbs_id).id) == Mode.find_by_mode_jeu("Classe") && recupDifficulte(joue.grille_dbs_id) == idDifficulte }
 			score = grilles.inject(0) { |score, joue| score += joue.score }
 	
 		rescue
@@ -161,10 +171,35 @@ class GestionBase
 	
 		begin
 			Joueur.find(idJoueur)
-			grilles = Array.new
-			joue = Joue.where([ "joueurs_id = ?", idJoueur ])
+			grilles = Array.new #GrilleDb.all
+#			joue = Joue.where([ "joueurs_id = ?", idJoueur ])
 			begin
-				joue.each { |joue| grilles.push(GrilleDb.find(joue.grille_dbs_id)) }
+				GrilleDb.all.each do |grilleDb|
+#puts grille.id
+#joue = nil
+					begin
+						joue = Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])
+					rescue
+						joue = nil
+					end
+#joue.each { |j| puts "Joue: #{j}" }
+					if (joue != nil && !joue.empty?)
+p joue
+						grilles.push(joue.grilleSer)
+					else
+#						grille = grilleDb.grilleSolution
+#						grilleDb.grilleSolution = YAML.load(grilleDb.grilleSolution)
+						grille = grilleDb.grilleSolution
+#puts "Joue:  #{joue == nil}"
+#p grille
+						grille = YAML.load(grille)
+#p grille
+						grille.tabLien.each { |lien| grille.supprimerLien(lien) }
+						grilleDb.grilleSolution = YAML.dump(grille)
+						grilles.push(grilleDb)
+					end					
+				end
+#				joue.map { |joue| grilles.push(GrilleDb.find(joue.grille_dbs_id)) }
 			rescue
 				puts "recupGrilles ==> Problème récupération grille depuis joue"
 			end
@@ -180,18 +215,17 @@ class GestionBase
 	# === Paramètres
 	#
 	# * +idJoueur+ => L'Id du Joueur dont on veut modifier le scre de l'une des grilles
-	# * +idGrilleDb+ => L'objet grille dont on veut modifier le score
+	# * +grilleDb+ => L'objet grille dont on veut modifier le score
 	# * +score+ => Le score du Joueur sur la grille en question
 	#
 	# === Retour
 	#
-	# Aucun : modifie le score de la grille du joueur
+	# Aucun : modifie le score de la grille du joueur ainsi que la grilleSer
 	#
-	def GestionBase.changeScore(idJoueur, idGrilleDb, score)
-
+	def GestionBase.changerScore(idJoueur, grilleDb, score)
 		begin			
-			raise ("raise changerScore") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, idGrilleDb ])).count != 1)
-			joue.update(score: score)
+			raise ("raise changerScore") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
+			joue.update(score: score, grilleSer: grilleDb)
 		rescue
 			puts "changeScore ==> La grille d'id #{idGrilleDb} du joueur d'id #{idJoueur} n'existe pas dans la base"
 		end
