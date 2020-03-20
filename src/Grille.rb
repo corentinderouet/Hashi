@@ -42,7 +42,7 @@ class Grille
     def initialize(tab,hauteur,largeur,grilleRes)
         @hypothese=false
         @tabLien=Array.new()
-        @tabCase=Array.new()
+        #@tabCase=Array.new() # Inutile avec la ligne d'en dessous
         @tabCase=tab
         @hauteur=hauteur
         @largeur=largeur
