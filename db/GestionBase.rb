@@ -147,12 +147,15 @@ class GestionBase
 	#
 	# Aucun retour (Enregistrement dans la base)
 	#
+	#--------------------------Obsolète--------------------------
 	def GestionBase.sauvegarderGrille(idJoueur, grilleDb)
 		begin			
-			raise ("raise sauvegarderGrille") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
-			
+			if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
+				joue.update(grilleSer: grilleDb)
+			else
+				Joue.create(grilleSer: grilleDb ,joueurs: idJoueur)
 		rescue
-			Joue.create( :joueurs_id => idJoueur, :grille_dbs_id => grilleDb.id)
+			puts(" sauvegarderGrille  ==> Joueur d'id #{idJoueur} n'existe pas dans la base ")
 		end
 	end
 	
