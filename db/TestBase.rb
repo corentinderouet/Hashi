@@ -65,7 +65,7 @@ class TestBase
 			grille = YAML.load(grilleDb.grilleSolution)
 			puts "Hauteur: #{grille.hauteur}, largeur: #{grille.largeur}"
 		end
-#		puts 
+		GestionBase.recupJoueurAll
 		
 		# puts GestionBase.recupScoreTotal(1)
 		# puts "Grilles: "

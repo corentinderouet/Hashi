@@ -10,7 +10,7 @@ require_relative "PhrasesAventure"
 
 # Classe permettant la récupérations d'informations de la Base de données vers le programme grâce au joueur ou aux grilles
 class GestionBase
-	# Ajoute un joueur à la base de donnée
+	# Ajoute un joueur à la base de données
 	#
 	# === Paramètres
 	#
@@ -31,7 +31,7 @@ class GestionBase
 		return retour != nil
 	end
 	
-	# Récupère un joueur de la base de donnée via son pseudo
+	# Récupère un joueur de la base de données via son pseudo
 	#
 	# === Paramètres
 	#
@@ -43,6 +43,16 @@ class GestionBase
 	#
 	def GestionBase.recupJoueur(pseudo)
 		return Joueur.find_by_pseudo(pseudo)
+	end
+
+	# Récupère tous les joueur de la base de données
+	#
+	# === Retour
+	#
+	# Un tableau de joueurs
+	#
+	def GestionBase.recupJoueurAll
+		return Joueur.all
 	end
 	
 	# Récupère la difficulté d'une grille via son Id
