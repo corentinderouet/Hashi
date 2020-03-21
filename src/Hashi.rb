@@ -13,6 +13,7 @@ require_relative "../db/GestionBase"
 class Hashi < Gtk::Window
 
     # @joueur => Objet joueur en train d'utiliser l'application
+    attr_reader :joueur
 
     # Constructeur
     def initialize()
