@@ -68,7 +68,7 @@ class TestBase
 			puts "Hauteur: #{grille.hauteur}, largeur: #{grille.largeur}, tabLien: #{grille.tabLien}"
 			puts "Solution: Hauteur: #{grille.grilleRes.hauteur}, largeur: #{grille.grilleRes.largeur}, tabLien: "
 		end
-		GestionBase.recupJoueurAll
+		puts GestionBase.recupJoueurAll
 		
 		# puts GestionBase.recupScoreTotal(1)
 		# puts "Grilles: "
