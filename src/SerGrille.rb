@@ -190,9 +190,38 @@ class SerGrille
 			tabLienVTmp = Array.new(comptligne)
 
 			if grille != nil
+#puts "ligne: #{ligne}"
+
 				ligne.each_char do | s |
 	
 					if(s==";") 
+						caseTmp = nil
+						lien = nil
+						# Création des liens horizontaux si nécessaire
+						tabLienHTmp.each do | l |
+#		puts "l class: #{l.class}"
+							if (l.instance_of? Case)
+#		puts "l est une case: #{l}"
+								if (caseTmp == nil || lien == nil)
+									caseTmp = l
+#puts "nouvelle caseTmp: #{caseTmp}"
+								else
+#		puts "création lien horizontal: #{caseTmp}"
+									grille.clicTriangle(caseTmp, 1)
+			
+									if (lien == false)
+										grille.clicTriangle(caseTmp, 1)
+									end
+		
+									caseTmp = l
+									lien = nil
+								end
+							else
+								lien = l
+							end
+						end
+	
+
 						comptligne += 1
 						comptcolonne = -1
 	
@@ -209,11 +238,16 @@ class SerGrille
 	
 						# Création du lien vertical (vers le nord) si besoin
 						if (tabLienVTmp[comptcolonne] != nil)
+begin
 							grille.clicTriangle(tabLienHTmp[comptcolonne], 0)
-	
+
 							if (tabLienVTmp[comptcolonne] == false)
 								grille.clicTriangle(tabLienHTmp[comptcolonne], 0)
 							end
+	
+rescue
+puts "Problème: lien vide en #{comptligne}/#{comptcolonne}"
+end
 	
 							tabLienVTmp[comptcolonne] = nil
 						end
@@ -227,30 +261,13 @@ class SerGrille
 							tabLienVTmp[comptcolonne] = true
 						elsif(s == "E")
 							tabLienVTmp[comptcolonne] = false
+						elsif(s == "_")
+							tabLienHTmp[comptcolonne] = nil
 						end
 					end
 	
 					comptcolonne+=1
 				end	
-	
-				caseTmp = nil
-				lien = nil
-				# Création des liens horizontaux si nécessaire
-				tabLienHTmp.each do | l |
-					if (l =~ /[[:digit:]]/)
-						if (caseTmp == nil || lien == nil)
-							caseTmp = l
-						else
-							grille.clicTriangle(caseTmp, 1)
-	
-							if (lien == false)
-								grille.clicTriangle(caseTmp, 1)
-							end
-						end
-					else
-						lien = l
-					end
-				end
 	
 				# Mise à jour de la grille
 				tabGrille[indice] = grille
@@ -370,11 +387,14 @@ end
 		fichierLec=File.open(fichierSource, "r")
 		fichierEcr=File.open(fichierRecept, "a+")
 		fichierLec.each_line do | ligne |
-			taille=ligne.length - 1
+#puts "dernier car: #{ligne[ligne.length - 1] == "\n"}"
+			taille= ligne[ligne.length - 1] == "\n" ? ligne.length - 1 : ligne.length
 			tailleLigne=Math.sqrt(taille)
+
+#puts "taille: #{taille}, tailleLigne: #{tailleLigne}"
 			comptLigne=0
 			ligne=ligne.split("")
-			ligne.pop
+#			ligne.pop
 			ligne.each do | car |
 				comptLigne+=1
 				if(car==" ")
@@ -387,8 +407,10 @@ end
 					fichierEcr.write("V")
 				elsif(car=="d")
 					fichierEcr.write("E")
-				else
+				elsif(car != "\n")
 					fichierEcr.write(car)
+#else
+#puts "\\n ? #{car}"
 				end
 
 				if((comptLigne % tailleLigne) == 0)

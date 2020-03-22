@@ -33,7 +33,7 @@ class SelecteurGrille < Gtk::ScrolledWindow
             10.times do |y|
                 n = x+y*3+1
                 vBox = Gtk::Box.new(Gtk::Orientation.new(1), 0)
-                g = grilles[n]
+                g = grilles[n - 1]
                 f = Gtk::Frame.new()
                 a = AfficheurGrille.new(g, false)
                 a.set_size_request(1,300)
