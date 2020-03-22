@@ -20,6 +20,10 @@ class SelecteurGrille < Gtk::ScrolledWindow
         self.expand = true
         @fenetre = fenetre
 
+        grilles = GestionBase.recupGrilles(fenetre.joueur.id, dif)
+        grilles = grilles.map() { |x| YAML.load(x.grilleSolution) }
+        #grilles = grilles.map() { |x| YAML.load(x.grilleSolution).grilleRes }
+
         grid = Gtk::Grid.new()
         grid.row_spacing = 40
         grid.column_spacing = 40
@@ -29,8 +33,7 @@ class SelecteurGrille < Gtk::ScrolledWindow
             10.times do |y|
                 n = x+y*3+1
                 vBox = Gtk::Box.new(Gtk::Orientation.new(1), 0)
-                res=SerGrille.deserialise(n, dif)
-                g = Grille.creer(res.tabCase,res.hauteur,res.largeur, nil)
+                g = grilles[n]
                 f = Gtk::Frame.new()
                 a = AfficheurGrille.new(g, false)
                 a.set_size_request(1,300)
@@ -38,18 +41,11 @@ class SelecteurGrille < Gtk::ScrolledWindow
                 f.add(a)
                 vBox.add(f)
                 vBox.add(Gtk::Label.new("Grille n°#{n}"))
-                vBox.signal_connect("button-press-event") { self.onClick(n, dif) }
+                vBox.signal_connect("button-press-event") { @fenetre.finSelection(g) }
                 grid.attach(vBox, x, y, 1, 1)
             end
         end
 
         self.add(grid)
     end
-
-    # Methodé appellée lors d'un clic sur une grille
-    def onClick(n, dif)
-        res = SerGrille.deserialise(n, dif)
-        g = Grille.creer(res.tabCase,res.hauteur,res.largeur, nil)
-        @fenetre.finSelection(g)
-    end 
 end
