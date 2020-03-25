@@ -1,9 +1,9 @@
 #Fonction de gestion de la base de données
 require "rubygems"
 require "active_record"
-require_relative "Joue"
 require_relative "Joueur"
 require_relative "GrilleDb"
+require_relative "Joue"
 require_relative "Difficulte"
 require_relative "Mode"
 require_relative "PhrasesAventure"
@@ -181,14 +181,14 @@ class GestionBase
 #puts grille.id
 #joue = nil
 					begin
-						joue = Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])
+						joue = Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ]).first
 					rescue
 						joue = nil
 					end
 #joue.each { |j| puts "Joue: #{j}" }
-					if (joue != nil && !joue.empty?)
+					if (joue != nil)
 p joue
-						grilles.push(joue.grilleSer)
+						grilleDb.grilleSolution = joue.grilleSer
 					else
 #						grille = grilleDb.grilleSolution
 #						grilleDb.grilleSolution = YAML.load(grilleDb.grilleSolution)
@@ -203,8 +203,11 @@ p joue
 #puts grille
 #						grille.tabLien.each { |lien| grille.supprimerLien(lien) }
 						grilleDb.grilleSolution = YAML.dump(grille)
-						grilles.push(grilleDb)
-					end					
+#:niveau => difficulte
+						Joue.create( :joueurs_id => idJoueur, :grille_dbs_id => grilleDb.id, :grilleSer => grilleDb.grilleSolution, :score => 0 )
+					end
+
+					grilles.push(grilleDb)
 				end
 #				joue.map { |joue| grilles.push(GrilleDb.find(joue.grille_dbs_id)) }
 			rescue
@@ -232,7 +235,7 @@ p joue
 	def GestionBase.changerScore(idJoueur, grilleDb, score)
 		begin			
 			raise ("raise changerScore") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
-			joue.update(score: score, grilleSer: grilleDb)
+			joue.update(score: score, grilleSer: grilleDb.grilleSolution)
 		rescue
 			puts "changeScore ==> La grille d'id #{idGrilleDb} du joueur d'id #{idJoueur} n'existe pas dans la base"
 		end
