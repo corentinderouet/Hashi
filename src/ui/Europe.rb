@@ -21,15 +21,16 @@ class Europe < Carte
         @dX = -2350
         @dY = -1300
         @factZoom = 1.5
-        res=SerGrille.deserialise(8, "m")
-        g = Grille.creer(res.tabCase,res.hauteur,res.largeur, nil)
-        ajouterEtiquette(Etiquette.new(2250, 1380, 90, 30, 1, g))
-        ajouterEtiquette(Etiquette.new(2170, 1320, 90, 30, 2, g))
-        ajouterEtiquette(Etiquette.new(2180, 1490, 90, 30, 3, g))
-        ajouterEtiquette(Etiquette.new(2340, 1160, 90, 30, 0, g))
-        ajouterEtiquette(Etiquette.new(2440, 1340, 90, 30, 3, g))
-        ajouterEtiquette(Etiquette.new(2400, 1500, 90, 30, 1, g))
-        ajouterEtiquette(Etiquette.new(2620, 1250, 90, 30, 3, g))
+
+        g = carte.grillesM
+
+        ajouterEtiquette(Etiquette.new(2250, 1380, 90, 30, 1, g[0]))
+        ajouterEtiquette(Etiquette.new(2170, 1320, 90, 30, 2, g[1]))
+        ajouterEtiquette(Etiquette.new(2180, 1490, 90, 30, 3, g[2]))
+        ajouterEtiquette(Etiquette.new(2340, 1160, 90, 30, 0, g[3]))
+        ajouterEtiquette(Etiquette.new(2440, 1340, 90, 30, 3, g[4]))
+        ajouterEtiquette(Etiquette.new(2400, 1500, 90, 30, 1, g[5]))
+        ajouterEtiquette(Etiquette.new(2620, 1250, 90, 30, 3, g[6]))
         dessinerEtiquettes()
     end
 

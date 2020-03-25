@@ -21,6 +21,8 @@ class AfficheurGrille < Gtk::DrawingArea
     # @vY => Nombre de pixel par coordonnée réelle verticale
     # @surbrillance => Liens à mettre en surbrillance
 
+    attr_accessor :cercleAide
+
     private
 
     # Constructeur
@@ -29,13 +31,16 @@ class AfficheurGrille < Gtk::DrawingArea
     #
     # * +grille+ => Grille à afficher
     # * +playable+ => Réagit au clics de souris ou non
-    def initialize(grille, playable)
+    # * +jeu+ => L'afficheur de jeu si la grille est utilisé en tant que jeu
+    def initialize(grille, playable, jeu)
         super()
+        @jeu = jeu
         @surbrillance = []
         @grille = grille
         @vWidth = grille.largeur
         @vHeight = grille.hauteur
         @ratio = 1.0 * @vWidth / @vHeight
+        @cercleAide = nil
         self.signal_connect("draw") { |widget, cr| draw(cr) }
         self.signal_connect("button-press-event") { |widget, event| mouseClick(event); self.queue_draw() } if playable
         self.events = :all_events_mask
@@ -220,6 +225,7 @@ class AfficheurGrille < Gtk::DrawingArea
 
         # Affichage bordure cercle
         saturee?(c) ? cr.set_source_rgb(0.5, 0.5, 0.5) : cr.set_source_rgb(0, 0, 0)
+        cr.set_source_rgb(0,1,0) if c == @cercleAide
         cr.arc(getX(x), getY(y), scale(0.3), 0, 2*Math::PI)
         cr.fill()
         # Affichage partie balnche cercle
@@ -228,6 +234,7 @@ class AfficheurGrille < Gtk::DrawingArea
         cr.fill()
         #Affichage numéro
         saturee?(c) ? cr.set_source_rgb(0.5, 0.5, 0.5) : cr.set_source_rgb(0, 0, 0)
+        cr.set_source_rgb(0,1,0) if c == @cercleAide
         cr.move_to(getX(x) - scale(0.14), getY(y) + scale(0.18))
         cr.show_text(n.to_s())
     end
@@ -286,30 +293,35 @@ class AfficheurGrille < Gtk::DrawingArea
 
             if (getVX(event.x) > x - 0.3) && (getVX(event.x) < x + 0.3) && (getVY(event.y) > y - 0.3) && (getVY(event.y) < y + 0.3)
                 @grille.clicCercle(c, @surbrillance)
+                @jeu.aJoue()
                 return
             end
 
             #haut
             if c.tabTriangle[0] && (getVX(event.x) > x - 0.1) && (getVX(event.x) < x + 0.1) && (getVY(event.y) > y - 0.5) && (getVY(event.y) < y - 0.3)
                 @grille.clicTriangle(c,0)
+                @jeu.aJoue()
                 return
             end
 
             #bas
             if c.tabTriangle[2] && (getVX(event.x) > x - 0.1) && (getVX(event.x) < x + 0.1) && (getVY(event.y) > y + 0.3) && (getVY(event.y) < y + 0.5)
                 @grille.clicTriangle(c,2)
+                @jeu.aJoue()
                 return
             end
 
             #gauche
             if c.tabTriangle[3] && (getVX(event.x) > x - 0.5) && (getVX(event.x) < x - 0.3) && (getVY(event.y) > y - 0.1) && (getVY(event.y) < y + 0.1)
                 @grille.clicTriangle(c,3)
+                @jeu.aJoue()
                 return
             end
 
             #droite
             if c.tabTriangle[1] && (getVX(event.x) > x + 0.3) && (getVX(event.x) < x + 0.5) && (getVY(event.y) > y - 0.1) && (getVY(event.y) < y + 0.1)
                 @grille.clicTriangle(c,1)
+                @jeu.aJoue()
                 return
             end
         end
@@ -336,11 +348,13 @@ class AfficheurGrille < Gtk::DrawingArea
             if y1 == y2
                 if (getVX(event.x) > x1 + 0.4) && (getVX(event.x) < x2 - 0.4) && (getVY(event.y) > y1 - marge) && (getVY(event.y) < y1 + marge)
                     @grille.clicLien(l)
+                    @jeu.aJoue()
                     return
                 end
             else
                 if (getVX(event.x) > x1 - marge) && (getVX(event.x) < x1 + marge) && (getVY(event.y) > y1 + 0.4) && (getVY(event.y) < y2 - 0.4)
                     @grille.clicLien(l)
+                    @jeu.aJoue()
                     return
                 end
             end
