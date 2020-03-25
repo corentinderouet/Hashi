@@ -26,7 +26,7 @@ class AfficheurJeu < Gtk::Paned
         @paused = false
 
         @grille = grille
-        @afficheurGrille = AfficheurGrille.new(grille, true)
+        @afficheurGrille = AfficheurGrille.new(grille, true, self)
 
         @menu = Gtk::Box.new(Gtk::Orientation.new(1), 0)
         @menu.spacing = 5
@@ -94,11 +94,25 @@ class AfficheurJeu < Gtk::Paned
         @aidePos = Gtk::Button.new(:label => "Position")
         @aidePos.margin_top = 5
         box.add(@aidePos)
-        @aidePos.signal_connect("clicked") { |widget| @grille.obtenirAide(0) }
+        @aidePos.signal_connect("clicked") do |widget|
+            @aide ||= @grille.obtenirAide(0)
+            @afficheurGrille.cercleAide = @aide.caseJeu
+            @afficheurGrille.queue_draw()
+            @aidePos.sensitive = false
+        end
 
         @aideTech = Gtk::Button.new(:label => "Technique")
         box.add(@aideTech)
-        @aideTech.signal_connect("clicked") { |widget| @grille.obtenirAide(0) }
+        @aideTech.signal_connect("clicked") do |widget|
+            @aide ||= @grille.obtenirAide(0)
+            @description.text = @aide.description
+            @afficheurGrille.queue_draw()
+            @aideTech.sensitive = false
+        end
+
+        @description = Gtk::Label.new("")
+        @description.line_wrap = true
+        box.add(@description)
 
         boxVerticale.add(box)
         @pause = Gtk::Button.new(:label => "Pause")
@@ -114,5 +128,13 @@ class AfficheurJeu < Gtk::Paned
             self.set_position(self.allocation.width* (@paused ? 1 : 0.80))
             print(nil)
         end
+    end
+
+    def aJoue()
+      @aide = nil
+      @afficheurGrille.cercleAide = nil
+      @description.text = ""
+      @aideTech.sensitive = true
+      @aidePos.sensitive = true
     end
 end
