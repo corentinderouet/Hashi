@@ -19,8 +19,8 @@ class Asie < Carte
     def initialize(carte)
         super(carte)
         @dX = -3450
-        @dY = -1650
-        @factZoom = 1.0
+        @dY = -1700
+        @factZoom = 1.3
 
         g = carte.grillesM
 
