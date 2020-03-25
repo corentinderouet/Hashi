@@ -64,10 +64,19 @@ class TestBase
 		# puts(GestionBase.recupNbGrillesJouees(1))
 		# puts "Joueur 4 nb: #{GestionBase.recupNbGrillesJouees(4) == nil}"
 		GestionBase.recupGrilles(1, 1, 0, 12).each do |grilleDb|
+#puts "#{grilleDb}"
+#puts "#{grilleDb.grilleSolution}"
 			grille = YAML.load(grilleDb.grilleSolution)
+#puts "#{grille}"
+			grille.clicTriangle(grille.tabCase[0], 1)
 			puts "ID: #{grilleDb.id}, Hauteur: #{grille.hauteur}, largeur: #{grille.largeur}, classe: #{grille.class}"
-			puts "Solution: Hauteur: #{grille.grilleRes.hauteur}, largeur: #{grille.grilleRes.largeur}, classe: #{grille.grilleRes.class}"
+#			puts "Solution: Hauteur: #{grille.grilleRes.hauteur}, largeur: #{grille.grilleRes.largeur}, classe: #{grille.grilleRes.class}"
+#puts "avant grilleDb ser: #{YAML.dump(grille).largeur}"
+			grilleDb.grilleSolution = YAML.dump(grille)
+#puts "grilleDb ser: #{grilleDb.grilleSolution.largeur}"
+			GestionBase.changerScore(1, grilleDb, 200)
 		end
+
 		puts GestionBase.recupJoueurAll
 		
 		# puts GestionBase.recupScoreTotal(1)

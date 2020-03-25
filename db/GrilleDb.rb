@@ -10,6 +10,6 @@ class GrilleDb < ActiveRecord::Base
 #	serialize :grilleSolution
 
 	def to_s
-		"<Grille> difficulte : #{difficultes_id}, mode : #{modes_id}"
+		"<GrilleDb> difficulte : #{difficultes_id}, mode : #{modes_id}"
 	end
 end
