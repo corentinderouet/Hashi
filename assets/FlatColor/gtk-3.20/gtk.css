@@ -80,6 +80,10 @@
 @define-color wm_border_focused @border_color;
 @define-color wm_border_unfocused @border_color;
 
+window {
+    font-size: 150%;
+}
+
 /*@import url("gtk-widgets.css");*/
 /*@import url("unity.css");*/
 @import url("widgets/button.css");

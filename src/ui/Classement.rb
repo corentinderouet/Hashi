@@ -26,7 +26,16 @@ class Classement < Gtk::Box
         bouton = Gtk::Button.new(label: "Retour")
         bouton.signal_connect("clicked") { fenetre.finClassement() }
 
-        self.add(switcher)
+        boxHorizontale = Gtk::Box.new(Gtk::Orientation.new(0), 0)
+        lab = Gtk::Label.new("")
+        boxHorizontale.add(lab)
+        lab.hexpand = true
+        boxHorizontale.add(switcher)
+        lab = Gtk::Label.new("")
+        boxHorizontale.add(lab)
+        lab.hexpand = true
+
+        self.add(boxHorizontale)
         self.add(stack)
         self.add(bouton)
     end
