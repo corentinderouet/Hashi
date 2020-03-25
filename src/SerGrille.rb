@@ -167,7 +167,7 @@ class SerGrille
 				if(s==";") 
 					comptligne += 1
 					comptcolonne = -1
-				elsif(s =~ /[[:digit:]]/)					
+				elsif (s =~ /[[:digit:]]/)					
 					tabCase.push(Case.creer(comptligne,comptcolonne,s))
 				end
 				comptcolonne+=1
@@ -238,16 +238,16 @@ class SerGrille
 	
 						# Création du lien vertical (vers le nord) si besoin
 						if (tabLienVTmp[comptcolonne] != nil)
-begin
-							grille.clicTriangle(tabLienHTmp[comptcolonne], 0)
-
-							if (tabLienVTmp[comptcolonne] == false)
+							begin
 								grille.clicTriangle(tabLienHTmp[comptcolonne], 0)
-							end
+
+								if (tabLienVTmp[comptcolonne] == false)
+									grille.clicTriangle(tabLienHTmp[comptcolonne], 0)
+								end
 	
-rescue
-puts "Problème: lien vide en #{comptligne}/#{comptcolonne}"
-end
+							rescue
+								puts "Problème: lien vide en #{comptligne}/#{comptcolonne}"
+							end
 	
 							tabLienVTmp[comptcolonne] = nil
 						end
