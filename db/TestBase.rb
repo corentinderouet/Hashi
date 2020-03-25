@@ -63,9 +63,9 @@ class TestBase
 		# puts(GestionBase.recupScoreTotal(1))
 		# puts(GestionBase.recupNbGrillesJouees(1))
 		# puts "Joueur 4 nb: #{GestionBase.recupNbGrillesJouees(4) == nil}"
-		GestionBase.recupGrilles(1, 3).each do |grilleDb|
+		GestionBase.recupGrilles(1, 1, 0, 12).each do |grilleDb|
 			grille = YAML.load(grilleDb.grilleSolution)
-			puts "Hauteur: #{grille.hauteur}, largeur: #{grille.largeur}, classe: #{grille.class}"
+			puts "ID: #{grilleDb.id}, Hauteur: #{grille.hauteur}, largeur: #{grille.largeur}, classe: #{grille.class}"
 			puts "Solution: Hauteur: #{grille.grilleRes.hauteur}, largeur: #{grille.grilleRes.largeur}, classe: #{grille.grilleRes.class}"
 		end
 		puts GestionBase.recupJoueurAll
