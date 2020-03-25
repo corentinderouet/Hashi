@@ -162,20 +162,22 @@ class GestionBase
 	#
 	# * +idJoueur+ => L'Id du joueur dont on veut récupérer les grilles déjà commencées 
 	# * +idDifficulte+ => L'Id de la difficulté des grilles qu'on souhaite récupérer
+	# * +nbDebut+ => Le rang auquel commencer la récupération des grilles (début à 0, fin à 89)
+	# * +nbGrilles+ => Le nombre de grilles à récupérer à partir de nbDebut
 	#
 	# === Retour
 	#
-	# Les grilles, de la difficulté voulue, jouées par le joueur, ou nil si le joueur n'existe pas
+	# Les grilles, d'un nombre et de la difficulté voulus, jouées par le joueur, ou nil si le joueur n'existe pas
 	#
-	def GestionBase.recupGrilles(idJoueur, idDifficulte)
+	def GestionBase.recupGrilles(idJoueur, idDifficulte, nbDebut, nbGrilles)
 		grilles = nil
 	
-#		begin
+		begin
 			Joueur.find(idJoueur)
 			grilles = Array.new #GrilleDb.all
 #			joue = Joue.where([ "joueurs_id = ?", idJoueur ])
-#			begin
-				GrilleDb.where(difficultes_id: idDifficulte).each do |grilleDb|
+			begin
+				GrilleDb.where(difficultes_id: idDifficulte).offset(nbDebut).limit(nbGrilles).each do |grilleDb|
 #puts grille.id
 #joue = nil
 					begin
@@ -205,14 +207,14 @@ p joue
 					end					
 				end
 #				joue.map { |joue| grilles.push(GrilleDb.find(joue.grille_dbs_id)) }
-#			rescue
-#				puts "recupGrilles ==> Problème récupération grille depuis joue"
-#			end
-#		rescue
-#			puts "recupGrilles ==> Joueur d'id #{idJoueur} n'existe pas dans la base"
-#		ensure
+			rescue
+				puts "recupGrilles ==> Problème récupération grille depuis joue"
+			end
+		rescue
+			puts "recupGrilles ==> Joueur d'id #{idJoueur} n'existe pas dans la base"
+		ensure
 			return grilles
-#		end
+		end
 	end
 
 	# Modifie le score de la grille d'un Joueur
