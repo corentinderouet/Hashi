@@ -95,12 +95,12 @@ class GestionBase
 	#
 	# Le score total du joueur, ou nil si le joueur n'existe pas
 	#
-	def GestionBase.recupScoreTotal(idJoueur)
+	def GestionBase.recupScoreTotal(idJoueur, idDifficulte)
 		score = nil
 	
 		begin
 			Joueur.find(idJoueur)
-			grilles = Joue.where([ "joueurs_id = ?", idJoueur ]).select{ |joue| recupMode(GrilleDb.find(joue.grille_dbs_id).id).mode_jeu == "Classe"}
+			grilles = Joue.where([ "joueurs_id = ?", idJoueur ]).select{ |joue| recupMode(GrilleDb.find(joue.grille_dbs_id).id) == Mode.find_by_mode_jeu("Classe") && recupDifficulte(joue.grille_dbs_id) == idDifficulte }
 			score = grilles.inject(0) { |score, joue| score += joue.score }
 	
 		rescue
@@ -164,20 +164,21 @@ class GestionBase
 	# === Paramètres
 	#
 	# * +idJoueur+ => L'Id du joueur dont on veut récupérer les grilles déjà commencées 
+	# * +idDifficulte+ => L'Id de la difficulté des grilles qu'on souhaite récupérer
 	#
 	# === Retour
 	#
-	# Les grilles jouées par le joueur, ou nil si le joueur n'existe pas
+	# Les grilles, de la difficulté voulue, jouées par le joueur, ou nil si le joueur n'existe pas
 	#
-	def GestionBase.recupGrilles(idJoueur)
+	def GestionBase.recupGrilles(idJoueur, idDifficulte)
 		grilles = nil
 	
-		begin
+#		begin
 			Joueur.find(idJoueur)
 			grilles = Array.new #GrilleDb.all
 #			joue = Joue.where([ "joueurs_id = ?", idJoueur ])
-			begin
-				GrilleDb.all.each do |grilleDb|
+#			begin
+				GrilleDb.where(difficultes_id: idDifficulte).each do |grilleDb|
 #puts grille.id
 #joue = nil
 					begin
@@ -195,22 +196,26 @@ p joue
 						grille = grilleDb.grilleSolution
 #puts "Joue:  #{joue == nil}"
 #p grille
-						grille = YAML.load(grille)
-#p grille
-						grille.tabLien.each { |lien| grille.supprimerLien(lien) }
+						grille2 = YAML.load(grille)
+#puts "Grille2: "
+#puts grille2
+						grille = Grille.creer(grille2.tabCase, grille2.hauteur, grille2.largeur, grille2)
+#puts "Grille: "
+#puts grille
+#						grille.tabLien.each { |lien| grille.supprimerLien(lien) }
 						grilleDb.grilleSolution = YAML.dump(grille)
 						grilles.push(grilleDb)
 					end					
 				end
-				joue.map { |joue| grilles.push(GrilleDb.find(joue.grille_dbs_id)) }
-			rescue
-				puts "recupGrilles ==> Problème récupération grille depuis joue"
-			end
-		rescue
-			puts "recupGrilles ==> Joueur d'id #{idJoueur} n'existe pas dans la base"
-		ensure
+#				joue.map { |joue| grilles.push(GrilleDb.find(joue.grille_dbs_id)) }
+#			rescue
+#				puts "recupGrilles ==> Problème récupération grille depuis joue"
+#			end
+#		rescue
+#			puts "recupGrilles ==> Joueur d'id #{idJoueur} n'existe pas dans la base"
+#		ensure
 			return grilles
-		end
+#		end
 	end
 
 	# Modifie le score de la grille d'un Joueur
@@ -218,18 +223,17 @@ p joue
 	# === Paramètres
 	#
 	# * +idJoueur+ => L'Id du Joueur dont on veut modifier le scre de l'une des grilles
-	# * +idGrilleDb+ => L'objet grille dont on veut modifier le score
+	# * +grilleDb+ => L'objet grille dont on veut modifier le score
 	# * +score+ => Le score du Joueur sur la grille en question
 	#
 	# === Retour
 	#
-	# Aucun : modifie le score de la grille du joueur
+	# Aucun : modifie le score de la grille du joueur ainsi que la grilleSer
 	#
-	def GestionBase.changeScore(idJoueur, idGrilleDb, score)
-
+	def GestionBase.changerScore(idJoueur, grilleDb, score)
 		begin			
-			raise ("raise changerScore") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, idGrilleDb ])).count != 1)
-			joue.update(score: score)
+			raise ("raise changerScore") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
+			joue.update(score: score, grilleSer: grilleDb)
 		rescue
 			puts "changeScore ==> La grille d'id #{idGrilleDb} du joueur d'id #{idJoueur} n'existe pas dans la base"
 		end

@@ -31,8 +31,8 @@ class AfficheurSelection < Gtk::Box
 		boxHorizontale.add(boxVerticale)
 		boxHorizontale.add(stackDif)
 
-		["Facile", "Moyen", "Difficile"].each() do |dif|
-			stackDif.add_titled(SelecteurGrille.new(fenetre, dif.downcase[0]), dif, dif)
+		["Facile", "Moyen", "Difficile"].each_with_index() do |dif, i|
+			stackDif.add_titled(SelecteurGrille.new(fenetre, i+1), dif, dif)
 	        end
 	end
 end

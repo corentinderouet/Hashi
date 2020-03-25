@@ -60,6 +60,63 @@ class Case
     end
 
 
+    # compte le nombre de voisins disponible
+    #
+    # === Retour
+    #
+    # entier correspondant au nombre de voisins dispo(donc la ou il y a un triangle)
+    #
+    def nbVoisinsDispo()
+        compteur=0
+        @tabTriangle.each do |t|
+            if(t!=false)
+                compteur+=1
+            end
+        end
+        return compteur
+    end
+
+
+    # test si un voisin dispo de la case possède une étiquette de 1
+    #
+    # === Retour
+    #
+    # boolean sur ce test
+    #
+    def voisinsDispoEtiDe1()
+        for i in 0..3 do
+            if(@tabTriangle[i]==true && @tabVoisins[i].etiquetteCase.to_i==1)
+                return true
+            end
+        end
+        return false
+    end
+
+
+
+
+    # test si au moin au de ses voisins DISPO ne peux creer plus que 1 lien
+    #
+    # === Parametres
+    #
+    # * + tabLien + = > le tableau des liens
+    #
+    # === Retour
+    #
+    # boolean sur ce test
+    #
+    def auMoinsUnVoisinDispoUnLienRestant(tabLien)
+        for i in 0..3 do
+            if(@tabTriangle[i]==true && @tabVoisins[i].etiquetteCase.to_i - 1 ==@tabVoisins[i].nbLienCase(tabLien) && @tabVoisins[i].nbVoisinsDispo()==1 )
+                return true
+            end
+        end
+        return false
+    end
+
+
+
+
     # Compte le nombre de liens attachés à une case
     #
     # === Parametres
@@ -158,5 +215,13 @@ class Case
         end
 
     end
+
+
+
+    def to_s()
+        return "Case en [#{@ligne},#{@colonne}] : etiq[#{@etiquetteCase}]"
+    end
+
+
 
 end

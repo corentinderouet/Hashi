@@ -31,6 +31,7 @@ class AfficheurGrille < Gtk::DrawingArea
     # * +playable+ => Réagit au clics de souris ou non
     def initialize(grille, playable)
         super()
+        @surbrillance = []
         @grille = grille
         @vWidth = grille.largeur
         @vHeight = grille.hauteur
@@ -278,7 +279,7 @@ class AfficheurGrille < Gtk::DrawingArea
     def mouseClick(event)
         #puts(event.x, event.y)
         #puts(getVX(event.x), getVY(event.y))
-        @surbrillance = Array.new()
+        @surbrillance = []
         @grille.tabCase.each() do |c|
             x = c.colonne
             y = c.ligne

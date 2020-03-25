@@ -10,11 +10,11 @@ class SerGrille
 		
 		# Choix des fichiers à ouvrir 
 
-		if(difficulte=="f")
+		if(difficulte=="Facile")
 			fichierSource="../src/Grilles/grilles_site_ser_facile.txt"
-		elsif(difficulte=="m")
+		elsif(difficulte=="Moyen")
 			fichierSource="../src/Grilles/grilles_site_ser_moyen.txt"
-		elsif (difficulte=="d")
+		elsif (difficulte=="Difficile")
 			fichierSource="../src/Grilles/grilles_site_ser_difficile.txt"
 		else
 			fichierSource="../src/Grilles/grilles_site_ser.txt"
@@ -140,11 +140,11 @@ class SerGrille
 		
 		# Choix des fichiers à ouvrir 
 
-		if(difficulte=="f")
+		if(difficulte=="Facile")
 			fichierSource="../src/Grilles/grilles_site_ser_facile.txt"
-		elsif(difficulte=="m")
+		elsif(difficulte=="Moyen")
 			fichierSource="../src/Grilles/grilles_site_ser_moyen.txt"
-		elsif (difficulte=="d")
+		elsif (difficulte=="Difficile")
 			fichierSource="../src/Grilles/grilles_site_ser_difficile.txt"
 		else
 			fichierSource="../src/Grilles/grilles_site_ser.txt"
@@ -180,73 +180,103 @@ class SerGrille
 
 		tabLienHTmp = Array.new(comptligne)
 		# Parcours n°2 pour créer les liens
+		fichier.rewind
+
 		fichier.each_line do | ligne |
 			grille = tabGrille[indice]
+			comptligne = 0
+			comptcolonne = 0
 
 			tabLienVTmp = Array.new(comptligne)
 
-			ligne.each_char do | s |
+			if grille != nil
+#puts "ligne: #{ligne}"
 
-				if(s==";") 
-					comptligne += 1
-					comptcolonne = 0
-
-				# Si numéro ==> enregistre le chiffre dans la table horizontale tabLienHTmp, et crée un lien vertical si nécessaire
-				elsif(s =~ /[[:digit:]]/)
-					c=grille.tabCase.select {|c| c.ligne == comptligne && c.colonne == comptcolonne}
-					
-					tabLienHTmp[comptcolonne] = c
-
-					# Création du lien vertical (vers le nord) si besoin
-					if (tabLienVTmp[comptcolonne] != nil)
-						grille.clicTriangle(c, 0)
-
-						if (tabLienVTmp[comptcolonne] == false)
-							grille.clicTriangle(c, 0)
+				ligne.each_char do | s |
+	
+					if(s==";") 
+						caseTmp = nil
+						lien = nil
+						# Création des liens horizontaux si nécessaire
+						tabLienHTmp.each do | l |
+#		puts "l class: #{l.class}"
+							if (l.instance_of? Case)
+#		puts "l est une case: #{l}"
+								if (caseTmp == nil || lien == nil)
+									caseTmp = l
+#puts "nouvelle caseTmp: #{caseTmp}"
+								else
+#		puts "création lien horizontal: #{caseTmp}"
+									grille.clicTriangle(caseTmp, 1)
+			
+									if (lien == false)
+										grille.clicTriangle(caseTmp, 1)
+									end
+		
+									caseTmp = l
+									lien = nil
+								end
+							else
+								lien = l
+							end
 						end
+	
 
-						tabLienVTmp[comptcolonne] = nil
-					end
+						comptligne += 1
+						comptcolonne = -1
+	
+					# Si numéro ==> enregistre le chiffre dans la table horizontale tabLienHTmp, et crée un lien vertical si nécessaire
+					elsif(s =~ /[[:digit:]]/)
+						c = grille.tabCase.select { |c1| c1.ligne == comptligne && c1.colonne == comptcolonne }
+	#		puts "c dans grille: #{c1.ligne}/#{c1.colonne}; #{comptligne}/#{comptcolonne}"
+	#					end
+	#					c = c.first
+	
+						tabLienHTmp[comptcolonne] = c.first
+	#puts "c: #{c}"					
+	#p c
+	
+						# Création du lien vertical (vers le nord) si besoin
+						if (tabLienVTmp[comptcolonne] != nil)
+begin
+							grille.clicTriangle(tabLienHTmp[comptcolonne], 0)
 
-				else
-					if(s == "H")
-						tabLienHTmp[comptcolonne] = true
-					elsif(s == "D")
-						tabLienHTmp[comptcolonne] = false
-					elsif(s == "V")
-						tabLienVTmp[comptcolonne] = true
-					elsif(s == "E")
-						tabLienVTmp[comptcolonne] = false
-					end
-				end
-
-				comptcolonne+=1
-			end	
-
-			caseTmp = nil
-			lien = nil
-			# Création des liens horizontaux si nécessaire
-			tabLienHTmp.each do | l |
-				if (l =~ /[[:digit:]]/)
-					if (caseTmp == nil || lien == nil)
-						caseTmp = l
+							if (tabLienVTmp[comptcolonne] == false)
+								grille.clicTriangle(tabLienHTmp[comptcolonne], 0)
+							end
+	
+rescue
+puts "Problème: lien vide en #{comptligne}/#{comptcolonne}"
+end
+	
+							tabLienVTmp[comptcolonne] = nil
+						end
+	
 					else
-						grille.clicTriangle(caseTmp, 1)
-
-						if (lien == false)
-							grille.clicTriangle(caseTmp, 1)
+						if(s == "H")
+							tabLienHTmp[comptcolonne] = true
+						elsif(s == "D")
+							tabLienHTmp[comptcolonne] = false
+						elsif(s == "V")
+							tabLienVTmp[comptcolonne] = true
+						elsif(s == "E")
+							tabLienVTmp[comptcolonne] = false
+						elsif(s == "_")
+							tabLienHTmp[comptcolonne] = nil
 						end
 					end
-				else
-					lien = l
-				end
+	
+					comptcolonne+=1
+				end	
+	
+				# Mise à jour de la grille
+				tabGrille[indice] = grille
+				indice += 1
+	#			puts "<SerGrille> Grille: tabLien: "
 			end
 
-			# Mise à jour de la grille
-			tabGrille[indice] = grille
-			indice += 1
 		end
-
+#puts "Fin SerGrille"
 		fichier.close
 
 		return tabGrille
@@ -259,19 +289,19 @@ class SerGrille
 	def SerGrille.transformeSerial(difficulte)
 		
 		# Choix des fichiers à ouvrir et supression des anciens fichiers
-		if(difficulte=="f")then
+		if(difficulte=="Facile")then
 			if (File.exist?("../src/Grilles/grilles_site_ser_facile.txt"))
 				File.delete "../src/Grilles/grilles_site_ser_facile.txt"
 			end
 			fichierSource="../src/Grilles/grilles_site_facile.txt"
 			fichierRecept="../src/Grilles/grilles_site_ser_facile.txt"
-		elsif(difficulte=="m")
+		elsif(difficulte=="Moyen")
 			if (File.exist?("../src/Grilles/grilles_site_ser_moyen.txt"))
 				File.delete "../src/Grilles/grilles_site_ser_moyen.txt"
 			end
 			fichierSource="../src/Grilles/grilles_site_moyen.txt"
 			fichierRecept="../src/Grilles/grilles_site_ser_moyen.txt"
-		elsif (difficulte=="d")then
+		elsif (difficulte=="Difficile")then
 			if (File.exist?("../src/Grilles/grilles_site_ser_difficile.txt"))
 				File.delete "../src/Grilles/grilles_site_ser_difficile.txt"
 			end
@@ -329,19 +359,19 @@ end
 	def SerGrille.transformeSerial2(difficulte)
 		
 		# Choix des fichiers à ouvrir et supression des anciens fichiers
-		if(difficulte=="f")then
+		if(difficulte=="Facile")then
 			if (File.exist?("../src/Grilles/grilles_site_ser_facile.txt"))
 				File.delete "../src/Grilles/grilles_site_ser_facile.txt"
 			end
 			fichierSource="../src/Grilles/grilles_site_facile.txt"
 			fichierRecept="../src/Grilles/grilles_site_ser_facile.txt"
-		elsif(difficulte=="m")
+		elsif(difficulte=="Moyen")
 			if (File.exist?("../src/Grilles/grilles_site_ser_moyen.txt"))
 				File.delete "../src/Grilles/grilles_site_ser_moyen.txt"
 			end
 			fichierSource="../src/Grilles/grilles_site_moyen.txt"
 			fichierRecept="../src/Grilles/grilles_site_ser_moyen.txt"
-		elsif (difficulte=="d")then
+		elsif (difficulte=="Difficile")then
 			if (File.exist?("../src/Grilles/grilles_site_ser_difficile.txt"))
 				File.delete "../src/Grilles/grilles_site_ser_difficile.txt"
 			end
@@ -357,11 +387,14 @@ end
 		fichierLec=File.open(fichierSource, "r")
 		fichierEcr=File.open(fichierRecept, "a+")
 		fichierLec.each_line do | ligne |
-			taille=ligne.length - 1
+#puts "dernier car: #{ligne[ligne.length - 1] == "\n"}"
+			taille= ligne[ligne.length - 1] == "\n" ? ligne.length - 1 : ligne.length
 			tailleLigne=Math.sqrt(taille)
+
+#puts "taille: #{taille}, tailleLigne: #{tailleLigne}"
 			comptLigne=0
 			ligne=ligne.split("")
-			ligne.pop
+#			ligne.pop
 			ligne.each do | car |
 				comptLigne+=1
 				if(car==" ")
@@ -374,8 +407,10 @@ end
 					fichierEcr.write("V")
 				elsif(car=="d")
 					fichierEcr.write("E")
-				else
+				elsif(car != "\n")
 					fichierEcr.write(car)
+#else
+#puts "\\n ? #{car}"
 				end
 
 				if((comptLigne % tailleLigne) == 0)
