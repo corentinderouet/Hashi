@@ -13,6 +13,7 @@ require_relative "../db/GestionBase"
 class Hashi < Gtk::Window
 
     # @joueur => Objet joueur en train d'utiliser l'application
+    attr_reader :joueur
 
     # Constructeur
     def initialize()
@@ -172,7 +173,7 @@ class Hashi < Gtk::Window
 end
 
 ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: '../db/base.sqlite')
-SerGrille.transformeSerial("f")
-SerGrille.transformeSerial("m")
-SerGrille.transformeSerial("d")
+SerGrille.transformeSerial("Facile")
+SerGrille.transformeSerial("Moyen")
+SerGrille.transformeSerial("Difficile")
 Hashi.new()

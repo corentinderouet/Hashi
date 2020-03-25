@@ -76,6 +76,8 @@ class Grille
                 end
             end
         end
+
+	self.actuCroisement()
     end
 
     # Méthode de création d'une grille
