@@ -12,6 +12,9 @@ require_relative "../db/GestionBase"
 # Fenêtre principale du jeu
 class Hashi < Gtk::Window
 
+    # @joueur => Objet joueur en train d'utiliser l'application
+    attr_reader :joueur
+
     # Constructeur
     def initialize()
         super("Hashi")
@@ -51,9 +54,13 @@ class Hashi < Gtk::Window
     #
     # * +usr+ - Utilisateur sélectionné
     def connexion(usr)
-        self.remove(@courant)
-        puts("Utilisateur connecté: #{usr}")
-        self.lancerMenu()
+        u = GestionBase.recupJoueur(usr)
+        if u
+          @joueur = u
+          self.remove(@courant)
+          puts("Utilisateur connecté: #{usr}")
+          self.lancerMenu()
+        end
     end
 
     # Inscription
@@ -63,12 +70,16 @@ class Hashi < Gtk::Window
     # * +usr+ - Utilisateur à créer
     def inscription(usr)
         if (GestionBase.ajouterJoueur(usr)) 
+          @joueur = GestionBase.recupJoueur(usr)
           self.remove(@courant)
           puts("Utilisateur créé: #{usr}")
           self.lancerMenu()
-          return true
         else
-          return false
+          d = Gtk::MessageDialog.new()
+          d.text = "Un utilisateur avec ce nom existe déjà"
+          d.message_type = :info
+          d.run
+          d.destroy
         end
     end
     
@@ -162,7 +173,7 @@ class Hashi < Gtk::Window
 end
 
 ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: '../db/base.sqlite')
-SerGrille.transformeSerial("f")
-SerGrille.transformeSerial("m")
-SerGrille.transformeSerial("d")
+SerGrille.transformeSerial("Facile")
+SerGrille.transformeSerial("Moyen")
+SerGrille.transformeSerial("Difficile")
 Hashi.new()

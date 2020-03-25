@@ -26,7 +26,9 @@ class Aides
     end
 
 
-
+    def to_s()
+      return "#{@caseJeu} , #{@description}"
+    end
 
 
 end
