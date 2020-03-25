@@ -90,7 +90,7 @@ class GestionBase
 	# === Paramètres
 	#
 	# * +idJoueur+ => L'Id du joueur dont on veut récupérer le score total
-	#
+	# * +idDifficulte+ => L'id de la difficulté des scores que l'on veut récupérer
 	# === Retour
 	#
 	# Le score total du joueur, ou nil si le joueur n'existe pas
@@ -116,17 +116,18 @@ class GestionBase
 	# === Paramètres
 	#
 	# * +idJoueur+ => L'Id du joueur dont on veut récupérer le nombre de grilles jouées
+	# * +idDifficulte+ => L'id de la difficulté des scores que l'on veut récupérer
 	#
 	# === Retour
 	#
 	# Le nombre de grilles jouées par le joueur, ou nil si le joueur n'existe pas
 	#
-	def GestionBase.recupNbGrillesJouees(idJoueur)
+	def GestionBase.recupNbGrillesJouees(idJoueur,idDifficulte)
 		nb = nil
 	
 		begin
 			Joueur.find(idJoueur)
-			grilles = Joue.where([ "joueurs_id = ?", idJoueur ]).select{ |joue| recupMode(GrilleDb.find(joue.grille_dbs_id).id).mode_jeu == "Classe"}
+			grilles = Joue.where([ "joueurs_id = ?", idJoueur ]).select{ |joue| recupMode(GrilleDb.find(joue.grille_dbs_id).id).mode_jeu == "Classe"  && recupDifficulte(joue.grille_dbs_id) == idDifficulte }
 			nb = grilles.inject(0) { |nb, joue| nb += 1 }
 		rescue
 			puts "recupNbGrillesJouees ==> Joueur d'id #{idJoueur} n'existe pas dans la base"
@@ -148,16 +149,16 @@ class GestionBase
 	# Aucun retour (Enregistrement dans la base)
 	#
 	#--------------------------Obsolète--------------------------
-	def GestionBase.sauvegarderGrille(idJoueur, grilleDb)
-		begin			
-			if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
-				joue.update(grilleSer: grilleDb)
-			else
-				Joue.create(grilleSer: grilleDb ,joueurs: idJoueur)
-		rescue
-			puts(" sauvegarderGrille  ==> Joueur d'id #{idJoueur} n'existe pas dans la base ")
-		end
-	end
+# => def GestionBase.sauvegarderGrille(idJoueur, grilleDb)
+#		begin			
+#			if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
+#				joue.update(grilleSer: grilleDb)
+#			else
+#				Joue.create(grilleSer: grilleDb ,joueurs: idJoueur)
+#		rescue
+#			puts(" sauvegarderGrille  ==> Joueur d'id #{idJoueur} n'existe pas dans la base ")
+#		end
+#	end
 	
 	# Récupère les grilles jouées par le joueur
 	#
