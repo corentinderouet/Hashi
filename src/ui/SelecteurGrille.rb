@@ -21,7 +21,6 @@ class SelecteurGrille < Gtk::ScrolledWindow
         @fenetre = fenetre
 
         grilles = GestionBase.recupGrilles(fenetre.joueur.id, dif, 0, 12)
-        grilles = grilles.map() { |x| YAML.load(x.grilleSolution) }
         #grilles = grilles.map() { |x| YAML.load(x.grilleSolution).grilleRes }
 
         grid = Gtk::Grid.new()
@@ -31,11 +30,11 @@ class SelecteurGrille < Gtk::ScrolledWindow
 
         3.times() do |x|
             4.times do |y|
-                n = x+y*3+1
+                n = x+y*3
                 vBox = Gtk::Box.new(Gtk::Orientation.new(1), 0)
                 g = grilles[n - 1]
                 f = Gtk::Frame.new()
-                a = AfficheurGrille.new(g, false, nil)
+                a = AfficheurGrille.new(YAML.load(g.grilleSolution), false, nil)
                 a.set_size_request(1,300)
                 a.expand = true
                 f.add(a)

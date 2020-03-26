@@ -25,8 +25,9 @@ class AfficheurJeu < Gtk::Paned
         super(Gtk::Orientation.new(0))
         @paused = false
 
-        @grille = grille
-        @afficheurGrille = AfficheurGrille.new(grille, true, self)
+        @grilleDb = grille
+        @grille = YAML.load(@grilleDb.grilleSolution)
+        @afficheurGrille = AfficheurGrille.new(@grille, true, self)
 
         @menu = Gtk::Box.new(Gtk::Orientation.new(1), 0)
         @menu.spacing = 5
@@ -37,7 +38,12 @@ class AfficheurJeu < Gtk::Paned
         @boutonContinuer.signal_connect("clicked") { |widget| self.remove(@menu); self.add1(@afficheurGrille); self.show_all(); @paused = false }
         @boutonRegles = Gtk::Button.new(:label => "Règles")
         @boutonQuitter = Gtk::Button.new(:label => "Quitter")
-        @boutonQuitter.signal_connect("clicked") { |widget| fenetre.finJeu() }
+        @boutonQuitter.signal_connect("clicked") do |widget|
+            @grilleDb.grilleSolution = @grille.to_yaml()
+            GestionBase.changerScore(fenetre.joueur.id, @grilleDb, 0)
+            puts("Sauvegardé")
+            fenetre.finJeu()
+        end
         @menu.add(@boutonContinuer)
         @menu.add(@boutonRegles)
         @menu.add(@boutonQuitter)
