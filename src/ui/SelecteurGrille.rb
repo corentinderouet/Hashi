@@ -30,7 +30,7 @@ class SelecteurGrille < Gtk::ScrolledWindow
 
         3.times() do |x|
             4.times do |y|
-                n = x+y*3
+                n = x+y*3+1
                 vBox = Gtk::Box.new(Gtk::Orientation.new(1), 0)
                 g = grilles[n - 1]
                 f = Gtk::Frame.new()
