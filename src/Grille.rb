@@ -27,6 +27,10 @@ class Grille
 
     attr_reader :largeur
 
+    attr_accessor :timer
+
+    attr_accessor :nbAides
+
     # Rend la méthode new privée
     private_class_method :new
 
