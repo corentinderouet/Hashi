@@ -24,11 +24,11 @@ class Aventure < Gtk::Stack
         self.set_transition_duration(500);
         
         @grillesF = GestionBase.recupGrilles(fenetre.joueur.id, 1, 12, 14)
-        @grillesF = @grillesF.map() { |x| YAML.load(x.grilleSolution) }
+        #@grillesF = @grillesF.map() { |x| YAML.load(x.grilleSolution) }
         @grillesM = GestionBase.recupGrilles(fenetre.joueur.id, 2, 12, 14)
-        @grillesM = @grillesM.map() { |x| YAML.load(x.grilleSolution) }
+        #@grillesM = @grillesM.map() { |x| YAML.load(x.grilleSolution) }
         @grillesD = GestionBase.recupGrilles(fenetre.joueur.id, 3, 12, 21)
-        @grillesD = @grillesD.map() { |x| YAML.load(x.grilleSolution) }
+        #@grillesD = @grillesD.map() { |x| YAML.load(x.grilleSolution) }
 
         @fenetre = fenetre
         @monde = Monde.new(self)
@@ -79,5 +79,9 @@ class Aventure < Gtk::Stack
     # Retour au menu principal
     def quitter()
         @fenetre.finAventure()
+    end
+
+    def joueur()
+        @fenetre.joueur
     end
 end
