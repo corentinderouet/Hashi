@@ -365,6 +365,7 @@ class Grille
 
             if(a.action == "suppression")
                 a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
+                self.actuCroisement()
             end
 
             @pile.depiler()
@@ -397,6 +398,7 @@ class Grille
             if(a.action == "suppression")
                 @pile.depiler()
                 a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
+                self.actuCroisement()
             end
 
             if(a.action == "hypotheseValidee")
@@ -411,6 +413,7 @@ class Grille
 
                     if(a.action == "suppression")
                         a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
+                        self.actuCroisement()
                     end
 
                     @pile.depiler()
@@ -439,7 +442,7 @@ class Grille
             if(a.action == "ajout")
                 @pileRedo.depiler()
                 a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
-                
+                self.actuCroisement()
             end
 
             if(a.action == "suppression")
@@ -455,6 +458,7 @@ class Grille
                 while(a.action != "debutHypothese")
                     if(a.action == "ajout")
                         a.lien.case1.creerLien(Utilitaire.index(a.lien.case1.tabVoisins,a.lien.case2),a.lien.hypothese,@tabLien)
+                        self.actuCroisement()
                     end
         
                     if(a.action == "suppression")
