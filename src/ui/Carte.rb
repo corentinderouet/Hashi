@@ -90,7 +90,12 @@ class Carte < Gtk::DrawingArea
     def draw(cr)
         #ic.rectangle(0, 0, 1000, 1000)
         #ic.fill()
-        @zoom = @factZoom * width / height / 2
+        #@zoom = @factZoom * width / height / 2
+        if height*1.3 > width
+          @zoom = @factZoom * (width / 5000.0) * 2.5
+        else
+          @zoom = @factZoom * (height / 2000.0) * 1.5
+        end
         cr.scale(@zoom, @zoom)
         cr.set_source(@image, (@dX + width/2/@zoom), (@dY + height/2/@zoom))
         cr.paint()

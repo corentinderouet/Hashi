@@ -11,6 +11,8 @@ require_relative "AmeriqueSud"
 # Widget Gtk permettant d'afficher l'aventure
 class Aventure < Gtk::Stack
 
+    attr_reader :grillesF, :grillesM, :grillesD
+
     # Constructeur
     #
     # === Paramètres
@@ -20,6 +22,13 @@ class Aventure < Gtk::Stack
         super()
         self.set_transition_type(Gtk::Stack::TransitionType::CROSSFADE);
         self.set_transition_duration(500);
+        
+        @grillesF = GestionBase.recupGrilles(fenetre.joueur.id, 1, 12, 14)
+        @grillesF = @grillesF.map() { |x| YAML.load(x.grilleSolution) }
+        @grillesM = GestionBase.recupGrilles(fenetre.joueur.id, 2, 12, 14)
+        @grillesM = @grillesM.map() { |x| YAML.load(x.grilleSolution) }
+        @grillesD = GestionBase.recupGrilles(fenetre.joueur.id, 3, 12, 21)
+        @grillesD = @grillesD.map() { |x| YAML.load(x.grilleSolution) }
 
         @fenetre = fenetre
         @monde = Monde.new(self)
