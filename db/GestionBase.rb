@@ -1,9 +1,9 @@
 #Fonction de gestion de la base de données
 require "rubygems"
 require "active_record"
-require_relative "Joue"
 require_relative "Joueur"
 require_relative "GrilleDb"
+require_relative "Joue"
 require_relative "Difficulte"
 require_relative "Mode"
 require_relative "PhrasesAventure"
@@ -162,31 +162,33 @@ class GestionBase
 	#
 	# * +idJoueur+ => L'Id du joueur dont on veut récupérer les grilles déjà commencées 
 	# * +idDifficulte+ => L'Id de la difficulté des grilles qu'on souhaite récupérer
+	# * +nbDebut+ => Le rang auquel commencer la récupération des grilles (début à 0, fin à 89)
+	# * +nbGrilles+ => Le nombre de grilles à récupérer à partir de nbDebut
 	#
 	# === Retour
 	#
-	# Les grilles, de la difficulté voulue, jouées par le joueur, ou nil si le joueur n'existe pas
+	# Les grilles, d'un nombre et de la difficulté voulus, jouées par le joueur, ou nil si le joueur n'existe pas
 	#
-	def GestionBase.recupGrilles(idJoueur, idDifficulte)
+	def GestionBase.recupGrilles(idJoueur, idDifficulte, nbDebut, nbGrilles)
 		grilles = nil
 	
-#		begin
+		begin
 			Joueur.find(idJoueur)
 			grilles = Array.new #GrilleDb.all
 #			joue = Joue.where([ "joueurs_id = ?", idJoueur ])
-#			begin
-				GrilleDb.where(difficultes_id: idDifficulte).each do |grilleDb|
+			begin
+				GrilleDb.where(difficultes_id: idDifficulte).offset(nbDebut).limit(nbGrilles).each do |grilleDb|
 #puts grille.id
 #joue = nil
 					begin
-						joue = Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])
+						joue = Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ]).first
 					rescue
 						joue = nil
 					end
 #joue.each { |j| puts "Joue: #{j}" }
-					if (joue != nil && !joue.empty?)
+					if (joue != nil)
 p joue
-						grilles.push(joue.grilleSer)
+						grilleDb.grilleSolution = joue.grilleSer
 					else
 #						grille = grilleDb.grilleSolution
 #						grilleDb.grilleSolution = YAML.load(grilleDb.grilleSolution)
@@ -201,18 +203,21 @@ p joue
 #puts grille
 #						grille.tabLien.each { |lien| grille.supprimerLien(lien) }
 						grilleDb.grilleSolution = YAML.dump(grille)
-						grilles.push(grilleDb)
-					end					
+#:niveau => difficulte
+						Joue.create( :joueurs_id => idJoueur, :grille_dbs_id => grilleDb.id, :grilleSer => grilleDb.grilleSolution, :score => 0 )
+					end
+
+					grilles.push(grilleDb)
 				end
 #				joue.map { |joue| grilles.push(GrilleDb.find(joue.grille_dbs_id)) }
-#			rescue
-#				puts "recupGrilles ==> Problème récupération grille depuis joue"
-#			end
-#		rescue
-#			puts "recupGrilles ==> Joueur d'id #{idJoueur} n'existe pas dans la base"
-#		ensure
+			rescue
+				puts "recupGrilles ==> Problème récupération grille depuis joue"
+			end
+		rescue
+			puts "recupGrilles ==> Joueur d'id #{idJoueur} n'existe pas dans la base"
+		ensure
 			return grilles
-#		end
+		end
 	end
 
 	# Modifie le score de la grille d'un Joueur
@@ -230,7 +235,7 @@ p joue
 	def GestionBase.changerScore(idJoueur, grilleDb, score)
 		begin			
 			raise ("raise changerScore") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
-			joue.update(score: score, grilleSer: grilleDb)
+			joue.update(score: score, grilleSer: grilleDb.grilleSolution)
 		rescue
 			puts "changeScore ==> La grille d'id #{idGrilleDb} du joueur d'id #{idJoueur} n'existe pas dans la base"
 		end
