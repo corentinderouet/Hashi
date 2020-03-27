@@ -40,6 +40,7 @@ class AfficheurJeu < Gtk::Paned
         @boutonRegles = Gtk::Button.new(:label => "Règles")
         @boutonQuitter = Gtk::Button.new(:label => "Quitter")
         @boutonQuitter.signal_connect("clicked") do |widget|
+            @grille.timer = @timer.secondes
             @grilleDb.grilleSolution = @grille.to_yaml()
             GestionBase.changerScore(fenetre.joueur.id, @grilleDb, 0)
             puts("Sauvegardé")
@@ -54,7 +55,7 @@ class AfficheurJeu < Gtk::Paned
         @menu.add(c)
 
         boxVerticale = Gtk::Box.new(Gtk::Orientation.new(1), 0)
-        @timer = Timer.new(0)
+        @timer = Timer.new(@grille.timer)
         @timer.margin_top = 15
         boxVerticale.add(@timer)
 
