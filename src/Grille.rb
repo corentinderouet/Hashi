@@ -27,6 +27,10 @@ class Grille
 
     attr_reader :largeur
 
+    attr_accessor :timer
+
+    attr_accessor :nbAides
+
     # Rend la méthode new privée
     private_class_method :new
 
@@ -164,7 +168,7 @@ class Grille
     # === Retour
     #rien
     #
-    def clicCercle(case1,tabLien2)#a modifier pour afficher toutes les cases reliées
+    def clicCercle(case1,tabLien2)
         for i in 0..3 do
             if(case1.tabVoisins[i]!=false)
                 if(case1.nbLienEntreDeuxCases(@tabLien,i) != 0 )
@@ -172,12 +176,12 @@ class Grille
                     #on push le ou les lien(s) si ils ne sont pas dans le tabLien2
                     @tabLien.each do  |lien|
                         if((lien.case1.ligne == case1.ligne && lien.case1.colonne == case1.colonne) && (lien.case2.ligne == case1.tabVoisins[i].ligne && lien.case2.colonne == case1.tabVoisins[i].colonne ) )
-                            if( Utilitaire.index(tabLien2,lien)==-1 )#probleme ici
+                            if( Utilitaire.index(tabLien2,lien)==-1 )
                                 tabLien2.push(lien)
                                 c +=1
                             end
                         elsif ((lien.case2.ligne == case1.ligne && lien.case2.colonne == case1.colonne) && (lien.case1.ligne == case1.tabVoisins[i].ligne && lien.case1.colonne == case1.tabVoisins[i].colonne ))
-                            if( Utilitaire.index(tabLien2,lien)==-1 )#probleme ici
+                            if( Utilitaire.index(tabLien2,lien)==-1 )
                                 tabLien2.push(lien)
                                 c +=1
                             end
@@ -193,6 +197,43 @@ class Grille
         end
         return
     end
+
+
+
+    # test si une archi n'est pas complette(plus de triangle sur les cases)
+    #
+    # === Paramètres
+    #
+    # * +case1+ => la case du clic
+    # * +tabCase2+ => le tableau qui va contenir les case deja test
+    #
+    # === Retour
+    #   boolean sur le test
+    #
+    def ArchiNonComplette(case1,tabCase2)
+        if(case1.nbVoisinsDispo()==0)
+            if(tabCase2.include?(case1)==false)
+                tabCase2.push(case1)
+            end
+            for i in 0..3 do
+                if(case1.tabVoisins[i]!=false && case1.nbLienEntreDeuxCases(@tabLien,i) != 0 )
+                    if(tabCase2.include?(case1.tabVoisins[i])==false)
+                        if(ArchiNonComplette(case1.tabVoisins[i],tabCase2)==true)
+                            return true
+                        end
+                    end
+
+                end
+            end
+        else
+            return true
+        end
+        
+        return false
+    end
+
+
+
 
     # Méthode lors d'un dlic sur le triangle d'un cercle
     #
@@ -506,40 +547,77 @@ class Grille
         aides2=Array.new() #aide qui utilise l'etiquette de la case et sa liste de voisins
         aides3=Array.new() #aide qui utilise l'etiquette de la case et sa liste de voisins ainsi que toute l'archipelle
 
+        niveau=1
+
 
         #on génere les aides par rapport a la grille actuel ici, on va push toutes les aides possibles dans les tableaux correspondant à leurs difficultés
 
         @tabCase.each do |c| 
             if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien))!=0 )   
 
-                if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) == c.nbLienCasePossible(@tabLien) )
-                    aides1.push( Aides.creer(c," Si une case possède une (etiquette - nb de liens déja fait sur cette case) égale au nombre de lien possible a créer vers ses voisins, il est possible de tous les créer ") )
-                end
-
-                if( ((c.etiquetteCase.to_i - c.nbLienCase(@tabLien) +1 ) == c.nbLienCasePossible(@tabLien) ) &&  c.nbVoisinsDispo()*2-1<=c.etiquetteCase.to_i - c.nbLienCase(@tabLien) )
-                    aides1.push( Aides.creer(c," Si une case possède une (etiquette - nb de liens déja fait sur cette case)+1 égale au nombre de lien possible a créer vers ses voisins et que son etiquette-nb de liens déja fait est supérieur ou égale au double du nombre de voisins dispo, -1 , il est possible de créer au moins un lien vers chaque voisins ") )
-                end
-
-
-
+                #bon
                 if( c.nbVoisinsDispo()==1 && c.etiquetteCase.to_i>c.nbLienCase(@tabLien) ) 
-                    aides1.push( Aides.creer(c," Si une case possède 1 voisin et a une etiquette supérieur au nombre de lien déja créer, il est possible de créer 1 lien au moins vers ce voisin ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède 1 voisin et a une etiquette supérieur au nombre de lien déja créer, il est possible de créer tous les liens restants vers ce voisin ") )
                 end
 
-                #faux , fonctionne sur bcp de tets mais rate sur grille moyenne avec le 7 au centre, quand il y a un lie, deux choix restant mais avec 0 comportant lien (car 3 triangles de base), il faudrait test les voisins etc
-                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && ((c.voisinsDispoEtiDe(2)==1 && c.nbLienCase(@tabLien)==0) || (c.voisinsDispoEtiDe(2)==2 && c.nbLienCase(@tabLien)==1) ) ) 
-                    aides1.push( Aides.creer(c," Si une case avec une etiquette de 2 possède 2 voisins et aucun lien dont un voisin avec une etiquette de 2 et l'autre non OU 2 voisins avec etiquette de 2 et un lien déja fait, il est possible de créer 1 lien vers l'autre voisin ") )
+                #bon
+                if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) == c.nbLienCasePossible(@tabLien) )
+                    aides1.push( Aides.creer(1,c," Si une case possède un nombre de lien restant possible vers elle égale à son etiquette moins le nombre de lien déja créé sur cette case, il est possible de créer tous les liens restant.") )
                 end
+
+               
+                if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 3 &&  c.nbVoisinsDispo()==2  )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de #{c.etiquetteCase.to_i} correspondant à son etiquette moins le nombre de liens deja fait ,et #{ (c.etiquetteCase.to_f/2+0.5).to_i } voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                end
+
+
+                if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 5 &&  c.nbVoisinsDispo()==3  )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de #{c.etiquetteCase.to_i} correspondant à son etiquette moins le nombre de liens deja fait ,et #{ (c.etiquetteCase.to_f/2+0.5).to_i } voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                end
+
+
+                if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 7 &&  c.nbVoisinsDispo()==4  )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de #{c.etiquetteCase.to_i} correspondant à son etiquette moins le nombre de liens deja fait ,et #{ (c.etiquetteCase.to_f/2+0.5).to_i } voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                end
+
+
+
+                #bon
+                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.voisinsDispoEtiDe(2)==2 && c.nbLienCase(@tabLien)==0) 
+                    aides2.push( Aides.creer(2,c,"Si une case avec une etiquette de 2 possède deux voisins qui sont deux case avec des etiquettes de 2, il est possible de créer un lien vers chaque voisin ") )
+                end
+
+
+                #bon
+                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.voisinsDispoEtiDe(2)==1 && c.nbLienCase(@tabLien)==0) 
+                    aides2.push( Aides.creer(2,c,"Si une case avec une etiquette de 2 et 0 lien possède deux voisins dont un SEUL avec une etiquette de 2, il est possible de créer un lien vers l'autre voisin ") )
+                end
+
+
+                #a faire detection archipelle
+                if( self.testArchipel(c) )
+                    aides3.push( Aides.creer(3,c," Si lors de la création d'un lien la suite du jeu est bloqué car une archipelle complette est formé(suite de case sans triangle restant relié par des liens) , il est possible de déterminer ou créer un lien ") )
+                end
+
+
+
+
+
+
+
+                #faux
+                #if( ((c.etiquetteCase.to_i - c.nbLienCase(@tabLien) +1 ) == c.nbLienCasePossible(@tabLien) ) )
+                    #aides2.push( Aides.creer(2,c,"Si une case possède un nombre de liens possible vers elle égale à son étiquette moins le nombre de lien déja fait +1 ,il est possible de créer au moins un lien vers chaque voisin.") )
+                #end
+
+
+
 
 
 
                 #if( c.nbVoisinsDispo()==2 && (c.etiquetteCase.to_i==2 || c.etiquetteCase.to_i==3) && c.nbLienCase(@tabLien)==0 && c.voisinsDispoEtiDe(1)==1 ) 
                    # aides2.push( Aides.creer(c," Si une case ayant une etiquette de 2 ou 3 possède 2 voisins dont un ayant une etiquette de 1, il est possible de créer l'etiquette-1 lien(s) vers l'autre voisin ") )
                 #end
-
-
-
-
             
             end
 
@@ -553,7 +631,7 @@ class Grille
             niveau+=1
         end
         if(niveau==3 && aides3.length==0)
-            return Aides.creer(@tabCase[0],"Aucune aide disponible pour le moment")
+            return Aides.creer(1,@tabCase[0],"Aucune aide disponible pour le moment")
         end
 
         case(niveau)
@@ -563,28 +641,47 @@ class Grille
                 return aides2[rand(0..(aides2.length-1) )]
             when 3
                 return aides3[rand(0..(aides3.length-1) )]
-            else
-                alea=1
-
-                if(alea==1 && aides1.length==0)
-                    alea+=1
-                end
-                if(alea==2 && aides2.length==0)
-                    alea+=1
-                end
-                if(alea==3 && aides3.length==0)
-                    return Aides.creer(@tabCase[0],"Aucune aide disponible pour le moment")
-                end
-
-                case(alea)
-                    when 1
-                        return aides1[rand(0..(aides1.length-1) )]
-                    when 2
-                        return aides2[rand(0..(aides2.length-1) )]
-                    when 3
-                        return aides3[rand(0..(aides3.length-1) )]
-                end
         end
+    end
+
+        # test si une seul solution est possible sur une case dans le cadre de la creation de liens pour eviter les archipelles
+    #
+    # === Parametres
+    #
+    # * + case + = > la case pour le test
+    #
+    # === Retour
+    #
+    # boolean sur le test
+    #
+    def testArchipel(case1)
+        compteur=0
+
+
+        #si nbLien deja fait sur cette case == etiquette-1 sinon return false
+            #on parcours les triangles de la case, on ajoute un lien et on test puis on l'enleve ainsi de suite
+                #parcours des cases et liens,si une case dans l'archipelle a partir de la case de depart n'est pas etiquette==nbLien alors compteur+=1
+
+
+        if(case1.nbLienCase(@tabLien)==case1.etiquetteCase.to_i-1)
+
+            for i in 0..3 do
+                if(case1.tabTriangle[i]==true)
+                    lien=case1.creerLien(i,false,tabLien)
+                    self.actuCroisement()
+                    if( ArchiNonComplette(case1,Array.new()) )
+                        compteur+=1
+                    end
+                    supprimerLien(lien)
+                end
+            end
+
+        end
+
+        if(compteur==1)
+            return true
+        end
+        return false
     end
 
 
