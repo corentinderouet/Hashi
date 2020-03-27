@@ -77,19 +77,24 @@ class Case
     end
 
 
-    # test si un voisin dispo de la case possède une étiquette de 1
+    # compte le nb de voisins dispo de la case possèdant une certaine étiquette
+    #
+    # === Parametres
+    #
+    # * + etiquette + = > l'etiquette à test
     #
     # === Retour
     #
-    # boolean sur ce test
+    # entier sur le nombre de voisins possédant cette etiquette
     #
-    def voisinsDispoEtiDe1()
+    def voisinsDispoEtiDe(etiquette)
+        compteur=0
         for i in 0..3 do
-            if(@tabTriangle[i]==true && @tabVoisins[i].etiquetteCase.to_i==1)
-                return true
+            if(@tabTriangle[i]==true && @tabVoisins[i].etiquetteCase.to_i==etiquette)
+                compteur+=1
             end
         end
-        return false
+        return compteur
     end
 
 
@@ -115,6 +120,30 @@ class Case
     end
 
 
+
+    # Compte le nombre de lien encore possible vers cette case
+    #
+    # === Parametres
+    #
+    # * + tabLien + = > le tableau des liens
+    #
+    # === Retour
+    #
+    # Le nombre de liens possible
+    #
+    def nbLienCasePossible(tabLien)
+        compteur=0
+        for i in 0..3 do
+            if(@tabTriangle[i]==true )
+                val=( 2 - self.nbLienEntreDeuxCases(tabLien,i) )
+                if(val > (@tabVoisins[i].etiquetteCase.to_i-@tabVoisins[i].nbLienCase(tabLien)) )
+                    val=(@tabVoisins[i].etiquetteCase.to_i-@tabVoisins[i].nbLienCase(tabLien))
+                end
+                compteur+= val
+            end
+        end
+        return compteur
+    end
 
 
     # Compte le nombre de liens attachés à une case
