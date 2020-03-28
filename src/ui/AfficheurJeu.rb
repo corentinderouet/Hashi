@@ -22,9 +22,11 @@ class AfficheurJeu < Gtk::Paned
     #
     # * +grille+ => Grille à afficher
     # * +fenetre+ => Fenetre principale
-    def initialize(grille, fenetre)
+    # * +type+ => "entrainemen", "classe", "aventure" 
+    def initialize(grille, fenetre, type)
         super(Gtk::Orientation.new(0))
         @paused = false
+        @type = type
 
         @grilleDb = grille
         @grille = YAML.load(@grilleDb.grilleSolution)
@@ -116,6 +118,11 @@ class AfficheurJeu < Gtk::Paned
             @description.text = @aide.description
             @afficheurGrille.queue_draw()
             @aideTech.sensitive = false
+        end
+
+        if @type == "aventure"
+            @aideTech.sensitive = false
+            @aidePos.sensitive = false
         end
 
         @description = Gtk::Label.new("")
