@@ -507,29 +507,30 @@ class Grille
         aides3=Array.new() #aide qui utilise l'etiquette de la case et sa liste de voisins ainsi que toute l'archipelle
 
 
-        #on génere les aides par rapport a la grille actuel ici, on va push toutes les aides possibles dans les tableaux correspondant à leurs difficultés
+        #on génere les aides par rapport a la grille actuelle ici, on va push toutes les aides possibles dans les tableaux correspondant à leurs difficultés
 
         @tabCase.each do |c| 
             if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien))!=0 )   
 
-                if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) == c.nbLienCasePossible(@tabLien) )
-                    aides1.push( Aides.creer(c," Si une case possède une (etiquette - nb de liens déja fait sur cette case) égale au nombre de lien possible a créer vers ses voisins, il est possible de tous les créer ") )
-                end
-
-                if( ((c.etiquetteCase.to_i - c.nbLienCase(@tabLien) +1 ) == c.nbLienCasePossible(@tabLien) ) &&  c.nbVoisinsDispo()*2-1<=c.etiquetteCase.to_i - c.nbLienCase(@tabLien) )
-                    aides1.push( Aides.creer(c," Si une case possède une (etiquette - nb de liens déja fait sur cette case)+1 égale au nombre de lien possible a créer vers ses voisins et que son etiquette-nb de liens déja fait est supérieur ou égale au double du nombre de voisins dispo, -1 , il est possible de créer au moins un lien vers chaque voisins ") )
-                end
-
-
-
-                if( c.nbVoisinsDispo()==1 && c.etiquetteCase.to_i>c.nbLienCase(@tabLien) ) 
-                    aides1.push( Aides.creer(c," Si une case possède 1 voisin et a une etiquette supérieur au nombre de lien déja créer, il est possible de créer 1 lien au moins vers ce voisin ") )
-                end
+                if( c.nbVoisinsDispo()==1 && c.etiquetteCase.to_i > c.nbLienCase(@tabLien) ) 
+                    aides1.push( Aides.creer(c,"Cette case #{c.etiquetteCase} possède exactement un voisin et possède encore au moins un pont créable; il est donc possible de créer au moins 1 pont vers ce voisin"))#Si une case possède 1 voisin et a une etiquette supérieur au nombre de liens déjà créés, il est possible de créer au moins 1 lien vers ce voisin ") )
+#                end
 
                 #faux , fonctionne sur bcp de tets mais rate sur grille moyenne avec le 7 au centre, quand il y a un lie, deux choix restant mais avec 0 comportant lien (car 3 triangles de base), il faudrait test les voisins etc
-                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && ((c.voisinsDispoEtiDe(2)==1 && c.nbLienCase(@tabLien)==0) || (c.voisinsDispoEtiDe(2)==2 && c.nbLienCase(@tabLien)==1) ) ) 
-                    aides1.push( Aides.creer(c," Si une case avec une etiquette de 2 possède 2 voisins et aucun lien dont un voisin avec une etiquette de 2 et l'autre non OU 2 voisins avec etiquette de 2 et un lien déja fait, il est possible de créer 1 lien vers l'autre voisin ") )
+                elsif( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && ((c.voisinsDispoEtiDe(2)==1 && c.nbLienCase(@tabLien)==0) || (c.voisinsDispoEtiDe(2)==2 && c.nbLienCase(@tabLien)==1) ) ) 
+                    aides1.push( Aides.creer(c,"Cette case #{c.etiquetteCase} possède exactement 2 voisins dont au moins un avec une étiquette 2; il est donc possible de créer 1 pont vers l'autre voisin")) #Si une case avec une etiquette de 2 possède exactement 2 voisins, dont au moins un voisin avec une etiquette de 2, il est possible de créer 1 pont vers l'autre voisin ") )
+#                end
+                elsif( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) == c.nbLienCasePossible(@tabLien) )
+                    aides1.push( Aides.creer(c,"Cette case #{c.etiquetteCase} possède autant de ponts créables que (l'étiquette - ponts); il est donc possible de créer au moins 1 pont vers chaque voisin.")) # Si une case possède une (etiquette - nb de liens déja fait sur cette case) égale au nombre de liens possibles à créer vers ses voisins, il est possible créer un lien vers tous les voisins.") )
+#                end
+
+		# PROBLÈME ==> c.nbLienCasePossible(@tabLien) donne 4 pour une case d'étiquette 3... j'ai rajouté un -1 avec nbLienCasePossible
+                elsif( ((c.etiquetteCase.to_i - c.nbLienCase(@tabLien) + 1) == c.nbLienCasePossible(@tabLien) ) &&  c.nbVoisinsDispo()*2-1<=c.etiquetteCase.to_i - c.nbLienCase(@tabLien) + 1)
+                    aides1.push( Aides.creer(c, "Cette case #{c.etiquetteCase} (#{c.nbLienCasePossible(@tabLien) - 1})possède autant de ponts créables que (l'étiquette - ponts) et le nombre de ponts créables est supérieur ou égal au double du nombre des voisins disponibles - 1; il est donc possible de créer au moins 1 pont vers chaque voisin."))#" Si une case possède (numéro étiquette - nombre de ponts) + 1 est égal au nombre de liens possibles à créer vers ses voisins et que son (étiquette - nombre de ponts) est supérieur ou égal au double du nombre de voisins dispo. -1 , il est possible de créer au moins 1 pont vers chaque voisin.") )
                 end
+
+
+
 
 
 
