@@ -77,6 +77,26 @@ class Case
     end
 
 
+
+
+
+    # compte le nombre de voisins
+    #
+    # === Retour
+    #
+    # entier correspondant au nombre de voisins(triangle ou pas)
+    #
+    def nbVoisins()
+        compteur=0
+        @tabVoisins.each do |v|
+            if(v!=false)
+                compteur+=1
+            end
+        end
+        return compteur
+    end
+
+
     # compte le nb de voisins dispo de la case possèdant une certaine étiquette
     #
     # === Parametres
@@ -96,6 +116,49 @@ class Case
         end
         return compteur
     end
+
+
+    # compte le nb de voisins déja   relié par un moins un lien
+    #
+    # === Parametres
+    #
+    # * + tabLien + = > le tableau des liens
+    #
+    # === Retour
+    #
+    # entier sur le nombre de voisins déja relié
+    #
+    def nbCaseDejaRelie(tabLien)
+        compteur=0
+        for i in 0..3 do
+            if(@tabVoinsins[i]!=false && self.nbLienEntreDeuxCases(tabLien,i)!=0  )
+                compteur+=1
+            end
+        end
+        return compteur
+    end
+
+
+        # compte le nb de voisins pas encore relié par un moins un lien
+    #
+    # === Parametres
+    #
+    # * + tabLien + = > le tableau des liens
+    #
+    # === Retour
+    #
+    # entier sur le nombre de voisins non relié
+    #
+    def nbCasePasDejaRelie(tabLien)
+        compteur=0
+        for i in 0..3 do
+            if(@tabTriangle[i]==true && self.nbLienEntreDeuxCases(tabLien,i)==0  )
+                compteur+=1
+            end
+        end
+        return compteur
+    end
+
 
 
 
@@ -191,6 +254,7 @@ class Case
         end
         return c
     end
+    
 
 
     def lienPasseEntreDeuxCases(tabLien,posTabTriangle)
@@ -226,7 +290,7 @@ class Case
     # * + hypothese + = > boolean qui correspond à l'état du lien, si il est créé ou non lors d'une hypothèse
     # * + tabLien + = > le tableau de liens de la grille
     #
-    def creerLien(posTabTriangle,hypothese,tabLien)#ATTENTION : à gérer le croisement de lien ici avant creation.
+    def creerLien(posTabTriangle,hypothese,tabLien)
         if(self.tabTriangle[posTabTriangle]!=false)
             l=Lien.creer(self,self.tabVoisins[posTabTriangle],hypothese)
 
