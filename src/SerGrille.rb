@@ -206,7 +206,7 @@ class SerGrille
 									caseTmp = l
 #puts "nouvelle caseTmp: #{caseTmp}"
 								else
-#		puts "création lien horizontal: #{caseTmp}"
+#		puts "création lien horizontal: #{caseTmp.etiquetteCase}"
 									grille.clicTriangle(caseTmp, 1)
 			
 									if (lien == false)
@@ -228,8 +228,8 @@ class SerGrille
 					# Si numéro ==> enregistre le chiffre dans la table horizontale tabLienHTmp, et crée un lien vertical si nécessaire
 					elsif(s =~ /[[:digit:]]/)
 						c = grille.tabCase.select { |c1| c1.ligne == comptligne && c1.colonne == comptcolonne }
-	#		puts "c dans grille: #{c1.ligne}/#{c1.colonne}; #{comptligne}/#{comptcolonne}"
-	#					end
+#			puts "c dans grille: #{c1.ligne}/#{c1.colonne}; #{comptligne}/#{comptcolonne}"
+#						end
 	#					c = c.first
 	
 						tabLienHTmp[comptcolonne] = c.first
@@ -272,7 +272,7 @@ class SerGrille
 				# Mise à jour de la grille
 				tabGrille[indice] = grille
 				indice += 1
-	#			puts "<SerGrille> Grille: tabLien: "
+#				puts "<SerGrille> Grille: #{indice}"
 			end
 
 		end
