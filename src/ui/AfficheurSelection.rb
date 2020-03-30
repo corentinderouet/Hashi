@@ -25,7 +25,7 @@ class AfficheurSelection < Gtk::Box
                 boxVerticale.add(sideDif)
 
                 retour = Gtk::Button.new(label: "Retour")
-                retour.signal_connect("clicked") { fenetre.finSelection(nil) }
+                retour.signal_connect("clicked") { fenetre.finSelection(nil, nil) }
                 boxVerticale.add(retour)
 
 		boxHorizontale.add(boxVerticale)
