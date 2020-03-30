@@ -42,7 +42,7 @@ class SelecteurGrille < Gtk::ScrolledWindow
                 f.add(a)
                 vBox.add(f)
                 vBox.add(Gtk::Label.new("Grille n°#{n}"))
-                vBox.signal_connect("button-press-event") { @fenetre.finSelection(g) }
+                vBox.signal_connect("button-press-event") { @fenetre.finSelection(g, "entrainement") }
                 grid.attach(vBox, x, y, 1, 1)
             end
         end

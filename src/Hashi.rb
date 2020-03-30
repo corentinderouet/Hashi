@@ -7,6 +7,7 @@ require_relative "ui/Classement"
 require_relative "ui/Aventure"
 require_relative "ui/Menu"
 require_relative "ui/ChargementAventure"
+require_relative "ui/SelectionDifficulte"
 require_relative "SerGrille"
 require_relative "../db/GestionBase"
 
@@ -109,8 +110,10 @@ class Hashi < Gtk::Window
     # * +action+ - Action sélectionnée dans le menu
     def finMenu(action)
         self.remove(@courant)
-        if action == "entrainement" || action == "classe"
+        if action == "entrainement"
             self.lancerSelection()
+        elsif action == "classe"
+            self.lancerClasse()
         elsif action == "classement"
             self.lancerClassement()
         elsif action == "aventure"
@@ -122,6 +125,12 @@ class Hashi < Gtk::Window
         else
             self.lancerMenu()
         end
+    end
+
+    # Lancement du mode classe
+    def lancerClasse()
+        @courant = SelectionDifficulte.new(self)
+        self.refresh()
     end
 
     # Lancement de l'aventure
@@ -174,18 +183,16 @@ class Hashi < Gtk::Window
     # === Paramètres
     #
     # * +grille+ - Grille selectionée
-    def finSelection(grille)
+    # * +type+ - Mode de jeu
+    def finSelection(grille, type)
         self.remove(@courant)
         if grille == nil
             self.lancerMenu()
         else
-            self.lancerJeu(grille, "entrainement")
+            self.lancerJeu(grille, type)
         end
     end
 end
 
 ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: '../db/base.sqlite')
-SerGrille.transformeSerial("Facile")
-SerGrille.transformeSerial("Moyen")
-SerGrille.transformeSerial("Difficile")
 Hashi.new()

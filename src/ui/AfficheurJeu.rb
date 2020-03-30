@@ -30,6 +30,8 @@ class AfficheurJeu < Gtk::Paned
 
         @grilleDb = grille
         @grille = YAML.load(@grilleDb.grilleSolution)
+        @grille.nbAides ||= 0
+        @nbAides = @grille.nbAides
         @afficheurGrille = AfficheurGrille.new(@grille, true, self)
 
         @menu = Gtk::Box.new(Gtk::Orientation.new(1), 0)
@@ -42,10 +44,13 @@ class AfficheurJeu < Gtk::Paned
         @boutonRegles = Gtk::Button.new(:label => "Règles")
         @boutonQuitter = Gtk::Button.new(:label => "Quitter")
         @boutonQuitter.signal_connect("clicked") do |widget|
-            @grille.timer = @timer.secondes
-            @grilleDb.grilleSolution = @grille.to_yaml()
-            GestionBase.changerScore(fenetre.joueur.id, @grilleDb, 0)
-            puts("Sauvegardé")
+            if @type != "classe"
+                @grille.timer = @timer.secondes
+                @grille.nbAides = @nbAides
+                @grilleDb.grilleSolution = @grille.to_yaml()
+                GestionBase.changerScore(fenetre.joueur.id, @grilleDb, 0)
+                puts("Sauvegardé")
+            end
             fenetre.finJeu()
         end
         @menu.add(@boutonContinuer)
@@ -105,7 +110,10 @@ class AfficheurJeu < Gtk::Paned
         @aidePos.margin_top = 5
         box.add(@aidePos)
         @aidePos.signal_connect("clicked") do |widget|
-            @aide ||= @grille.obtenirAide(0)
+            @aide ||= @grille.obtenirAide()
+            puts("avant " + @nbAides.to_s)
+            @nbAides += @aide.niveau == 1 ? 5 : @aide.niveau == 2 ? 3 : 1
+            puts("après " + @nbAides.to_s)
             @afficheurGrille.cercleAide = @aide.caseJeu
             @afficheurGrille.queue_draw()
             @aidePos.sensitive = false
@@ -114,7 +122,10 @@ class AfficheurJeu < Gtk::Paned
         @aideTech = Gtk::Button.new(:label => "Technique")
         box.add(@aideTech)
         @aideTech.signal_connect("clicked") do |widget|
-            @aide ||= @grille.obtenirAide(0)
+            @aide ||= @grille.obtenirAide()
+            puts("avant " + @nbAides.to_s)
+            @nbAides += @aide.niveau == 1 ? 5 : @aide.niveau == 2 ? 3 : 1
+            puts("après " + @nbAides.to_s)
             @description.text = @aide.description
             @afficheurGrille.queue_draw()
             @aideTech.sensitive = false
