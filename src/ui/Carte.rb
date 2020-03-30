@@ -20,7 +20,7 @@ class Carte < Gtk::DrawingArea
     # @factZoom => Facteur de zoom
     # @dX => Décalage de l'affichage en x
     # @dY => Décalage de l'affichage en y
-
+    
     # Constructeur
     #
     # === Paramètres
@@ -35,6 +35,13 @@ class Carte < Gtk::DrawingArea
         self.events = :all_events_mask
         @image = Cairo::ImageSurface.from_png("../assets/map.png")
         @ic = Cairo::Context.new(@image)
+    end
+
+    def refresh()
+        @image = Cairo::ImageSurface.from_png("../assets/map.png")
+        @ic = Cairo::Context.new(@image)
+        self.dessinerEtiquettes()
+        self.queue_draw()
     end
 
     # Largeur écran en pixels

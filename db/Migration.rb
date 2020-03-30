@@ -5,16 +5,15 @@ ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: 'base.sqli
 class Migration < ActiveRecord::Migration[4.2]
 	def change
 		if ActiveRecord::Base.connection.table_exists?(:joueurs)
-		    drop_table :joueurs
+			drop_table :joueurs
 		end
 	
 		if ActiveRecord::Base.connection.table_exists?(:grille_dbs)
-		    drop_table :grille_dbs
+			drop_table :grille_dbs
 		end
 	
-		if ActiveRecord::Base.connection.table_exists?(:difficultes)
-		
-		    drop_table :difficultes
+		if ActiveRecord::Base.connection.table_exists?(:difficultes)	
+			drop_table :difficultes
 		end
 
 		if ActiveRecord::Base.connection.table_exists?(:modes)
@@ -47,6 +46,8 @@ class Migration < ActiveRecord::Migration[4.2]
 		create_table :grille_dbs do |t|
 			t.belongs_to :difficultes
 			t.belongs_to :modes
+			t.integer :tempsMoyen
+			t.integer :scoreMax
 			t.text :grilleSolution
 		end
 

@@ -550,19 +550,19 @@ class Grille
         niveau=1
 
 
-        #on génere les aides par rapport a la grille actuel ici, on va push toutes les aides possibles dans les tableaux correspondant à leurs difficultés
+        #on génere les aides par rapport a la grille actuelle ici, on va push toutes les aides possibles dans les tableaux correspondant à leurs difficultés
 
         @tabCase.each do |c| 
             if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien))!=0 )   
 
                 #bon
                 if( c.nbVoisinsDispo()==1 && c.etiquetteCase.to_i>c.nbLienCase(@tabLien) ) 
-                    aides1.push( Aides.creer(1,c," Si une case possède 1 voisin et a une etiquette supérieur au nombre de lien déja créer, il est possible de créer tous les liens restants vers ce voisin ") )
+                    aides1.push( Aides.creer(1,c,"Cette case #{c.etiquetteCase} possède exactement un voisin et possède encore au moins un pont créable; il est donc possible de créer au moins 1 pont vers ce voisin")) #" Si une case possède 1 voisin et a une etiquette supérieur au nombre de lien déja créer, il est possible de créer tous les liens restants vers ce voisin ") )
                 end
 
                 #bon
                 if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) == c.nbLienCasePossible(@tabLien) )
-                    aides1.push( Aides.creer(1,c," Si une case possède un nombre de lien restant possible vers elle égale à son etiquette moins le nombre de lien déja créé sur cette case, il est possible de créer tous les liens restant.") )
+                    aides1.push( Aides.creer(1,c,"Cette case #{c.etiquetteCase} possède autant de ponts créables que (l'étiquette - ponts); il est donc possible de créer au moins 1 pont vers chaque voisin.")) #" Si une case possède un nombre de lien restant possible vers elle égale à son etiquette moins le nombre de lien déja créé sur cette case, il est possible de créer tous les liens restant.") )
                 end
 
                
@@ -578,7 +578,6 @@ class Grille
                     aides1.push( Aides.creer(1,c," Si une case possède une valeur de 5 correspondant à son etiquette moins le nombre de liens vers une durection déja complette et 3 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
-
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 7 &&  c.nbVoisinsDispo()==4  )
                     aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers une durection déja complette et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
@@ -591,7 +590,7 @@ class Grille
                 end
 
 
-
+#exemple de phrase: "Cette case #{c.etiquetteCase} possède exactement 2 voisins dont au moins un avec une étiquette 2; il est donc possible de créer 1 pont vers l'autre voisin"
                 #bon
                 if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.voisinsDispoEtiDe(2)==2 && c.nbLienCase(@tabLien)==0) 
                     aides2.push( Aides.creer(2,c,"Si une case avec une etiquette de 2 possède 2 voisins qui sont deux case avec des etiquettes de 2, il est possible de créer un lien vers chaque voisin ") )

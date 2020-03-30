@@ -35,11 +35,15 @@ class TestBase
 			tabGrille = SerGrille.deserialiseVide(difficulte)
 			idDifficulte = Difficulte.find_by_niveau(difficulte).id
 			puts "diff: #{idDifficulte}"
+			idMode = 1
 #puts tabGrille
 			tabGrille.each do |grille|
-				puts "Grille: #{grille}, tabLien: "
+#				puts "Grille: #{grille}, tabLien: "
+				scoreMax = grille.largeur * idDifficulte * 60
+				tempsMoyen = grille.tabLien.length * Math.exp((idDifficulte - 1) ** 2)
 #				puts YAML.dump(grille)
-				GrilleDb.create(:grilleSolution => YAML.dump(grille), :difficultes_id => idDifficulte, :modes_id => 3)
+				GrilleDb.create(:grilleSolution => YAML.dump(grille), :difficultes_id => idDifficulte, :modes_id => idMode, :scoreMax => scoreMax, :tempsMoyen => tempsMoyen)
+				idMode = (idMode % 3) + 1
 			end
 		end
 		#grille=GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>1, :mode_jeu => 3)
@@ -69,7 +73,7 @@ class TestBase
 			grille = YAML.load(grilleDb.grilleSolution)
 #puts "#{grille}"
 			grille.clicTriangle(grille.tabCase[0], 1)
-			puts "ID: #{grilleDb.id}, Hauteur: #{grille.hauteur}, largeur: #{grille.largeur}, classe: #{grille.class}"
+			puts "ID: #{grilleDb.id}, Hauteur: #{grille.hauteur}, largeur: #{grille.largeur}, classe: #{grille.class}, scoreMax: #{grilleDb.scoreMax}, tempsMoyen: #{grilleDb.tempsMoyen}"
 #			puts "Solution: Hauteur: #{grille.grilleRes.hauteur}, largeur: #{grille.grilleRes.largeur}, classe: #{grille.grilleRes.class}"
 #puts "avant grilleDb ser: #{YAML.dump(grille).largeur}"
 			grilleDb.grilleSolution = YAML.dump(grille)
@@ -79,7 +83,7 @@ class TestBase
 
 		puts GestionBase.recupJoueurAll
 		
-		# puts GestionBase.recupScoreTotal(1)
+		puts "Score total de joueur 2 difficulté facile: #{GestionBase.recupScoreTotal(2, 1)}"
 		# puts "Grilles: "
 		# puts GestionBase.recupGrilles(1)
 		# puts "Nil?"

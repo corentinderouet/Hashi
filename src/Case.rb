@@ -304,7 +304,7 @@ class Case
 
             return l
         else
-            puts('impossible de creer un lien entre ' "#{@etiquetteCase}"' et ' "#{self.tabVoisins[posTabTriangle].etiquetteCase}"' deja existant')
+            puts("impossible de creer un lien entre #{@etiquetteCase} et son voisin #{posTabTriangle}") #' "#{self.tabVoisins[posTabTriangle].etiquetteCase}"' deja existant')
         end
 
     end
