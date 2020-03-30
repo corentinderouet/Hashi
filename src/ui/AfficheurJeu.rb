@@ -1,5 +1,6 @@
 require "gtk3"
 require_relative "AfficheurGrille"
+require_relative "Timer"
 
 # Widget Gtk permettant d'afficher un plateau de jeu
 class AfficheurJeu < Gtk::Paned
@@ -21,9 +22,11 @@ class AfficheurJeu < Gtk::Paned
     #
     # * +grille+ => Grille à afficher
     # * +fenetre+ => Fenetre principale
-    def initialize(grille, fenetre)
+    # * +type+ => "entrainemen", "classe", "aventure" 
+    def initialize(grille, fenetre, type)
         super(Gtk::Orientation.new(0))
         @paused = false
+        @type = type
 
         @grilleDb = grille
         @grille = YAML.load(@grilleDb.grilleSolution)
@@ -35,10 +38,11 @@ class AfficheurJeu < Gtk::Paned
         c.expand = true
         @menu.add(c)
         @boutonContinuer = Gtk::Button.new(:label => "Continuer")
-        @boutonContinuer.signal_connect("clicked") { |widget| self.remove(@menu); self.add1(@afficheurGrille); self.show_all(); @paused = false }
+        @boutonContinuer.signal_connect("clicked") { |widget| self.remove(@menu); self.add1(@afficheurGrille); self.show_all(); @paused = false; @timer.reprendre() }
         @boutonRegles = Gtk::Button.new(:label => "Règles")
         @boutonQuitter = Gtk::Button.new(:label => "Quitter")
         @boutonQuitter.signal_connect("clicked") do |widget|
+            @grille.timer = @timer.secondes
             @grilleDb.grilleSolution = @grille.to_yaml()
             GestionBase.changerScore(fenetre.joueur.id, @grilleDb, 0)
             puts("Sauvegardé")
@@ -53,7 +57,7 @@ class AfficheurJeu < Gtk::Paned
         @menu.add(c)
 
         boxVerticale = Gtk::Box.new(Gtk::Orientation.new(1), 0)
-        @timer = Gtk::Label.new("Timer")
+        @timer = Timer.new(@grille.timer)
         @timer.margin_top = 15
         boxVerticale.add(@timer)
 
@@ -116,6 +120,11 @@ class AfficheurJeu < Gtk::Paned
             @aideTech.sensitive = false
         end
 
+        if @type == "aventure"
+            @aideTech.sensitive = false
+            @aidePos.sensitive = false
+        end
+
         @description = Gtk::Label.new("")
         @description.line_wrap = true
         box.add(@description)
@@ -123,7 +132,7 @@ class AfficheurJeu < Gtk::Paned
         boxVerticale.add(box)
         @pause = Gtk::Button.new(:label => "Pause")
         boxVerticale.add(@pause)
-        @pause.signal_connect("clicked") { |widget| self.remove(@afficheurGrille); self.add1(@menu); self.show_all(); @paused = true }
+        @pause.signal_connect("clicked") { |widget| @timer.pause(); self.remove(@afficheurGrille); self.add1(@menu); self.show_all(); @paused = true }
 
         self.add1(@afficheurGrille)
         self.add2(boxVerticale)

@@ -6,6 +6,7 @@ require_relative "ui/Connexion"
 require_relative "ui/Classement"
 require_relative "ui/Aventure"
 require_relative "ui/Menu"
+require_relative "ui/ChargementAventure"
 require_relative "SerGrille"
 require_relative "../db/GestionBase"
 
@@ -125,7 +126,18 @@ class Hashi < Gtk::Window
 
     # Lancement de l'aventure
     def lancerAventure()
-        @courant = Aventure.new(self)
+        @courant = ChargementAventure.new(self)
+        self.refresh()
+        @t = Thread.new() do
+            @charge = Aventure.new(self)
+            @courant.activer()
+        end
+    end
+
+    # Fin du chargement de l'aventure
+    def finChargement()
+        self.remove(@courant)
+        @courant = @charge
         self.refresh()
     end
 
@@ -140,8 +152,8 @@ class Hashi < Gtk::Window
     # === Paramètres
     #
     # * +grille+ - Grille à lancer
-    def lancerJeu(grille)
-        @courant = AfficheurJeu.new(grille, self)
+    def lancerJeu(grille, type)
+        @courant = AfficheurJeu.new(grille, self, type)
         self.refresh()
     end
 
@@ -167,7 +179,7 @@ class Hashi < Gtk::Window
         if grille == nil
             self.lancerMenu()
         else
-            self.lancerJeu(grille)
+            self.lancerJeu(grille, "entrainement")
         end
     end
 end

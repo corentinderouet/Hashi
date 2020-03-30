@@ -22,24 +22,19 @@ class Europe < Carte
         @dY = -1300
         @factZoom = 1.5
 
-        g = carte.grillesM
+        @g = carte.grillesM
 
-        ajouterEtiquette(Etiquette.new(2250, 1380, 90, 30, 1, g[0]))
-        ajouterEtiquette(Etiquette.new(2170, 1320, 90, 30, 2, g[1]))
-        ajouterEtiquette(Etiquette.new(2180, 1490, 90, 30, 3, g[2]))
-        ajouterEtiquette(Etiquette.new(2340, 1160, 90, 30, 0, g[3]))
-        ajouterEtiquette(Etiquette.new(2440, 1340, 90, 30, 3, g[4]))
-        ajouterEtiquette(Etiquette.new(2400, 1500, 90, 30, 1, g[5]))
-        ajouterEtiquette(Etiquette.new(2620, 1250, 90, 30, 3, g[6]))
-        dessinerEtiquettes()
+        self.dessinerEtiquettes()
     end
 
-    # Dessin de la carte
-    #
-    # === Paramètres
-    #
-    # * +cr+ => Contexte sur lequel dessiner
-    def draw(cr)
-        super(cr)
+    def dessinerEtiquettes()
+        ajouterEtiquette(Etiquette.new(2250, 1380, 90, 30, @carte.etoiles[1][0], @g[0]))
+        ajouterEtiquette(Etiquette.new(2170, 1320, 90, 30, @carte.etoiles[1][1], @g[1]))
+        ajouterEtiquette(Etiquette.new(2180, 1490, 90, 30, @carte.etoiles[1][2], @g[2]))
+        ajouterEtiquette(Etiquette.new(2340, 1160, 90, 30, @carte.etoiles[1][3], @g[3]))
+        ajouterEtiquette(Etiquette.new(2440, 1340, 90, 30, @carte.etoiles[1][4], @g[4]))
+        ajouterEtiquette(Etiquette.new(2400, 1500, 90, 30, @carte.etoiles[1][5], @g[5]))
+        ajouterEtiquette(Etiquette.new(2620, 1250, 90, 30, @carte.etoiles[1][6], @g[6]))
+        super()
     end
 end
