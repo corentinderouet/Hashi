@@ -20,7 +20,9 @@ class SelecteurGrille < Gtk::ScrolledWindow
         self.expand = true
         @fenetre = fenetre
 
-        grilles = GestionBase.recupGrilles(fenetre.joueur.id, dif, 0, 12)
+	#à modifier
+	idMode = 1 # Entrainement
+        grilles = GestionBase.recupGrilles(fenetre.joueur.id, dif, 1, 0, 12)
         #grilles = grilles.map() { |x| YAML.load(x.grilleSolution).grilleRes }
 
         grid = Gtk::Grid.new()
