@@ -131,7 +131,28 @@ class Case
     def nbCaseDejaRelie(tabLien)
         compteur=0
         for i in 0..3 do
-            if(@tabTriangle[i]==true && self.nbLienEntreDeuxCases(tabLien,i)!=0  )
+            if(@tabVoinsins[i]!=false && self.nbLienEntreDeuxCases(tabLien,i)!=0  )
+                compteur+=1
+            end
+        end
+        return compteur
+    end
+
+
+        # compte le nb de voisins pas encore relié par un moins un lien
+    #
+    # === Parametres
+    #
+    # * + tabLien + = > le tableau des liens
+    #
+    # === Retour
+    #
+    # entier sur le nombre de voisins non relié
+    #
+    def nbCasePasDejaRelie(tabLien)
+        compteur=0
+        for i in 0..3 do
+            if(@tabTriangle[i]==true && self.nbLienEntreDeuxCases(tabLien,i)==0  )
                 compteur+=1
             end
         end
@@ -233,6 +254,7 @@ class Case
         end
         return c
     end
+    
 
 
     def lienPasseEntreDeuxCases(tabLien,posTabTriangle)

@@ -22,7 +22,7 @@ class Aides
     end
 
     # Redéfinition du constructeur
-  #
+    #
     def Aides.creer(niveau,caseJeu,description)
         new(niveau,caseJeu,description)
     end
