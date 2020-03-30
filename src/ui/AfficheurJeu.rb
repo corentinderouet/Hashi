@@ -44,11 +44,13 @@ class AfficheurJeu < Gtk::Paned
         @boutonRegles = Gtk::Button.new(:label => "Règles")
         @boutonQuitter = Gtk::Button.new(:label => "Quitter")
         @boutonQuitter.signal_connect("clicked") do |widget|
-            @grille.timer = @timer.secondes
-            @grille.nbAides = @nbAides
-            @grilleDb.grilleSolution = @grille.to_yaml()
-            GestionBase.changerScore(fenetre.joueur.id, @grilleDb, 0)
-            puts("Sauvegardé")
+            if @type != "classe"
+                @grille.timer = @timer.secondes
+                @grille.nbAides = @nbAides
+                @grilleDb.grilleSolution = @grille.to_yaml()
+                GestionBase.changerScore(fenetre.joueur.id, @grilleDb, 0)
+                puts("Sauvegardé")
+            end
             fenetre.finJeu()
         end
         @menu.add(@boutonContinuer)
