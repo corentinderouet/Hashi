@@ -14,7 +14,20 @@ class ChargementAventure < Gtk::Box
         self.margin = 15
 
         view = Gtk::TextView.new()
-        view.buffer.text = "Histoire et instructions pour le mode aventure à rajouter"
+        view.buffer.text = 
+"   
+    Histoire :
+
+    Objectif :
+        - Débloquez tout les continents jusqu'à atteindre l'Antarctique
+        - Les continents se débloquent en fonction de votre nombre d'étoiles
+        - Gagnez des étoiles en jouant les niveaux présents sur les continents
+        - Chaque niveau peut vous rapporter jusqu'à 3 étoiles
+
+    Déplacements : 
+        - Cliquez sur un continent débloqué pour vous y déplacer
+        - Cliquez sur l'étiquette d'un niveau (rectangle avec le nombre d'étoiles) pour le jouer
+        - Cliquez en dehors d'un continent ou d'une étiquette pour revenir en arrière"
         view.sensitive = false
 
         scroll = Gtk::ScrolledWindow.new()
@@ -22,7 +35,7 @@ class ChargementAventure < Gtk::Box
         scroll.expand = true
         scroll.add(view)
 
-        @bouton = Gtk::Button.new(label: "Chargement en cours")
+        @bouton = Gtk::Button.new(label: "Chargement en cours ...")
         @bouton.sensitive = false
         @bouton.signal_connect("clicked") { fenetre.finChargement() }
         @bouton.margin_top = 10
