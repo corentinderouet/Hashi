@@ -118,6 +118,43 @@ class Case
     end
 
 
+    # test si un lien est présent pour un voisin dont l'etiquette est différente du parametre OU si le nombre max de voisins avec 
+    #l'etiquette est dépassé et qu'il y en a un autre avec cette meme etiquette et qu'il y a un lien
+    #
+    # === Parametres
+    #
+    # * + etiquette + = > l'etiquette du test
+    # * + nombre + = > le nombre du test
+    # * + tabLien + = > le tableau des liens
+    #
+    # === Retour
+    #
+    # boolean, vrai si il a un lien qui correspond au test
+    #
+    def lienDifDeFois(etiquette,nombre,tabLien)
+        compteurDeEtiqu=0
+        compteurDeAutre=0
+
+        for i in 0..3 do
+            if(@tabTriangle[i]==true && @tabVoisins[i].etiquetteCase.to_i==etiquette)
+                if(compteurDeEtiqu<nombre)
+                    compteurDeEtiqu+=1
+                elsif( self.nbLienEntreDeuxCases(tabLien,i)!=0 )
+                    compteurDeAutre+=1
+                end
+            elsif(@tabTriangle[i]==true && self.nbLienEntreDeuxCases(tabLien,i)!=0  )
+                compteurDeAutre+=1
+            end
+        end
+
+        if(compteurDeAutre!=0)
+            return true
+        end
+        return false
+    end
+
+
+
     # compte le nb de voisins déja   relié par un moins un lien
     #
     # === Parametres
