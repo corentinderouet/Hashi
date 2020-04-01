@@ -520,9 +520,9 @@ class Grille
     end
 
 
-    # Méthode pour réénitialiser tout la grille et les actions (en gros nouveau départ)
+    # Méthode pour réinitialiser tout la grille et les actions (en gros nouveau départ)
     #
-    def reenitialiser()
+    def reinitialiser()
         for i in 0..@tabLien.length-1 do
             self.clicLien(@tabLien[i])
         end
