@@ -155,9 +155,9 @@ class SerGrille
 		comptligne = 0
 		comptcolonne = 0
 		# Parcours n°1 pour créer les cases et la grille
-		fichier.each_line do | ligne |
+		fichier.each_line do | ligne2 |
 			tabCase=[]	
-			ligne=ligne.split("")
+			ligne=ligne2.split("")
 			ligne.pop
 			#compteur pour savoir les coordonées de chaque case
 			comptligne = 0
@@ -175,6 +175,9 @@ class SerGrille
 			if( comptligne != 0)
 				tabGrille.push( Grille.creer(tabCase, comptligne, comptligne, nil) ) #La grille étant carrée, comptligne représente la hauteur et la largeur
 			end
+#puts "ligne: #{ligne2}"
+#                        tabCase.select { |c10| puts "#{c10.etiquetteCase} : #{c10.ligne} / #{c10.colonne}" }
+
 		end
 		indice = 0
 
@@ -233,7 +236,7 @@ class SerGrille
 	#					c = c.first
 	
 						tabLienHTmp[comptcolonne] = c.first
-	#puts "c: #{c}"					
+#	puts "c: #{c.first}"
 	#p c
 	
 						# Création du lien vertical (vers le nord) si besoin
@@ -244,9 +247,13 @@ class SerGrille
 								if (tabLienVTmp[comptcolonne] == false)
 									grille.clicTriangle(tabLienHTmp[comptcolonne], 0)
 								end
-	
+
 							rescue
-								puts "Problème: lien vide en #{comptligne}/#{comptcolonne}"
+								puts "Problème: lien vide en #{comptligne}/#{comptcolonne}" #	#{c.first.etiquetteCase}"
+								puts "V = #{tabLienVTmp[comptcolonne]}"
+								puts "H = #{tabLienHTmp[comptcolonne]}, est un #{s}"
+								puts "pour #{ligne}"
+#								grille.tabCase.select { |c10| puts "#{c10.etiquetteCase} : #{c10.ligne} / #{c10.colonne}" }
 							end
 	
 							tabLienVTmp[comptcolonne] = nil

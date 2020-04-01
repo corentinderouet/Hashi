@@ -52,6 +52,8 @@ class Grille
         @grilleRes=grilleRes
         @pile=Pile.creer()
         @pileRedo=Pile.creer()
+	@timer ||= 0
+	@nbAides ||= 0
 
 
         for i in 0..@tabCase.length-1 do
