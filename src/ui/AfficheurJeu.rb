@@ -98,6 +98,9 @@ class AfficheurJeu < Gtk::Paned
         @hypothese.visible_child = @boutonHypothese
         boxVerticale.add(@hypothese)
 
+        @reinitialiser = Gtk::Button.new(:label => "Réinitialiser")
+        boxVerticale.add(@reinitialiser)
+        @reinitialiser.signal_connect("clicked") { |widget| @grille.reinitialiser(); @afficheurGrille.queue_draw() }
 
 
         box = Gtk::Box.new(Gtk::Orientation.new(1), 0)
