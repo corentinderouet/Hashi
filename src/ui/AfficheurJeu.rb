@@ -1,6 +1,7 @@
 require "gtk3"
 require_relative "AfficheurGrille"
 require_relative "Timer"
+require_relative "Didacticiel"
 
 # Widget Gtk permettant d'afficher un plateau de jeu
 class AfficheurJeu < Gtk::Paned
@@ -41,7 +42,8 @@ class AfficheurJeu < Gtk::Paned
         @menu.add(c)
         @boutonContinuer = Gtk::Button.new(:label => "Continuer")
         @boutonContinuer.signal_connect("clicked") { |widget| self.remove(@menu); self.add1(@afficheurGrille); self.show_all(); @paused = false; @timer.reprendre() }
-        @boutonRegles = Gtk::Button.new(:label => "Règles")
+        @boutonRegles = Gtk::Button.new(:label => "Didacticiel")
+        @boutonRegles.signal_connect("clicked") { |widget| @didacticiel = Didacticiel.new(); }
         @boutonQuitter = Gtk::Button.new(:label => "Quitter")
         @boutonQuitter.signal_connect("clicked") do |widget|
             if @type != "classe"
