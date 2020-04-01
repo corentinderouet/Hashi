@@ -12,7 +12,7 @@ require_relative "GestionBase"
 require_relative "../src/SerGrille"
 
 class TestBase
-	def TestBase.test1
+	def TestBase.genererBase
 		# Réinitialise la base
 		Migration.migrate(:up)
 
@@ -41,8 +41,9 @@ puts "nb grilles: #{tabGrille.length}"
 			tabGrille.each do |grille|
 #puts "idMode: #{idMode}"
 #				puts "Grille: #{grille}, tabLien: "
-				scoreMax = grille.largeur * idDifficulte * 60
-				tempsMoyen = grille.tabLien.length * Math.exp((idDifficulte - 1) ** 2)
+				x = grille.tabLien.length + (idDifficulte / 2) - 1
+				tempsMoyen = 3.6 * x * x + 34 * x + 120
+				scoreMax = 3 * tempsMoyen
 #				puts YAML.dump(grille)
 				GrilleDb.create(:grilleSolution => YAML.dump(grille), :difficultes_id => idDifficulte, :modes_id => idMode, :scoreMax => scoreMax, :tempsMoyen => tempsMoyen, :terminee => false)
 				idMode = (idMode % 3) + 1
@@ -107,6 +108,23 @@ puts "nb grilles: #{tabGrille.length}"
 		#p score
 		#puts score.inject(0) { |score, joue| score += joue.score }
 	end
+
+	def TestBase.updateScore
+                fichiers = ["Facile", "Moyen", "Difficile"]
+
+		GrilleDb.all.each do |grilleDb|
+                        idDifficulte = grilleDb.difficultes_id
+			grille = YAML.load(grilleDb.grilleSolution)
+#puts tabGrille
+#puts "idMode: #{idMode}"
+#                               puts "Grille: #{grille}, tabLien: "
+       			x = grille.hauteur + (idDifficulte / 2.0) - 1
+			tempsMoyen = 3.6 * x * x - 34 * x + 120
+			scoreMax = 3 * tempsMoyen
+puts "x: #{x}, scoreMax: #{scoreMax}, tempsMoyen: #{tempsMoyen}"
+			grilleDb.update(scoreMax: scoreMax, tempsMoyen: tempsMoyen)
+		end
+	end
 end
 
-TestBase.test2
+TestBase.genererBase
