@@ -36,13 +36,15 @@ class TestBase
 			idDifficulte = Difficulte.find_by_niveau(difficulte).id
 			puts "diff: #{idDifficulte}"
 			idMode = 1
+puts "nb grilles: #{tabGrille.length}"
 #puts tabGrille
 			tabGrille.each do |grille|
+#puts "idMode: #{idMode}"
 #				puts "Grille: #{grille}, tabLien: "
 				scoreMax = grille.largeur * idDifficulte * 60
 				tempsMoyen = grille.tabLien.length * Math.exp((idDifficulte - 1) ** 2)
 #				puts YAML.dump(grille)
-				GrilleDb.create(:grilleSolution => YAML.dump(grille), :difficultes_id => idDifficulte, :modes_id => idMode, :scoreMax => scoreMax, :tempsMoyen => tempsMoyen)
+				GrilleDb.create(:grilleSolution => YAML.dump(grille), :difficultes_id => idDifficulte, :modes_id => idMode, :scoreMax => scoreMax, :tempsMoyen => tempsMoyen, :terminee => false)
 				idMode = (idMode % 3) + 1
 			end
 		end
@@ -67,7 +69,10 @@ class TestBase
 		# puts(GestionBase.recupScoreTotal(1))
 		# puts(GestionBase.recupNbGrillesJouees(1))
 		# puts "Joueur 4 nb: #{GestionBase.recupNbGrillesJouees(4) == nil}"
-		GestionBase.recupGrilles(1, 1, 0, 12).each do |grilleDb|
+		idJoueur = 2
+		idDifficulte = 1
+		idMode = 1
+		GestionBase.recupGrilles(idJoueur, idDifficulte, idMode, 0, 12).each do |grilleDb|
 #puts "#{grilleDb}"
 #puts "#{grilleDb.grilleSolution}"
 			grille = YAML.load(grilleDb.grilleSolution)
@@ -78,12 +83,14 @@ class TestBase
 #puts "avant grilleDb ser: #{YAML.dump(grille).largeur}"
 			grilleDb.grilleSolution = YAML.dump(grille)
 #puts "grilleDb ser: #{grilleDb.grilleSolution.largeur}"
-			GestionBase.changerScore(1, grilleDb, 200)
+			GestionBase.changerScore(idJoueur, grilleDb, 200)
+
+			puts "Score de la grille #{grilleDb.id}: #{GestionBase.recupScore(idJoueur, grilleDb)}"
 		end
 
 		puts GestionBase.recupJoueurAll
 		
-		puts "Score total de joueur 2 difficulté facile: #{GestionBase.recupScoreTotal(2, 1)}"
+		puts "Score total de joueur 2 difficulté facile: #{GestionBase.recupScoreTotal(idJoueur, 1)}"
 		# puts "Grilles: "
 		# puts GestionBase.recupGrilles(1)
 		# puts "Nil?"

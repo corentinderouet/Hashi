@@ -84,12 +84,43 @@ class GestionBase
 		grille= GrilleDb.find(idGrille)
 		return Mode.find(grille.modes_id).mode_jeu
 	end
+
+	# Récupère le score du joueur sur la grille
+	#
+	# === Paramètres
+	#
+	# * +idJoueur+ => L'Id du joueur dont on veut récupérer le score de la grille
+	# * +grilleDb+ => La grille dont on veut récupérer le score
+	#
+	# === Retour
+	#
+	# Le score du joueur sur la grilleDb, ou nil si le joueur n'existe pas
+	#
+	def GestionBase.recupScore(idJoueur, grilleDb)
+		score = nil
+	
+		begin
+			Joueur.find(idJoueur)
+
+			begin
+				score = Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ]).first.score
+			rescue
+				score = 0
+				puts "recupScore => La grille #{grilleDb.id} n'existe pas pour le joueur #{idJoueur}"
+			end
+		rescue
+			puts "recupScore ==> Joueur d'id #{idJoueur} n'existe pas dans la base"
+		ensure
+			return score
+		end
+	end
 	
 	# Récupère le score total du joueur sur les grilles qu'il a joué (uniquement en mode classé)
 	#
 	# === Paramètres
 	#
 	# * +idJoueur+ => L'Id du joueur dont on veut récupérer le score total
+	# * +idDifficulte+ => L'Id de la difficulté désirée
 	#
 	# === Retour
 	#
@@ -236,12 +267,17 @@ class GestionBase
 		begin
 			raise ("raise changerScore") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
 			joue = joue.first
-#			grille = YAML.load(grilleDb.grilleSolution)
-#			tempsReel = grille.timer
-#			aides = 8 * (0.5 * grille.nbAides)
-#			score = grilleDb.scoreMax * (grilleDb.tempsMoyen / tempsReel) - nbAides
-			score = grilleDb.scoreMax * grilleDb.tempsMoyen
-
+			grille = YAML.load(grilleDb.grilleSolution)
+			puts "grille: #{grille.nbAides}"
+			tempsReel = grille.timer
+			aides = 8 * (0.5 * grille.nbAides)
+			begin
+				score = grilleDb.scoreMax * (grilleDb.tempsMoyen / tempsReel) - nbAides
+			rescue # timer == 0?
+				puts "Timer: #{tempsReel}"
+				score = 0
+			end
+#			score = grilleDb.scoreMax * grilleDb.tempsMoyen
 			joue.update(score: score, grilleSer: grilleDb.grilleSolution)# if (joue.score < score)
 		rescue
 			puts "changeScore ==> La grille d'id #{grilleDb.id} du joueur d'id #{idJoueur} n'existe pas dans la base"

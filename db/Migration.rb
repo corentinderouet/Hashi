@@ -49,6 +49,7 @@ class Migration < ActiveRecord::Migration[4.2]
 			t.integer :tempsMoyen
 			t.integer :scoreMax
 			t.text :grilleSolution
+			t.boolean :terminee
 		end
 
 		create_table :joues do |t|
