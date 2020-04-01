@@ -27,6 +27,7 @@ class Aventure < Gtk::Stack
         super()
         self.set_transition_type(Gtk::Stack::TransitionType::CROSSFADE);
         self.set_transition_duration(500);
+        @fenetre = fenetre
         
         @grillesF = GestionBase.recupGrilles(fenetre.joueur.id, 1, 3, 0, 14)
         #@grillesF = @grillesF.map() { |x| YAML.load(x.grilleSolution) }
@@ -37,7 +38,6 @@ class Aventure < Gtk::Stack
         
         self.calculNbEtoiles()
 
-        @fenetre = fenetre
         @monde = Monde.new(self)
         @europe = Europe.new(self)
         @afrique = Afrique.new(self)
@@ -65,8 +65,9 @@ class Aventure < Gtk::Stack
         [@grillesF, @grillesM, @grillesD].each() do |d|
             ed = []
             d.each() do |g|
-              ed.push(1)
-              @nbEtoiles += 1
+              e = GestionBase.recupScore(@fenetre.joueur.id, g) / (g.scoreMax/4)
+              ed.push(e)
+              @nbEtoiles += e
             end
             @etoiles.push(ed)
         end

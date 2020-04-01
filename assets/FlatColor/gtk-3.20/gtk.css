@@ -81,7 +81,7 @@
 @define-color wm_border_unfocused @border_color;
 
 window {
-    font-size: 150%;
+    font-size: 135%;
 }
 
 /*@import url("gtk-widgets.css");*/

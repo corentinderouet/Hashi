@@ -28,6 +28,7 @@ class AfficheurJeu < Gtk::Paned
         super(Gtk::Orientation.new(0))
         @paused = false
         @type = type
+        @fenetre = fenetre
 
         @grilleDb = grille
         @grille = YAML.load(@grilleDb.grilleSolution)
@@ -162,12 +163,27 @@ class AfficheurJeu < Gtk::Paned
     end
 
     def aJoue()
-      if @type != "aventure" 
-          @aide = nil
-          @afficheurGrille.cercleAide = nil
-          @description.text = ""
-          @aideTech.sensitive = true
-          @aidePos.sensitive = true
-      end
+        if @type != "aventure" 
+            @aide = nil
+            @afficheurGrille.cercleAide = nil
+            @description.text = ""
+            @aideTech.sensitive = true
+            @aidePos.sensitive = true
+        end
+        if @grille.GrilleFinie()
+            if @type != "classe"
+                @grille.timer = @timer.secondes
+                @grille.nbAides = @nbAides
+                @grilleDb.grilleSolution = @grille.to_yaml()
+                GestionBase.changerScore(@fenetre.joueur.id, @grilleDb, 0)
+                puts("Sauvegardé")
+            end
+            d = Gtk::MessageDialog.new()
+            d.text = "Score final: #{GestionBase.recupScore(@fenetre.joueur.id, @grilleDb)}"
+            d.message_type = :info
+            d.run
+            d.destroy
+            @fenetre.finJeu()
+        end
     end
 end
