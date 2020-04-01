@@ -387,7 +387,7 @@ class Grille
     # === Retour
     # boolean correspondant au test
     # 
-    def GrilleFinie()
+    def grilleFinie?()
         if( self.nbErreurGrille()==0 && @tabLien.length==@grilleRes.tabLien.length )
             @grilleFinie=true
             return true

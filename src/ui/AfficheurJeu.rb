@@ -170,7 +170,7 @@ class AfficheurJeu < Gtk::Paned
             @aideTech.sensitive = true
             @aidePos.sensitive = true
         end
-        if @grille.GrilleFinie()
+        if @grille.grilleFinie?()
             if @type != "classe"
                 @grille.timer = @timer.secondes
                 @grille.nbAides = @nbAides
