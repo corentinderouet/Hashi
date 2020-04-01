@@ -108,8 +108,6 @@ class Monde < Carte
     #
     # * +event+ => Evenement Gtk contenant les informations sur le clic
     def mouseClick(event)
-        puts(event.x, event.y)
-        puts(getVX(event.x), getVY(event.y))
         x = getVX(event.x)
         y = getVY(event.y)
 
@@ -160,7 +158,6 @@ class Monde < Carte
             end
         end
         if s
-            puts(s)
             if s != "null"
               @carte.choix(s)
             end
