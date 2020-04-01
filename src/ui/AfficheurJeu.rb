@@ -174,7 +174,7 @@ class AfficheurJeu < Gtk::Paned
             if @type != "classe"
                 @grille.timer = @timer.secondes
                 @grille.nbAides = @nbAides
-                @grille.finie = true;
+                @grille.grilleFinie = true;
                 @grilleDb.grilleSolution = @grille.to_yaml()
                 GestionBase.changerScore(@fenetre.joueur.id, @grilleDb, 0)
                 puts("Sauvegardé")
