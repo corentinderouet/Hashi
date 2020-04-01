@@ -8,6 +8,7 @@ require_relative "ui/Aventure"
 require_relative "ui/Menu"
 require_relative "ui/ChargementAventure"
 require_relative "ui/SelectionDifficulte"
+require_relative "ui/Didacticiel"
 require_relative "SerGrille"
 require_relative "../db/GestionBase"
 
@@ -122,6 +123,9 @@ class Hashi < Gtk::Window
             Gtk.main_quit()
         elsif action == "deconnexion"
             self.lancerConnexion()
+        elsif action == "didacticiel"
+            @didacticiel = Didacticiel.new()
+            self.lancerMenu()
         else
             self.lancerMenu()
         end

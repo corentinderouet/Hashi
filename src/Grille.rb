@@ -29,6 +29,8 @@ class Grille
 
     attr_accessor :timer
 
+    attr_accessor :grilleFinie #boolean, true si la grille est fini
+
     attr_accessor :nbAides
 
     # Rend la méthode new privée
@@ -49,6 +51,7 @@ class Grille
         @tabCase=tab
         @hauteur=hauteur
         @largeur=largeur
+        @grilleFinie=false
         @grilleRes=grilleRes
         @pile=Pile.creer()
         @pileRedo=Pile.creer()
@@ -356,9 +359,20 @@ class Grille
         return nil
     end
 
-    def lememeLien(l,tab)
+
+    # Méthode permettant de savoir si un lien est présent dans un tableau de lien
+    #
+    # === Paramètres
+    #
+    # * +l+ => un lien
+    # * +tab+ => un tableau de ;lien
+    #
+    # === Retour
+    # un lien ou null
+    # 
+    def leMemeLien(l,tab)
       tab.each do |lien|
-          if((lien.case1==l.case1 && lien.case2==l.case2) || (lien.case1==l.case2 && lien.case2==l.case1))
+          if((lien.case1.ligne==l.case1.ligne && lien.case1.colonne==l.case1.colonne && lien.case2.ligne==l.case2.ligne && lien.case2.colonne==l.case2.colonne) || (lien.case1.ligne==l.case2.ligne && lien.case1.colonne==l.case2.colonne && lien.case2.ligne==l.case1.ligne && lien.case2.colonne==l.case1.colonne))
               return lien
           end
       end
@@ -366,30 +380,65 @@ class Grille
     end
 
 
-    def verification()
-        #revien d'action en action au dernier etat correct
-        unePile= Marshal.load(Marshal.dump(@pile))
-        pileInverser=Pile.creer()
-        pileCorrect=Pile.creer()
 
-        unePile.each do |action|
-            pileInverser.empiler(action)
+
+    # Méthode permettant de tester si la grille est terminée ou non
+    #
+    # === Retour
+    # boolean correspondant au test
+    # 
+    def GrilleFinie()
+        if( self.nbErreurGrille()==0 && @tabLien.length==@grilleRes.tabLien.length )
+            @grilleFinie=true
+            return true
         end
 
-        i=0
-        while(i!=1 && pileInverser.sommet() !=nil)
-            a= pileInverser.depiler()
-            if(a.action =="ajout")
-                if(self.lememeLien(a.lien,@grilleRes.tabLien) != nil)
-                    pileCorrect.empiler(a)
-                else
-                    i +=1
-                end
+        return false
+      end
+
+
+
+
+
+
+    # Méthode permettant de savoir le nb d'erreur sur la grille
+    #
+    # === Retour
+    # entier correspondant au nombre d'erreur
+    # 
+    def nbErreurGrille()
+        nbErreur=0
+
+        tabRes=Marshal.load(Marshal.dump(@grilleRes.tabLien))
+
+        @tabLien.each do |lien|
+
+            l=leMemeLien(lien,tabRes)
+            if( l!=nil )
+                tabRes.delete(l)
+            else
+                nbErreur+=1
             end
-        end
-        @pile.vider()
-        @pile=pileCorrect
 
+        end
+
+        return nbErreur
+    end
+
+
+
+    # Méthode permettant de retourner au dernier etat correct de la grille
+    #
+    # === Retour
+    # entier correspondant au nombre d'erreur lors de l'appel de la methode
+    # 
+    def verification()
+        val=nbErreurGrille()
+        while(self.nbErreurGrille()!=0 )
+            self.annuler()
+        end
+        @pileRedo.vider()
+        return val
 
     end
 
@@ -572,16 +621,16 @@ class Grille
 
                 #A MODIFIER les 3 aides en dessous pour gerer le cas ou un lien est déja créé vers un des voisins
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 3 &&  c.nbVoisinsDispo()==2  )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 3 correspondant à son etiquette moins le nombre de liens vers une durection déja complette et 2 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 3 correspondant à son etiquette moins le nombre de liens vers une direction déja complette et 2 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
 
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 5 &&  c.nbVoisinsDispo()==3  )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 5 correspondant à son etiquette moins le nombre de liens vers une durection déja complette et 3 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 5 correspondant à son etiquette moins le nombre de liens vers une direction déja complette et 3 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 7 &&  c.nbVoisinsDispo()==4  )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers une durection déja complette et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers une direction déja complette et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
 
@@ -660,7 +709,8 @@ class Grille
         end
     end
 
-        # test si une seul solution est possible sur une case dans le cadre de la creation de liens pour eviter les archipelles
+
+        # test si une seul solution est possible sur une case dans le cadre de la creation de liens pour eviter les archipelles complettes avec creation d'un lien
     #
     # === Parametres
     #
@@ -701,7 +751,7 @@ class Grille
     end
 
 
-    # test si une seul solution est possible sur une case dans le cadre de la creation de liens pour eviter les archipelles
+    # test si une seul solution est possible sur une case dans le cadre de la creation de liens pour eviter les archipelles complette avec creation de deux liens
     #
     # === Parametres
     #
