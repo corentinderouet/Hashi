@@ -18,16 +18,16 @@ class ChargementAventure < Gtk::Box
 "   
     Histoire :
 
-    Objectif :
-        - Débloquez tout les continents jusqu'à atteindre l'Antarctique
+    Objectifs :
+        - Débloquer tous les continents jusqu'à atteindre l'Antarctique
         - Les continents se débloquent en fonction de votre nombre d'étoiles
-        - Gagnez des étoiles en jouant les niveaux présents sur les continents
-        - Chaque niveau peut vous rapporter jusqu'à 3 étoiles
+        - Gagner des étoiles en jouant les niveaux présents sur les continents
+        - Chaque niveau peut rapporter jusqu'à 3 étoiles
 
     Déplacements : 
-        - Cliquez sur un continent débloqué pour vous y déplacer
-        - Cliquez sur l'étiquette d'un niveau (rectangle avec le nombre d'étoiles) pour le jouer
-        - Cliquez en dehors d'un continent ou d'une étiquette pour revenir en arrière"
+        - Cliquer sur un continent débloqué pour s'y déplacer
+        - Cliquer sur l'étiquette d'un niveau (rectangle avec le nombre d'étoiles) pour le jouer
+        - Cliquer en dehors d'un continent ou d'une étiquette pour revenir en arrière"
         view.sensitive = false
 
         scroll = Gtk::ScrolledWindow.new()
