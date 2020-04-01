@@ -41,14 +41,17 @@ puts "nb grilles: #{tabGrille.length}"
 			tabGrille.each do |grille|
 #puts "idMode: #{idMode}"
 #				puts "Grille: #{grille}, tabLien: "
-				x = grille.tabLien.length + (idDifficulte / 2) - 1
-				tempsMoyen = 3.6 * x * x + 34 * x + 120
-				scoreMax = 3 * tempsMoyen
+				x = grille.tabLien.length + (idDifficulte / 2.0) - 1
+				tempsMoyen = 3.6 * x * x - 34 * x + 120
+				tempsMax = 3 * tempsMoyen
+				scoreMax = tempsMax + 500 - (3 * (7 - idDifficulte))
 #				puts YAML.dump(grille)
-				GrilleDb.create(:grilleSolution => YAML.dump(grille), :difficultes_id => idDifficulte, :modes_id => idMode, :scoreMax => scoreMax, :tempsMoyen => tempsMoyen, :terminee => false)
+				GrilleDb.create(:grilleSolution => YAML.dump(grille), :difficultes_id => idDifficulte, :modes_id => idMode, :scoreMax => scoreMax, :tempsMoyen => tempsMoyen, :tempsMax => tempsMax, :terminee => false)
 				idMode = (idMode % 3) + 1
 			end
+
 		end
+		GestionBase.updateScore
 		#grille=GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>1, :mode_jeu => 3)
 		#GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>2, :mode_jeu => 3)
 		#GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>3, :mode_jeu => 3)
@@ -120,11 +123,13 @@ puts "nb grilles: #{tabGrille.length}"
 #                               puts "Grille: #{grille}, tabLien: "
        			x = grille.hauteur + (idDifficulte / 2.0) - 1
 			tempsMoyen = 3.6 * x * x - 34 * x + 120
-			scoreMax = 3 * tempsMoyen
+			tempsMax = 3 * tempsMoyen
+			scoreMax = tempsMax + 500 - (3 * (7 - idDifficulte))
 puts "x: #{x}, scoreMax: #{scoreMax}, tempsMoyen: #{tempsMoyen}"
-			grilleDb.update(scoreMax: scoreMax, tempsMoyen: tempsMoyen)
+			grilleDb.update(scoreMax: scoreMax, tempsMoyen: tempsMoyen, tempsMax: tempsMax)
 		end
 	end
 end
 
-TestBase.genererBase
+#TestBase.genererBase
+TestBase.updateScore

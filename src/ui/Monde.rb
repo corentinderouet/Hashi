@@ -30,7 +30,7 @@ class Monde < Carte
         self.drawTexte(380 + 1300/2, 900 + 950/2, "Amérique du nord : #{n}/21")
 
         # Amérique du sud
-        @bAmeriqueSud = @carte.nbEtoiles > 12
+        @bAmeriqueSud = @carte.nbEtoiles >= 12
         self.drawRectangleVide(1150, 1870, 700, 950, !@bAmeriqueSud)
         if @bAmeriqueSud
           n = @carte.etoiles[0].last(7).inject(:+)
@@ -41,7 +41,7 @@ class Monde < Carte
         end
 
         # Europe
-        @bEurope = @carte.nbEtoiles > 24
+        @bEurope = @carte.nbEtoiles >= 24
         self.drawRectangleVide(1980, 900, 850, 680, !@bEurope)
         if @bEurope
             n = @carte.etoiles[1].first(7).inject(:+)
@@ -51,7 +51,7 @@ class Monde < Carte
         end
 
         # Asie
-        @bAsie = @carte.nbEtoiles > 36
+        @bAsie = @carte.nbEtoiles >= 36
         self.drawRectangleVide(2850, 750, 1200, 1350, !@bAsie)
         if @bAsie
             n = @carte.etoiles[1].last(7).inject(:+)
@@ -61,7 +61,7 @@ class Monde < Carte
         end
 
         # Océanie
-        @bOceanie = @carte.nbEtoiles > 48
+        @bOceanie = @carte.nbEtoiles >= 48
         self.drawRectangleVide(3375, 2120, 950, 550, !@bOceanie)
         if @bOceanie
             n = @carte.etoiles[1].first(7).inject(:+)
@@ -71,7 +71,7 @@ class Monde < Carte
         end
 
         # Afrique
-        @bAfrique = @carte.nbEtoiles > 60
+        @bAfrique = @carte.nbEtoiles >= 60
         self.drawRectangleVide(1980, 1600, 850, 900, !@bAfrique)
         if @bAfrique
           n = @carte.etoiles[1].last(8).first(7).inject(:+)
@@ -81,7 +81,7 @@ class Monde < Carte
         end
         
         # Antarctique
-        @bAntarctique = @carte.nbEtoiles > 120
+        @bAntarctique = @carte.nbEtoiles >= 120
         self.drawRectangleVide(1980, 3000, 850, 200, !@bAntarctique)
         if @bAntarctique
           n = @carte.etoiles[1].last.inject(:+)

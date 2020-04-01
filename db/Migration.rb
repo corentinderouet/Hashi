@@ -47,6 +47,7 @@ class Migration < ActiveRecord::Migration[4.2]
 			t.belongs_to :difficultes
 			t.belongs_to :modes
 			t.integer :tempsMoyen
+			t.integer :tempsMax
 			t.integer :scoreMax
 			t.text :grilleSolution
 			t.boolean :terminee

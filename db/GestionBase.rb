@@ -267,14 +267,16 @@ class GestionBase
 		begin
 			raise ("raise changerScore") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
 			joue = joue.first
-			idDifficulte = grilelDb.difficultes_id
+			idDifficulte = grilleDb.difficultes_id
 			grille = YAML.load(grilleDb.grilleSolution)
 #			puts "grille: #{grille.nbAides}"
 
 			tempsReel = grille.timer
 			nbAides = 10 * grille.nbAides
 			begin
-				score = grilleDb.scoreMax + (3 * (grilleDb.tempsMoyen - tempsReel)) - nbAides + 2000
+				raise ("Grille non terminée") if (!grille.grilleFinie)
+				score = grilleDb.tempsMax + (3 * (grilleDb.tempsMoyen - tempsReel)) - nbAides + 500 - (3 * (7 - idDifficulte))
+				puts "score: #{score}, scoreMax: #{grilleDb.scoreMax}, tempsMoyen: #{grilleDb.tempsMoyen}"
 			rescue # timer == 0?
 #				puts "Timer: #{tempsReel}"
 				score = 0
@@ -282,7 +284,7 @@ class GestionBase
 #			score = grilleDb.scoreMax * grilleDb.tempsMoyen
 			joue.update(score: score, grilleSer: grilleDb.grilleSolution)# if (joue.score < score)
 		rescue
-			puts "changeScore ==> La grille d'id #{grilleDb.id} du joueur d'id #{idJoueur} n'existe pas dans la base"
+			puts "changeScore ==> La grille d'id #{grilleDb.id} du joueur d'id #{idJoueur} n'existe pas dans la base. Score: #{score}"
 		end
 	end
 end
