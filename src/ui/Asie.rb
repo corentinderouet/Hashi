@@ -9,8 +9,6 @@ class Asie < Carte
     # @dX => Décalage de l'affichage en x
     # @dY => Décalage de l'affichage en y
 
-    private
-
     # Constructeur
     #
     # === Paramètres
