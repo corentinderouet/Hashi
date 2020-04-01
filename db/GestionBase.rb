@@ -267,14 +267,16 @@ class GestionBase
 		begin
 			raise ("raise changerScore") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
 			joue = joue.first
+			idDifficulte = grilelDb.difficultes_id
 			grille = YAML.load(grilleDb.grilleSolution)
-			puts "grille: #{grille.nbAides}"
+#			puts "grille: #{grille.nbAides}"
+
 			tempsReel = grille.timer
-			aides = 8 * (0.5 * grille.nbAides)
+			nbAides = 10 * grille.nbAides
 			begin
-				score = grilleDb.scoreMax * (grilleDb.tempsMoyen / tempsReel) - nbAides
+				score = grilleDb.scoreMax + (3 * (grilleDb.tempsMoyen - tempsReel)) - nbAides + 2000
 			rescue # timer == 0?
-				puts "Timer: #{tempsReel}"
+#				puts "Timer: #{tempsReel}"
 				score = 0
 			end
 #			score = grilleDb.scoreMax * grilleDb.tempsMoyen
