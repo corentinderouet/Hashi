@@ -25,9 +25,9 @@ class ChargementAventure < Gtk::Box
         - Chaque niveau peut rapporter jusqu'à 3 étoiles
 
     Déplacements : 
-        - Cliquer sur un continent débloqué pour s'y déplacer
-        - Cliquer sur l'étiquette d'un niveau (rectangle avec le nombre d'étoiles) pour le jouer
-        - Cliquer en dehors d'un continent ou d'une étiquette pour revenir en arrière"
+        - Cliquez sur un continent débloqué pour vous y déplacer
+        - Cliquez sur l'étiquette d'un niveau (rectangle avec le nombre d'étoiles) pour le jouer
+        - Cliquez en dehors d'un continent ou d'une étiquette pour revenir en arrière"
         view.sensitive = false
 
         scroll = Gtk::ScrolledWindow.new()

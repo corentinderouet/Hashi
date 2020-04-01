@@ -129,7 +129,13 @@ puts "x: #{x}, scoreMax: #{scoreMax}, tempsMoyen: #{tempsMoyen}"
 			grilleDb.update(scoreMax: scoreMax, tempsMoyen: tempsMoyen, tempsMax: tempsMax)
 		end
 	end
+
+	def TestBase.reinitialiser
+		Joue.delete_all
+	end
+
 end
 
 #TestBase.genererBase
-TestBase.updateScore
+#TestBase.updateScore
+TestBase.reinitialiser
