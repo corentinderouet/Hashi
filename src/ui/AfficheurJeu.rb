@@ -157,10 +157,12 @@ class AfficheurJeu < Gtk::Paned
     end
 
     def aJoue()
-      @aide = nil
-      @afficheurGrille.cercleAide = nil
-      @description.text = ""
-      @aideTech.sensitive = true
-      @aidePos.sensitive = true
+      if @type != "aventure" 
+          @aide = nil
+          @afficheurGrille.cercleAide = nil
+          @description.text = ""
+          @aideTech.sensitive = true
+          @aidePos.sensitive = true
+      end
     end
 end
