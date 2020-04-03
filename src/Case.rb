@@ -117,6 +117,26 @@ class Case
         return compteur
     end
 
+    # compte le nb de voisins dispo de la case possèdant une certaine étiquette ACTUEL
+    #
+    # === Parametres
+    #
+    # * + etiquette + = > l'etiquette à test
+    # * + tabLien + = > le tableau des liens
+    #
+    # === Retour
+    #
+    # entier sur le nombre de voisins possédant cette etiquette
+    #
+    def voisinsDispoEtiRestanteDe(etiquette,tabLien)
+        compteur=0
+        for i in 0..3 do
+            if(@tabTriangle[i]==true && ( @tabVoisins[i].etiquetteCase.to_i - @tabVoisins[i].nbLienCase(tabLien) )==etiquette)
+                compteur+=1
+            end
+        end
+        return compteur
+    end
 
     # test si un lien est présent pour un voisin dont l'etiquette est différente du parametre OU si le nombre max de voisins avec 
     #l'etiquette est dépassé et qu'il y en a un autre avec cette meme etiquette et qu'il y a un lien
