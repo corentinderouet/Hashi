@@ -47,14 +47,21 @@ class AfficheurJeu < Gtk::Paned
         @boutonRegles.signal_connect("clicked") { |widget| @didacticiel = Didacticiel.new(); }
         @boutonQuitter = Gtk::Button.new(:label => "Quitter")
         @boutonQuitter.signal_connect("clicked") do |widget|
-            if @type != "classe"
+            if @type == "classe"
+                d = Gtk::MessageDialog.new(:buttons => :ok_cancel)
+                d.text = "Votre progression sur cette grille sera effacée si vous quittez"
+                d.message_type = :question
+                r = d.run == :ok
+                d.destroy
+                fenetre.finJeu() if r
+            else
                 @grille.timer = @timer.secondes
                 @grille.nbAides = @nbAides
                 @grilleDb.grilleSolution = @grille.to_yaml()
                 GestionBase.changerScore(fenetre.joueur.id, @grilleDb, 0)
                 puts("Sauvegardé")
+                fenetre.finJeu()
             end
-            fenetre.finJeu()
         end
         @menu.add(@boutonContinuer)
         @menu.add(@boutonRegles)
