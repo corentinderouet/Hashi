@@ -50,7 +50,6 @@ class Migration < ActiveRecord::Migration[4.2]
 			t.integer :tempsMax
 			t.integer :scoreMax
 			t.text :grilleSolution
-			t.boolean :terminee
 		end
 
 		create_table :joues do |t|
@@ -58,6 +57,7 @@ class Migration < ActiveRecord::Migration[4.2]
 			t.belongs_to :grille_dbs
 			t.text :grilleSer
 			t.integer :score
+			t.boolean :terminee
 		end
 
 		create_table :phrases_aventures do |t|
