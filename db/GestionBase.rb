@@ -235,7 +235,7 @@ class GestionBase
 #						grille.tabLien.each { |lien| grille.supprimerLien(lien) }
 						grilleDb.grilleSolution = YAML.dump(grille)
 #:niveau => difficulte
-						Joue.create( :joueurs_id => idJoueur, :grille_dbs_id => grilleDb.id, :grilleSer => grilleDb.grilleSolution, :score => 0 )
+						Joue.create( :joueurs_id => idJoueur, :grille_dbs_id => grilleDb.id, :grilleSer => grilleDb.grilleSolution, :score => 0, :terminee => false )
 					end
 
 					grilles.push(grilleDb)

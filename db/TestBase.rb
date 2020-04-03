@@ -46,12 +46,12 @@ puts "nb grilles: #{tabGrille.length}"
 				tempsMax = 3 * tempsMoyen
 				scoreMax = tempsMax + 500 - (3 * (7 - idDifficulte))
 #				puts YAML.dump(grille)
-				GrilleDb.create(:grilleSolution => YAML.dump(grille), :difficultes_id => idDifficulte, :modes_id => idMode, :scoreMax => scoreMax, :tempsMoyen => tempsMoyen, :tempsMax => tempsMax, :terminee => false)
+				GrilleDb.create(:grilleSolution => YAML.dump(grille), :difficultes_id => idDifficulte, :modes_id => idMode, :scoreMax => scoreMax, :tempsMoyen => tempsMoyen, :tempsMax => tempsMax)
 				idMode = (idMode % 3) + 1
 			end
 
 		end
-		GestionBase.updateScore
+		TestBase.updateScore
 		#grille=GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>1, :mode_jeu => 3)
 		#GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>2, :mode_jeu => 3)
 		#GrilleDb.create(:grilleSolution => "1__5HHH", :niveau =>3, :mode_jeu => 3)
@@ -137,5 +137,5 @@ puts "x: #{x}, scoreMax: #{scoreMax}, tempsMoyen: #{tempsMoyen}"
 end
 
 #TestBase.genererBase
-#TestBase.updateScore
-TestBase.reinitialiser
+TestBase.updateScore
+#TestBase.reinitialiser
