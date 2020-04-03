@@ -289,4 +289,27 @@ class GestionBase
 			puts "changeScore ==> La grille d'id #{grilleDb.id} du joueur d'id #{idJoueur} n'existe pas dans la base. Score: #{score}"
 		end
 	end
+
+	# Permet de savoir si une grille a été terminée par le joueur
+	#
+	# === Paramètres
+	#
+	# * +idJoueur+ => L'Id du Joueur dont on veut savoir s'il a terminé la grille
+	# * +grilleDb+ => L'objet grille dont on veut savoir si elle a été terminée
+	#
+	# === Retour
+	#
+	# Si le joueur et la grille existent, renvoie l'état de la grille (true ou false), nil si la grille n'existe pas pour le joueur
+	#
+	def GestionBase.grilleTerminee?(idJoueur, grilleDb)
+		terminee = nil
+		begin
+			raise ("raise grilleTerminee?") if ((joue=Joue.where([ "joueurs_id = ? AND grille_dbs_id = ?", idJoueur, grilleDb.id ])).count != 1)
+			terminee = joue.first.terminee
+		rescue
+			puts "grilleTerminee? ==> La grille d'id #{grilleDb.id} du joueur d'id #{idJoueur} n'existe pas dans la base."
+		ensure
+			return terminee
+		end
+	end
 end
