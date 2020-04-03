@@ -18,13 +18,13 @@ class SelectionDifficulte < Gtk::Box
         self.add(l)
 
         b = Gtk::Button.new(label: "Facile")
-        b.signal_connect("clicked") { fenetre.finSelection(GestionBase.recupGrilles(fenetre.joueur.id, 1, 2, 0, 1).first, "classe") }
+        b.signal_connect("clicked") { fenetre.finSelection(GestionBase.recupGrilleAleatoire(fenetre.joueur.id, 1, 2), "classe") }
         self.add(b)
         b = Gtk::Button.new(label: "Moyen")
-        b.signal_connect("clicked") { fenetre.finSelection(GestionBase.recupGrilles(fenetre.joueur.id, 2, 2, 0, 1).first, "classe") }
+        b.signal_connect("clicked") { fenetre.finSelection(GestionBase.recupGrilleAleatoire(fenetre.joueur.id, 2, 2), "classe") }
         self.add(b)
         b = Gtk::Button.new(label: "Difficile")
-        b.signal_connect("clicked") { fenetre.finSelection(GestionBase.recupGrilles(fenetre.joueur.id, 3, 2, 0, 1).first, "classe") }
+        b.signal_connect("clicked") { fenetre.finSelection(GestionBase.recupGrilleAleatoire(fenetre.joueur.id, 3, 2), "classe") }
         self.add(b)
 
         l = Gtk::Label.new("")

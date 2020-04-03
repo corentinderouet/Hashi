@@ -137,5 +137,6 @@ puts "x: #{x}, scoreMax: #{scoreMax}, tempsMoyen: #{tempsMoyen}"
 end
 
 #TestBase.genererBase
-TestBase.updateScore
+#TestBase.updateScore
 #TestBase.reinitialiser
+puts GestionBase.recupGrilleAleatoire(2, 1, 2)
