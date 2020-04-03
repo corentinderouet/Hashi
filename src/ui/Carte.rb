@@ -117,7 +117,7 @@ class Carte < Gtk::DrawingArea
     # * +y+ - Position en y du rectangle
     # * +w+ - Largeur du rectangle
     # * +h+ - Hauteur du rectangle
-    def drawRectangle(x, y, w, h)
+    def drawRectangle(x, y, w, h, c)
         radius = h / 10.0
         degrees = Math::PI / 180.0;
 
@@ -128,13 +128,19 @@ class Carte < Gtk::DrawingArea
         @ic.arc(x + radius, y + radius, radius, 180 * degrees, 270 * degrees)
         @ic.close_path()
 
-        #@ic.set_source_rgb(1, 1, 1)
-        @ic.set_source_rgba(0.1328125, 0.1328125, 0.1328125, 0.5)
-        @ic.fill_preserve()
-        #@ic.set_source_rgb(0, 0, 0)
-        @ic.set_source_rgb(0.9375, 0.328125, 0.296875)
-        @ic.set_line_width(2.0)
-        @ic.stroke()
+        if c == false
+            @ic.set_source_rgba(0.1328125, 0.1328125, 0.1328125, 0.5)
+            @ic.fill_preserve()
+            @ic.set_source_rgb(0.9375, 0.328125, 0.296875)
+            @ic.set_line_width(2.0)
+            @ic.stroke()
+        else 
+            @ic.set_source_rgba(0.1328125, 0.1328125, 0.1328125, 0.5)
+            @ic.fill_preserve()
+            @ic.set_source_rgb(0, 0, 0)
+            @ic.set_line_width(2.0)
+            @ic.stroke()
+        end
     end
 
     # Dessin d'un rectangle vide
@@ -169,7 +175,6 @@ class Carte < Gtk::DrawingArea
             @ic.set_source_rgb(0, 0, 0)
             @ic.set_line_width(10.0)
             @ic.stroke()
-
         end
     end
 
@@ -202,7 +207,7 @@ class Carte < Gtk::DrawingArea
     #
     # * +e+ - Etiquette à dessiner
     def drawEtiquette(e)
-        drawRectangle(e.x, e.y, e.w, e.h)
+        drawRectangle(e.x, e.y, e.w, e.h, e.s > 1)
         3.times() do |i| 
             i < e.s ? c = [0.9375, 0.328125, 0.296875] : c = [0.5,0.5,0.5]
             drawEtoile(e.x + e.h*i + 4, e.y + 4, e.h - 8, c)
@@ -250,20 +255,24 @@ class Carte < Gtk::DrawingArea
         y = getVY(event.y)
         @etiquettes.each() do |e|
             if x > e.x && y > e.y && x < (e.x + e.w) && y < (e.y + e.h)
-                if GestionBase.grilleTerminee?(@id, e.g)
-                    d = Gtk::MessageDialog.new(:buttons => :ok_cancel)
-                    d.text = "Votre progression sur cette grille sera effacée si vous la rejouez"
-                    d.message_type = :question
-                    r = d.run == :ok
-                    d.destroy
-                    if r == true
-                        grille2 = YAML.load(e.g.grilleSolution)
-                        grille = Grille.creer(grille2.tabCase, grille2.hauteur, grille2.largeur, grille2)
-                        e.g.grilleSolution = YAML.dump(grille)
+                etoiles = GestionBase.recupScore(@id, e.g) / (e.g.scoreMax/4)
+                etoiles = etoiles > 3 ? 3 : (etoiles < 0 ? 0 : etoiles)
+                if etoiles < 2
+                    if GestionBase.grilleTerminee?(@id, e.g)
+                        d = Gtk::MessageDialog.new(:buttons => :ok_cancel)
+                        d.text = "Votre progression sur cette grille sera effacée si vous la rejouez"
+                        d.message_type = :question
+                        r = d.run == :ok
+                        d.destroy
+                        if r == true
+                            grille2 = YAML.load(e.g.grilleSolution)
+                            grille = Grille.creer(grille2.tabCase, grille2.hauteur, grille2.largeur, grille2)
+                            e.g.grilleSolution = YAML.dump(grille)
+                            @carte.lancer(e.g)
+                        end
+                    else
                         @carte.lancer(e.g)
                     end
-                else
-                    @carte.lancer(e.g)
                 end
                 return nil
             end

@@ -75,15 +75,20 @@ class AfficheurJeu < Gtk::Paned
         @timer = Timer.new(@grille.timer)
         @timer.margin_top = 15
         boxVerticale.add(@timer)
-
+        
+        
+        boxHorizontale = Gtk::Box.new(Gtk::Orientation.new(0), 0)
+        boxHorizontale.margin_top = 15
         @annuler = Gtk::Button.new(:label => "Annuler")
-        @annuler.margin_top = 15
-        boxVerticale.add(@annuler)
+        @annuler.hexpand = true
+        boxHorizontale.add(@annuler)
         @annuler.signal_connect("clicked") { |widget| @grille.annuler(); @afficheurGrille.queue_draw() }
 
         @refaire = Gtk::Button.new(:label => "Refaire")
-        boxVerticale.add(@refaire)
+        @refaire.hexpand = true
+        boxHorizontale.add(@refaire)
         @refaire.signal_connect("clicked") { |widget| @grille.refaire(); @afficheurGrille.queue_draw() }
+        boxVerticale.add(boxHorizontale)
 
         @verif = Gtk::Button.new(:label => "Vérification")
         boxVerticale.add(@verif)
