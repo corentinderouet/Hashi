@@ -81,13 +81,15 @@ class Monde < Carte
         end
         
         # Antarctique
-        @bAntarctique = @carte.nbEtoiles >= 120
-        self.drawRectangleVide(1980, 3000, 850, 200, !@bAntarctique)
-        if @bAntarctique
-          n = @carte.etoiles[1].last.inject(:+)
-            self.drawTexte(1980 + 850/2, 3000 + 200/2, "Antarctique : #{n}/3")
-        else
-            self.drawTexte(1980 + 850/2, 3000 + 200/2, "120 pour débloquer")
+        if @bAfrique
+            @bAntarctique = @carte.nbEtoiles >= 120
+            self.drawRectangleVide(1980, 3000, 850, 200, !@bAntarctique)
+            if @bAntarctique
+                n = @carte.etoiles[1].last.inject(:+)
+                self.drawTexte(1980 + 850/2, 3000 + 200/2, "Antarctique : #{n}/3")
+            else
+                self.drawTexte(1980 + 850/2, 3000 + 200/2, "120 pour débloquer")
+            end
         end
     end
 

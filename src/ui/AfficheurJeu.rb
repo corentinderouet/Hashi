@@ -47,14 +47,21 @@ class AfficheurJeu < Gtk::Paned
         @boutonRegles.signal_connect("clicked") { |widget| @didacticiel = Didacticiel.new(); }
         @boutonQuitter = Gtk::Button.new(:label => "Quitter")
         @boutonQuitter.signal_connect("clicked") do |widget|
-            if @type != "classe"
+            if @type == "classe"
+                d = Gtk::MessageDialog.new(:buttons => :ok_cancel)
+                d.text = "Votre progression sur cette grille sera effacée si vous quittez"
+                d.message_type = :question
+                r = d.run == :ok
+                d.destroy
+                fenetre.finJeu() if r
+            else
                 @grille.timer = @timer.secondes
                 @grille.nbAides = @nbAides
                 @grilleDb.grilleSolution = @grille.to_yaml()
                 GestionBase.changerScore(fenetre.joueur.id, @grilleDb, 0)
                 puts("Sauvegardé")
+                fenetre.finJeu()
             end
-            fenetre.finJeu()
         end
         @menu.add(@boutonContinuer)
         @menu.add(@boutonRegles)
@@ -80,7 +87,7 @@ class AfficheurJeu < Gtk::Paned
 
         @verif = Gtk::Button.new(:label => "Vérification")
         boxVerticale.add(@verif)
-        @verif.signal_connect("clicked") { |widget| @grille.verification(); @afficheurGrille.queue_draw() }
+        @verif.signal_connect("clicked") { |widget| @nbAides += 3*@grille.verification(); @afficheurGrille.queue_draw() }
 
         @hypothese = Gtk::Stack.new()
         @boutonHypothese = Gtk::Button.new(:label => "Hypothèse")
@@ -171,13 +178,11 @@ class AfficheurJeu < Gtk::Paned
             @aidePos.sensitive = true
         end
         if @grille.grilleFinie?()
-            if @type != "classe"
-                @grille.timer = @timer.secondes
-                @grille.nbAides = @nbAides
-                @grilleDb.grilleSolution = @grille.to_yaml()
-                GestionBase.changerScore(@fenetre.joueur.id, @grilleDb, 0)
-                puts("Sauvegardé")
-            end
+            @grille.timer = @timer.secondes
+            @grille.nbAides = @nbAides
+            @grilleDb.grilleSolution = @grille.to_yaml()
+            GestionBase.changerScore(@fenetre.joueur.id, @grilleDb, 0)
+            puts("Sauvegardé")
             d = Gtk::MessageDialog.new()
             d.text = "Score final: #{GestionBase.recupScore(@fenetre.joueur.id, @grilleDb)}"
             d.message_type = :info

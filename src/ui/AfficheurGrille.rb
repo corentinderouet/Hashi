@@ -34,6 +34,7 @@ class AfficheurGrille < Gtk::DrawingArea
     # * +jeu+ => L'afficheur de jeu si la grille est utilisé en tant que jeu
     def initialize(grille, playable, jeu)
         super()
+        @playable = playable
         @jeu = jeu
         @surbrillance = []
         @grille = grille
@@ -42,8 +43,16 @@ class AfficheurGrille < Gtk::DrawingArea
         @ratio = 1.0 * @vWidth / @vHeight
         @cercleAide = nil
         self.signal_connect("draw") { |widget, cr| draw(cr) }
-        self.signal_connect("button-press-event") { |widget, event| mouseClick(event); self.queue_draw() } if playable
+        self.signal_connect("button-press-event") { |widget, event| mouseClick(event); self.queue_draw() } if @playable
         self.events = :all_events_mask
+    end
+
+    # Passage en état jouable
+    def setPlayable()
+        if !@playable
+            self.signal_connect("button-press-event") { |widget, event| mouseClick(event); self.queue_draw() }
+            @playable = true
+        end
     end
 
     # Largeur écran en pixels
