@@ -42,7 +42,8 @@ class GestionBase
 	# Le joueur si existant, nil sinon
 	#
 	def GestionBase.recupJoueur(pseudo)
-		return Joueur.find_by_pseudo(pseudo)
+		return Joueur.where("lower(pseudo) = ?", pseudo.downcase).first
+#		return Joueur.find_by_pseudo(pseudo)
 	end
 
 	# Récupère tous les joueur de la base de données
@@ -124,14 +125,14 @@ class GestionBase
 	#
 	# === Retour
 	#
-	# Le score total du joueur, ou nil si le joueur n'existe pas
+	# Le score total du joueur sur les grilles classées terminées, ou nil si le joueur n'existe pas
 	#
 	def GestionBase.recupScoreTotal(idJoueur, idDifficulte)
 		score = nil
 	
 		begin
 			Joueur.find(idJoueur)
-			grilles = Joue.where([ "joueurs_id = ?", idJoueur ]).select{ |joue| GrilleDb.find(joue.grille_dbs_id).modes_id == Mode.find_by_mode_jeu("Classe").id && GrilleDb.find(joue.grille_dbs_id).difficultes_id == idDifficulte }
+			grilles = Joue.where([ "joueurs_id = ? AND terminee = 1", idJoueur ]).select{ |joue| GrilleDb.find(joue.grille_dbs_id).modes_id == Mode.find_by_mode_jeu("Classe").id && GrilleDb.find(joue.grille_dbs_id).difficultes_id == idDifficulte }
 			score = grilles.inject(0) { |s, joue| s += joue.score }
 		rescue
 			puts "recupScoreTotal ==> Joueur d'id #{idJoueur} n'existe pas dans la base"
@@ -146,17 +147,18 @@ class GestionBase
 	# === Paramètres
 	#
 	# * +idJoueur+ => L'Id du joueur dont on veut récupérer le nombre de grilles jouées
+	# * +idDifficulte+ => L'Id de la difficulté désirée
 	#
 	# === Retour
 	#
-	# Le nombre de grilles jouées par le joueur, ou nil si le joueur n'existe pas
+	# Le nombre de grilles terminées par le joueur, ou nil si le joueur n'existe pas
 	#
-	def GestionBase.recupNbGrillesJouees(idJoueur)
+	def GestionBase.recupNbGrillesJouees(idJoueur, idDifficulte)
 		nb = nil
 	
 		begin
 			Joueur.find(idJoueur)
-			grilles = Joue.where([ "joueurs_id = ?", idJoueur ]).select{ |joue| recupMode(GrilleDb.find(joue.grille_dbs_id).id).mode_jeu == "Classe"}
+			grilles = Joue.where([ "joueurs_id = ? AND terminee = 1", idJoueur ]).select{ |joue| GrilleDb.find(joue.grille_dbs_id).modes_id == Mode.find_by_mode_jeu("Classe").id && GrilleDb.find(joue.grille_dbs_id).difficultes_id == idDifficulte}
 			nb = grilles.inject(0) { |nb, joue| nb += 1 }
 		rescue
 			puts "recupNbGrillesJouees ==> Joueur d'id #{idJoueur} n'existe pas dans la base"
