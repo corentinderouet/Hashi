@@ -273,16 +273,18 @@ class GestionBase
 
 			tempsReel = grille.timer
 			nbAides = 10 * grille.nbAides
+			terminee = false
 			begin
 				raise ("Grille non terminée") if (!grille.grilleFinie)
 				score = grilleDb.tempsMax + (3 * (grilleDb.tempsMoyen - tempsReel)) - nbAides + 500 - (3 * (7 - idDifficulte))
+				terminee = true
 				puts "score: #{score}, scoreMax: #{grilleDb.scoreMax}, tempsMoyen: #{grilleDb.tempsMoyen}"
 			rescue # timer == 0?
 #				puts "Timer: #{tempsReel}"
 				score = 0
 			end
 #			score = grilleDb.scoreMax * grilleDb.tempsMoyen
-			joue.update(score: score, grilleSer: grilleDb.grilleSolution)# if (joue.score < score)
+			joue.update(score: score, grilleSer: grilleDb.grilleSolution, terminee: terminee)# if (joue.score < score)
 		rescue
 			puts "changeScore ==> La grille d'id #{grilleDb.id} du joueur d'id #{idJoueur} n'existe pas dans la base. Score: #{score}"
 		end

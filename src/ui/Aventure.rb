@@ -66,7 +66,7 @@ class Aventure < Gtk::Stack
             ed = []
             d.each() do |g|
               e = GestionBase.recupScore(@fenetre.joueur.id, g) / (g.scoreMax/4)
-	      e = e > 3 ? 3 : e
+	      e = e > 3 ? 3 : (e < 0 ? 0 : e)
               ed.push(e)
               @nbEtoiles += e
             end
