@@ -249,6 +249,13 @@ class Carte < Gtk::DrawingArea
         y = getVY(event.y)
         @etiquettes.each() do |e|
             if x > e.x && y > e.y && x < (e.x + e.w) && y < (e.y + e.h)
+                if e.g.terminee
+                    d = Gtk::MessageDialog.new()
+                    d.text = "Score final: #{GestionBase.recupScore(@fenetre.joueur.id, @grilleDb)}"
+                    d.message_type = :question
+                    puts(d.run)
+                    d.destroy
+                end
                 @carte.lancer(e.g)
                 return nil
             end

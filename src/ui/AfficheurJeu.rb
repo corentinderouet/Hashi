@@ -171,13 +171,11 @@ class AfficheurJeu < Gtk::Paned
             @aidePos.sensitive = true
         end
         if @grille.grilleFinie?()
-            if @type != "classe"
-                @grille.timer = @timer.secondes
-                @grille.nbAides = @nbAides
-                @grilleDb.grilleSolution = @grille.to_yaml()
-                GestionBase.changerScore(@fenetre.joueur.id, @grilleDb, 0)
-                puts("Sauvegardé")
-            end
+            @grille.timer = @timer.secondes
+            @grille.nbAides = @nbAides
+            @grilleDb.grilleSolution = @grille.to_yaml()
+            GestionBase.changerScore(@fenetre.joueur.id, @grilleDb, 0)
+            puts("Sauvegardé")
             d = Gtk::MessageDialog.new()
             d.text = "Score final: #{GestionBase.recupScore(@fenetre.joueur.id, @grilleDb)}"
             d.message_type = :info
