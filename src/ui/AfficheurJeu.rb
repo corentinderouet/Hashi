@@ -80,7 +80,7 @@ class AfficheurJeu < Gtk::Paned
 
         @verif = Gtk::Button.new(:label => "Vérification")
         boxVerticale.add(@verif)
-        @verif.signal_connect("clicked") { |widget| @grille.verification(); @afficheurGrille.queue_draw() }
+        @verif.signal_connect("clicked") { |widget| @nbAides += 3*@grille.verification(); @afficheurGrille.queue_draw() }
 
         @hypothese = Gtk::Stack.new()
         @boutonHypothese = Gtk::Button.new(:label => "Hypothèse")

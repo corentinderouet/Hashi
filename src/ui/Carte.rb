@@ -30,6 +30,7 @@ class Carte < Gtk::DrawingArea
         super()
         @etiquettes = []
         @carte = carte
+        @id = @carte.joueur.id
         self.signal_connect("draw") { |widget, cr| draw(cr) }
         self.signal_connect("button-press-event") { |widget, event| mouseClick(event); self.queue_draw(); }
         self.events = :all_events_mask
@@ -249,14 +250,21 @@ class Carte < Gtk::DrawingArea
         y = getVY(event.y)
         @etiquettes.each() do |e|
             if x > e.x && y > e.y && x < (e.x + e.w) && y < (e.y + e.h)
-                if e.g.terminee
-                    d = Gtk::MessageDialog.new()
-                    d.text = "Score final: #{GestionBase.recupScore(@fenetre.joueur.id, @grilleDb)}"
+                if GestionBase.grilleTerminee?(@id, e.g)
+                    d = Gtk::MessageDialog.new(:buttons => :ok_cancel)
+                    d.text = "Votre progression sur cette grille sera effacée si vous la rejouez"
                     d.message_type = :question
-                    puts(d.run)
+                    r = d.run == :ok
                     d.destroy
+                    if r == true
+                        grille2 = YAML.load(e.g.grilleSolution)
+                        grille = Grille.creer(grille2.tabCase, grille2.hauteur, grille2.largeur, grille2)
+                        e.g.grilleSolution = YAML.dump(grille)
+                        @carte.lancer(e.g)
+                    end
+                else
+                    @carte.lancer(e.g)
                 end
-                @carte.lancer(e.g)
                 return nil
             end
         end
