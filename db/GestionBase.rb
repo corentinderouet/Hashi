@@ -208,6 +208,10 @@ class GestionBase
 			grilles = Array.new #GrilleDb.all
 #			joue = Joue.where([ "joueurs_id = ?", idJoueur ])
 			begin
+				if nbGrilles == 0
+					nbGrilles = GrilleDb.where(difficultes_id: idDifficulte, modes_id: idMode).count - nbDebut
+				end
+
 				GrilleDb.where(difficultes_id: idDifficulte, modes_id: idMode).offset(nbDebut).limit(nbGrilles).each do |grilleDb|
 #puts grille.id
 #joue = nil
@@ -251,6 +255,30 @@ class GestionBase
 		end
 	end
 
+	def GestionBase.recupGrilleAleatoire(idJoueur, idDifficulte, idMode)
+		# Récupère toutes les grilles du mode idMode et difficulte idDifficulte
+		grilles = GestionBase.recupGrilles(idJoueur, idDifficulte, idMode, 0, 0)
+
+		# Trie les grilles pour garder uniquement les grilles non terminée
+		grilleDb = grilles.select { |grilleDb| !GestionBase.grilleTerminee?(idJoueur, grilleDb) }.sample
+
+		if grilleDb == nil
+			puts "Aucune grille non terminée, on prend parmi les terminées et on réinitialise"
+			grilleDb = grilles.sample
+
+			# Réinitialisation de la grille
+			grilleSolution = YAML.load(grilleDb.grilleSolution)
+			grille = Grille.creer(grilleSolution.tabCase, grilleSolution.hauteur, grilleSolution.largeur, grilleSolution)
+			grilleDb.grilleSolution = YAML.dump(grille)
+
+			# Enregistrement de la grille
+			GestionBase.changerScore(idJoueur, grilleDb, 0)
+		else
+			puts "Grille trouvée"
+		end
+
+		return grilleDb
+	end
 
 	# Modifie le score de la grille d'un Joueur
 	#
