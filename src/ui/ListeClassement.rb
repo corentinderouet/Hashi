@@ -18,7 +18,7 @@ class ListeClassement < Gtk::ScrolledWindow
         joueurs = GestionBase.recupJoueurAll()
 
         c = joueurs.map() { |x| [x, GestionBase.recupScoreTotal(x.id, difficulté)] }
-        c.sort() { |a,b| b[1] <=> a[1] }
+        c = c.sort() { |a,b| b[1] <=> a[1] }
 
           c.each_index()  do |i|
              iter = @store.append()
