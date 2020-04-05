@@ -92,7 +92,16 @@ class AfficheurJeu < Gtk::Paned
 
         @verif = Gtk::Button.new(:label => "Vérification")
         boxVerticale.add(@verif)
-        @verif.signal_connect("clicked") { |widget| @nbAides += 3*@grille.verification(); @afficheurGrille.queue_draw() }
+        @verif.signal_connect("clicked") do |widget|
+            r = @grille.verification();
+            @nbAides += 3*r;
+            @afficheurGrille.queue_draw()
+            d = Gtk::MessageDialog.new()
+            d.text = "Erreurs corrigées: #{r}"
+            d.message_type = :info
+            d.run
+            d.destroy
+        end
 
         @hypothese = Gtk::Stack.new()
         @boutonHypothese = Gtk::Button.new(:label => "Hypothèse")

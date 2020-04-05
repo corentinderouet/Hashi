@@ -17,7 +17,11 @@ class ListeClassement < Gtk::ScrolledWindow
         
         joueurs = GestionBase.recupJoueurAll()
 
-        c = joueurs.map() { |x| [x, GestionBase.recupScoreTotal(x.id, difficulté)] }
+        c = joueurs.map() do |x|
+            nb = GestionBase.recupNbGrillesJouees(x.id, difficulté)
+            score = nb > 0 ? GestionBase.recupScoreTotal(x.id, difficulté) / nb : 0
+            [x, score] 
+        end
         c = c.sort() { |a,b| b[1] <=> a[1] }
 
           c.each_index()  do |i|
@@ -28,7 +32,7 @@ class ListeClassement < Gtk::ScrolledWindow
          @tree = Gtk::TreeView.new(@store)
          @tree.show_expanders = false
 
-         colonnes = ["Rang", "Nom d'utilisateur", "Score"]
+         colonnes = ["Rang", "Nom d'utilisateur", "Score  moyen"]
          colonnes.each_index() do |i|
              renderer = Gtk::CellRendererText.new()
              colonne = Gtk::TreeViewColumn.new(colonnes[i], renderer, {:text => i})
