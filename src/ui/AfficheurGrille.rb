@@ -197,7 +197,7 @@ class AfficheurGrille < Gtk::DrawingArea
         y = c.ligne()
         n = c.etiquetteCase()
 
-        cr.set_source_rgb(0, 0, 0)
+        cr.set_source_rgb(0.45, 0.45, 0.45)
 
         #nord
         if c.tabTriangle[0]

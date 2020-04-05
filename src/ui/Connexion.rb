@@ -48,7 +48,13 @@ class Connexion < Gtk::Box
         stack.add_titled(connexion, "Se connecter", "Se connecter")
         stack.add_titled(inscription, "Creer un compte", "Créer un compte")
         stack.margin_top = 15
+        stack.vexpand = true
+
+        bouton = Gtk::Button.new(label: "Quitter")
+        bouton.signal_connect("clicked") { |widget| Gtk.main_quit() }
+
         self.add(boxHorizontale)
         self.add(stack)
+        self.add(bouton)
     end
 end
