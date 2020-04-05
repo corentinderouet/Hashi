@@ -205,7 +205,7 @@ class Grille
 
 
 
-    # test si une archi n'est pas complette(plus de triangle sur les cases)
+    # test si une archi n'est pas complète(c'est a dire qu'il reste au moins un triangle dans l'archipelle))
     #
     # === Paramètres
     #
@@ -215,6 +215,7 @@ class Grille
     # === Retour
     #   boolean sur le test
     #
+    # NOM À CHANGER EN "ArchiNonComplete"
     def ArchiNonComplette(case1,tabCase2)
         if(case1.nbVoisinsDispo()==0)
             if(tabCase2.include?(case1)==false)
@@ -731,12 +732,14 @@ class Grille
 
 
                 if( self.testArchipel2(c) )
-                    aides3.push( Aides.creer(3,c," Si lors de la création de deux liens sur une case avec deux voisins et 2 liens restant max a construire la suite du jeu est bloqué car une archipelle complette est formé(suite de case sans triangle restant relié par des liens) , il est possible de déterminer ou créer au moins un lien") )
+                    aides3.push( Aides.creer(3,c," Si lors de la création de deux liens sur une case avec 2 voisins et 2 liens restant max a construire la suite du jeu est bloqué car une archipelle complette est formé(suite de case sans triangle restant relié par des liens) , il est possible de déterminer ou créer au moins un lien") )
+                end
+
+                if( self.testArchipel3(c) )
+                    aides3.push( Aides.creer(3,c," Si lors de la création de quatre liens sur une case avec 3 voisins et 4 liens restant max a construire la suite du jeu est bloqué car une archipelle complette est formé(suite de case sans triangle restant relié par des liens) , il est possible de déterminer ou créer au moins un lien") )
                 end
 
 
-
-            
             end
 
         end
@@ -822,7 +825,7 @@ class Grille
     #
     def testArchipel2(case1)
 
-        if(case1.nbLienCase(@tabLien)==case1.etiquetteCase.to_i-2 && case1.nbVoisinsDispo()==2 && case1.nbCasePasDejaRelie(@tabLien)==2 && case1.voisinsDispoEtiDe(1)==0  )
+        if(case1.nbLienCase(@tabLien)==case1.etiquetteCase.to_i-2 && case1.nbVoisinsDispo()==2 && case1.nbCasePasDejaRelie(@tabLien)==2 && case1.voisinsDispoEtiRestanteDe(1,@tabLien)==0  )
             compteur=0
             for i in 0..3 do
                 if(case1.tabTriangle[i]==true)
@@ -852,7 +855,54 @@ class Grille
     end
 
 
+    # test si une seule solution est possible sur une case dans le cadre de la création de liens pour eviter les archipelles complètes avec création de deux liens dans plusieurs directions
+    #
+    # === Paramètres
+    #
+    # * + case + = > la case pour le test
+    #
+    # === Retour
+    #
+    # boolean sur le test
+    #
+    def testArchipel3(case1)
 
+        if(case1.nbLienCase(@tabLien)==case1.etiquetteCase.to_i-4 && case1.nbVoisinsDispo()==3 && case1.nbCasePasDejaRelie(@tabLien)==3 && case1.voisinsDispoEtiRestanteDe(1,@tabLien)==0  )
+            compteur=0
+            for i in 0..3 do
+                for j in 0..3 do
+
+                    if(case1.tabTriangle[i]==true && case1.tabTriangle[j]==true && i!=j)
+                        lien=case1.creerLien(i,false,tabLien)
+                        lien2=case1.creerLien(i,false,tabLien)
+                        lien3=case1.creerLien(j,false,tabLien)
+                        lien4=case1.creerLien(j,false,tabLien)
+                    
+
+                        self.actuCroisement()
+                        if( !ArchiNonComplette(case1,Array.new()) )
+                            compteur+=1
+                        end
+    
+                        supprimerLien(lien)
+                        supprimerLien(lien2)
+                        supprimerLien(lien3)
+                        supprimerLien(lien4)
+
+
+                    end
+
+                end
+            end
+
+            if(compteur>=1)
+                return true
+            end
+
+        end
+
+        return false
+    end
 
 
 
