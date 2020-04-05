@@ -205,7 +205,7 @@ class Grille
 
 
 
-    # test si une archi n'est pas complette(c'est a dire qu'il reste au moin un triangle dans l'archipelle))
+    # test si une archi n'est pas complète(c'est a dire qu'il reste au moins un triangle dans l'archipelle))
     #
     # === Paramètres
     #
@@ -215,6 +215,7 @@ class Grille
     # === Retour
     #   boolean sur le test
     #
+    # NOM À CHANGER EN "ArchiNonComplete"
     def ArchiNonComplette(case1,tabCase2)
         if(case1.nbVoisinsDispo()==0)
             if(tabCase2.include?(case1)==false)
@@ -854,9 +855,9 @@ class Grille
     end
 
 
-    # test si une seul solution est possible sur une case dans le cadre de la creation de liens pour eviter les archipelles complette avec creation de deux liens dans plusieur directions
+    # test si une seule solution est possible sur une case dans le cadre de la création de liens pour eviter les archipelles complètes avec création de deux liens dans plusieurs directions
     #
-    # === Parametres
+    # === Paramètres
     #
     # * + case + = > la case pour le test
     #
