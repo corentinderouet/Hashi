@@ -117,7 +117,7 @@ class Case
         return compteur
     end
 
-    # compte le nb de voisins dispo de la case possèdant une certaine étiquette ACTUEL
+    # compte le nombre de voisins disponibles de la case possèdant une certaine étiquette ACTUELLE
     #
     # === Parametres
     #
