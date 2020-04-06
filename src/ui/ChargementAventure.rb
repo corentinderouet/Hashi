@@ -18,13 +18,23 @@ class ChargementAventure < Gtk::Box
 "   
     Histoire :
 
+        Vous êtes dans la peau d’un grand architecte qui à pour projet de de relier tous les
+        continents entre eux. Mais votre tâche ne sera pas si simple, les ponts seront de
+        plus en plus en plus compliqués à construire. Prenez votre courage à deux  mains et 
+        reliez tous ces continents pour faciliter les déplacements à travers le monde.
+
+        En avant !
+
+
     Objectifs :
+
         - Débloquer tous les continents jusqu'à atteindre l'Antarctique
         - Les continents se débloquent en fonction de votre nombre d'étoiles
         - Gagner des étoiles en jouant les niveaux présents sur les continents
         - Chaque niveau peut rapporter jusqu'à 3 étoiles
 
     Déplacements : 
+    
         - Cliquez sur un continent débloqué pour vous y déplacer
         - Cliquez sur l'étiquette d'un niveau (rectangle avec le nombre d'étoiles) pour le jouer
         - Cliquez en dehors d'un continent ou d'une étiquette pour revenir en arrière"
