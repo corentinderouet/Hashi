@@ -13,24 +13,40 @@ require_relative "Action"
 
 class Grille
 
-    # Méthode d'accès en lecture/écriture de @tabCase
+    # @tabCase => tableau contenant les cases (objet Case)
+    # @tabLien => tableau contenant les liens (objet Lien)
+    # @hypothese => boolean correspondnant a l'état du jeu, en mode hypothese ou non
+    # @grilleRes => object Grille contenant la grille finie et correcte
+    # @hauteur => entier, hauteur de la grille
+    # @largeur => entier, largeur de la grille
+    # @timer => entier, temps déja passé sur la grille en seconde
+    # @grilleFini => boolean correspondant a l'état de la grille, si elle est fini ou non (et correcte)
+    # @nbAides => entier, représentant le nombre d'aides déja utilisées
+
+
+    # Méthodes d'accès en lecture/écriture de @tabCase
     attr_accessor :tabCase
-    # Méthode d'accès en lecture/écriture de @tabLien
+    # Méthodes d'accès en lecture/écriture de @tabLien
     attr_accessor :tabLien
-    # Méthode d'accès en lecture/écriture de @hypothese
+    # Méthodes d'accès en lecture/écriture de @hypothese
     attr_accessor :hypothese
 
-    # Méthode d'accès en lecture/écriture de @grilleRes
+    # Méthodes d'accès en lecture/écriture de @grilleRes
     attr_accessor :grilleRes
 
+    # Méthode d'accès en lecture de @hauteur
     attr_reader :hauteur
 
+    # Méthode d'accès en lecture de @largeur
     attr_reader :largeur
 
+    # Méthodes d'accès en lecture/écriture de @timer
     attr_accessor :timer
 
-    attr_accessor :grilleFinie #boolean, true si la grille est fini
+    # Méthodes d'accès en lecture/écriture de @grilleFini
+    attr_accessor :grilleFinie
 
+    # Méthodes d'accès en lecture/écriture de @nbAides
     attr_accessor :nbAides
 
     # Rend la méthode new privée
@@ -55,8 +71,8 @@ class Grille
         @grilleRes=grilleRes
         @pile=Pile.creer()
         @pileRedo=Pile.creer()
-	@timer ||= 0
-	@nbAides ||= 0
+        @timer ||= 0
+        @nbAides ||= 0
 
 
         for i in 0..@tabCase.length-1 do
@@ -117,12 +133,17 @@ class Grille
     # * +ligne+ => la position dans la grille
     # * +colonne+ => la position dans la grille
     #
+    # === Retour
+    #
+    # Retourne la case sinon retourne faux
+    #
     def caseIci(ligne, colonne)
         @tabCase.each do |c|
             if(c.ligne==ligne && c.colonne==colonne)
                 return c
             end
         end
+        return false
     end
 
     # Méthode de suppression des liens entres les cases
@@ -151,7 +172,7 @@ class Grille
     #
     # === Retour
     #
-    # Retourne la valeur de la case, sinon retour faux
+    # Retourne la valeur de la case, sinon retourne faux
     #
     def contientCaseAvecEtiquette(ligne,colonne)
         for i in 0..@tabCase.length-1 do
@@ -163,7 +184,7 @@ class Grille
     end
 
 
-    # Méthode lors d'un clic sur un cercle
+    # Méthode lors d'un clic sur un cercle/une case
     #
     # === Paramètres
     #
@@ -205,7 +226,7 @@ class Grille
 
 
 
-    # test si une archi n'est pas complète(c'est a dire qu'il reste au moins un triangle dans l'archipelle))
+    # test si une archipelle n'est pas complète(c'est a dire qu'il reste au moins un triangle dans l'archipelle))
     #
     # === Paramètres
     #
@@ -215,8 +236,7 @@ class Grille
     # === Retour
     #   boolean sur le test
     #
-    # NOM À CHANGER EN "ArchiNonComplete"
-    def ArchiNonComplette(case1,tabCase2)
+    def ArchiNonComplete(case1,tabCase2)
         if(case1.nbVoisinsDispo()==0)
             if(tabCase2.include?(case1)==false)
                 tabCase2.push(case1)
@@ -224,7 +244,7 @@ class Grille
             for i in 0..3 do
                 if(case1.tabVoisins[i]!=false && case1.nbLienEntreDeuxCases(@tabLien,i) != 0 )
                     if(tabCase2.include?(case1.tabVoisins[i])==false)
-                        if(ArchiNonComplette(case1.tabVoisins[i],tabCase2)==true)
+                        if(ArchiNonComplete(case1.tabVoisins[i],tabCase2)==true)
                             return true
                         end
                     end
@@ -241,7 +261,7 @@ class Grille
 
 
 
-    # Méthode lors d'un dlic sur le triangle d'un cercle
+    # Méthode appelée lors d'un clic sur le triangle d'un cercle/une case
     #
     # === Paramètres
     #
@@ -256,7 +276,7 @@ class Grille
         self.actuCroisement()
     end
 
-    # actualise les triangles de chaques cases pour empecher les croisements de liens
+    # actualise les triangles de chaques cases pour empecher les croisements de liens et met à jours les autres triangles.
     #
     def actuCroisement()
 
@@ -308,7 +328,7 @@ class Grille
     end
 
 
-    # Méthode lors du clic sur un lien pour supprimer ce dernier
+    # Méthode appelée lors du clic sur un lien pour le supprimer
     #
     # === Paramètres
     #
@@ -318,7 +338,6 @@ class Grille
         @pile.empiler(Action.creer("suppression",l))
         self.supprimerLien(l)
         @pileRedo.vider()
-        #@pile.afficherPile()
     end
 
     # Méthode pour commencer à faire une hypothèse
@@ -337,7 +356,6 @@ class Grille
             end
         end
         @pile.empiler(Action.creer("hypotheseValidee",nil) )
-        #@pile.afficherPile()
         @hypothese=false
     end
 
@@ -361,7 +379,7 @@ class Grille
     end
 
 
-    # Méthode permettant de savoir si un lien est présent dans un tableau de lien
+    # Méthode permettant de savoir si un lien est présent dans un tableau de lien en comparent les coordonée des cases
     #
     # === Paramètres
     #
@@ -481,8 +499,6 @@ class Grille
 
             @pileRedo.empiler(a) #quand on depile en Undo on doit empiler en Redo
 
-            #puts("Sommet pile : #{a}")
-
             if(a.action == "ajout")
                 @pile.depiler()
                 self.supprimerLien( a.lien )
@@ -518,7 +534,6 @@ class Grille
 
         end
 
-        #@pile.afficherPile()
     end
 
 
@@ -530,7 +545,6 @@ class Grille
         if( !@pileRedo.estVide() )
             a = @pileRedo.sommet()
             @pile.empiler(a)    #quand on depile en Redo on doit empiler en Undo
-            #puts("Sommet pile : #{a}")
 
             if(a.action == "ajout")
                 @pileRedo.depiler()
@@ -567,12 +581,11 @@ class Grille
 
         end
 
-        #@pileRedo.afficherPile()
 
     end
 
 
-    # Méthode pour réinitialiser tout la grille et les actions (en gros nouveau départ)
+    # Méthode pour réinitialiser toute la grille et les actions (en gros nouveau départ)
     #
     def reinitialiser()
         for i in 0..@tabLien.length-1 do
@@ -597,7 +610,7 @@ class Grille
         niveau=1
 
 
-        #on génere les aides par rapport a la grille actuelle ici, on va push toutes les aides possibles dans les tableaux correspondant à leurs difficultés
+        #on génere les aides par rapport a la grille actuelle ici, on push toutes les aides possibles dans les tableaux correspondant à leurs difficultés
 
         @tabCase.each do |c| 
             if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien))!=0 )   
@@ -625,11 +638,11 @@ class Grille
                 #A OPTI avec boucle for
 
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 3 &&  c.nbVoisinsDispo()==2  )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 3 correspondant à son etiquette moins le nombre de liens vers des directions déja complettes et 2 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 3 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 2 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) ==2 &&  c.nbVoisinsDispo()==2 && c.nbCasePasDejaRelie(@tabLien)==1  )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 3 correspondant à son etiquette moins le nombre de liens vers des directions déja complettes et 2 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 3 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 2 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
 
@@ -638,34 +651,34 @@ class Grille
 
 
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 5 &&  c.nbVoisinsDispo()==3  )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 5 correspondant à son etiquette moins le nombre de liens vers des directions déja complettes et 3 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 5 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 3 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 4 &&  c.nbVoisinsDispo()==3 && c.nbCasePasDejaRelie(@tabLien)==2 )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 5 correspondant à son etiquette moins le nombre de liens vers des directions déja complettes et 3 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 5 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 3 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 3 &&  c.nbVoisinsDispo()==3 && c.nbCasePasDejaRelie(@tabLien)==1 )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 5 correspondant à son etiquette moins le nombre de liens vers des directions déja complettes et 3 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 5 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 3 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
 
 
 
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 7 &&  c.nbVoisinsDispo()==4  )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers des directions déja complettes et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 6 &&  c.nbVoisinsDispo()==4 && c.nbCasePasDejaRelie(@tabLien)==3 )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers des directions déja complettes et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 5 &&  c.nbVoisinsDispo()==4 && c.nbCasePasDejaRelie(@tabLien)==2 )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers des directions déja complettes et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
                 if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 4 &&  c.nbVoisinsDispo()==4 && c.nbCasePasDejaRelie(@tabLien)==1 )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers des directions déja complettes et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
                 end
 
 
@@ -677,16 +690,16 @@ class Grille
 
                 #en cours
 
-                if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==4 && c.nbVoisinsDispo()==3 && c.voisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==3 ) 
-                    aides2.push( Aides.creer(2,c,"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de liens vers des directions déja complettes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un lien vers le troisieme voisin ") )
+                if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==4 && c.nbVoisinsDispo()==3 && c.nbVoisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==3 ) 
+                    aides2.push( Aides.creer(2,c,"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un lien vers le troisieme voisin ") )
                 end
 
-                if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==3 && c.nbVoisinsDispo()==3 && c.voisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==2 && !c.lienDifDeFois(2,2,@tabLien) ) 
-                    aides2.push( Aides.creer(2,c,"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de liens vers des directions déja complettes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un lien vers le troisieme voisin ") )
+                if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==3 && c.nbVoisinsDispo()==3 && c.nbVoisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==2 && !c.lienDifDeFois(2,2,@tabLien) ) 
+                    aides2.push( Aides.creer(2,c,"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un lien vers le troisieme voisin ") )
                 end
 
-                if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==2 && c.nbVoisinsDispo()==3 && c.voisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==1 && !c.lienDifDeFois(2,2,@tabLien) ) 
-                    aides2.push( Aides.creer(2,c,"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de liens vers des directions déja complettes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un lien vers le troisieme voisin ") )
+                if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==2 && c.nbVoisinsDispo()==3 && c.nbVoisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==1 && !c.lienDifDeFois(2,2,@tabLien) ) 
+                    aides2.push( Aides.creer(2,c,"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un lien vers le troisieme voisin ") )
                 end
 
 
@@ -702,18 +715,18 @@ class Grille
 
 #exemple de phrase: "Cette case #{c.etiquetteCase} possède exactement 2 voisins dont au moins un avec une étiquette 2; il est donc possible de créer 1 pont vers l'autre voisin"
                 #bon
-                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.voisinsDispoEtiDe(2)==2 && c.nbLienCase(@tabLien)==0) 
+                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.nbVoisinsDispoEtiDe(2)==2 && c.nbLienCase(@tabLien)==0) 
                     aides2.push( Aides.creer(2,c,"Si une case avec une etiquette de 2 possède 2 voisins qui sont deux case avec des etiquettes de 2, il est possible de créer un lien vers chaque voisin ") )
                 end
 
 
                 #bon
-                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.voisinsDispoEtiDe(2)==1 && c.nbLienCase(@tabLien)==0) 
+                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.nbVoisinsDispoEtiDe(2)==1 && c.nbLienCase(@tabLien)==0) 
                     aides2.push( Aides.creer(2,c,"Si une case avec une etiquette de 2 et 0 lien possède 2 voisins dont un SEUL avec une etiquette de 2, il est possible de créer un lien vers l'autre voisin ") )
                 end
 
 
-                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.voisinsDispoEtiDe(1)==1 && c.nbLienCase(@tabLien)==0) 
+                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.nbVoisinsDispoEtiDe(1)==1 && c.nbLienCase(@tabLien)==0) 
                     aides2.push( Aides.creer(2,c,"Si une case avec une etiquette de 2 possède 2 voisins dont un avec une etiquette de 1, il est possible de créer un lien vers l'autre voisins ") )
                 end
 
@@ -745,7 +758,7 @@ class Grille
         end
 
 
-        #on retourne une aides en fonction du niveau ici
+        #on retourne une aides en fonction du niveau
 
         if(niveau==1 && aides1.length==0)
             niveau+=1
@@ -772,7 +785,7 @@ class Grille
 
 
 
-        # test si une seul solution est possible sur une case dans le cadre de la creation de liens pour eviter les archipelles complettes avec creation d'un lien
+        # test si une seule solution est possible sur une case dans le cadre de la creation de liens pour eviter les archipelles completes avec creation d'un unique lien
     #
     # === Parametres
     #
@@ -786,18 +799,13 @@ class Grille
         compteur=0
 
 
-        #si nbLien deja fait sur cette case == etiquette-1 sinon return false
-            #on parcours les triangles de la case, on ajoute un lien et on test puis on l'enleve ainsi de suite
-                #parcours des cases et liens,si une case dans l'archipelle a partir de la case de depart n'est pas etiquette==nbLien alors compteur+=1
-
-
         if(case1.nbLienCase(@tabLien)==case1.etiquetteCase.to_i-1)
 
             for i in 0..3 do
                 if(case1.tabTriangle[i]==true)
                     lien=case1.creerLien(i,false,tabLien)
                     self.actuCroisement()
-                    if( ArchiNonComplette(case1,Array.new()) )
+                    if( ArchiNonComplete(case1,Array.new()) )
                         compteur+=1
                     end
                     supprimerLien(lien)
@@ -813,7 +821,7 @@ class Grille
     end
 
 
-    # test si une seul solution est possible sur une case dans le cadre de la creation de liens pour eviter les archipelles complette avec creation de deux liens
+    # test si une seule solution est possible sur une case dans le cadre de la creation de liens pour eviter les archipelles completes avec creation de deux liens
     #
     # === Parametres
     #
@@ -825,7 +833,7 @@ class Grille
     #
     def testArchipel2(case1)
 
-        if(case1.nbLienCase(@tabLien)==case1.etiquetteCase.to_i-2 && case1.nbVoisinsDispo()==2 && case1.nbCasePasDejaRelie(@tabLien)==2 && case1.voisinsDispoEtiRestanteDe(1,@tabLien)==0  )
+        if(case1.nbLienCase(@tabLien)==case1.etiquetteCase.to_i-2 && case1.nbVoisinsDispo()==2 && case1.nbCasePasDejaRelie(@tabLien)==2 && case1.nbVoisinsDispoEtiRestanteDe(1,@tabLien)==0  )
             compteur=0
             for i in 0..3 do
                 if(case1.tabTriangle[i]==true)
@@ -834,7 +842,7 @@ class Grille
                     lien2=case1.creerLien(i,false,tabLien)
 
                     self.actuCroisement()
-                    if( ArchiNonComplette(case1,Array.new()) )
+                    if( ArchiNonComplete(case1,Array.new()) )
                         compteur+=1
                     end
  
@@ -867,7 +875,7 @@ class Grille
     #
     def testArchipel3(case1)
 
-        if(case1.nbLienCase(@tabLien)==case1.etiquetteCase.to_i-4 && case1.nbVoisinsDispo()==3 && case1.nbCasePasDejaRelie(@tabLien)==3 && case1.voisinsDispoEtiRestanteDe(1,@tabLien)==0  )
+        if(case1.nbLienCase(@tabLien)==case1.etiquetteCase.to_i-4 && case1.nbVoisinsDispo()==3 && case1.nbCasePasDejaRelie(@tabLien)==3 && case1.nbVoisinsDispoEtiRestanteDe(1,@tabLien)==0  )
             compteur=0
             for i in 0..3 do
                 for j in 0..3 do
@@ -880,7 +888,7 @@ class Grille
                     
 
                         self.actuCroisement()
-                        if( !ArchiNonComplette(case1,Array.new()) )
+                        if( !ArchiNonComplete(case1,Array.new()) )
                             compteur+=1
                         end
     
