@@ -5,10 +5,17 @@
 
 class Action
 
-      attr_accessor:action
-      attr_accessor:lien
+    # @action => String, représente le type d'action
+    # @lien => Lien, le lien sur lequel a été appliqué l'action
 
-      private_class_method :new
+
+    # Méthode d'acces en lecture / ecriture de @action
+    attr_accessor :action
+    # Méthode d'acces en lecture / ecriture de @lien
+    attr_accessor :lien
+        
+    # On rend privé la méthode de classe new pour forcer l'utilisation de Action.creer
+    private_class_method :new
       
       # Constructeur
 	#
@@ -16,10 +23,10 @@ class Action
 	#
 	# * +action+ => Action à faire
 	# * +lien+ => Lien sur lequel faire l'action
-      def initialize(action,lien)
-          @action = action
-          @lien = lien
-      end
+    def initialize(action,lien)
+        @action = action
+        @lien = lien
+    end
 
       # Redéfinition du constructeur
 	#
@@ -27,13 +34,13 @@ class Action
 	#
 	# * +action+ => Action à faire
 	# * +lien+ => Lien sur lequel faire l'action
-      def Action.creer(action,lien)
-          new(action,lien)
-      end
+    def Action.creer(action,lien)
+        new(action,lien)
+    end
 
-      # Redéfinition de l'affichage d'une Action
-      def to_s()
-          return "#{@action}"
-      end
+    # Redéfinition de l'affichage d'une Action
+    def to_s()
+        return "#{@action}"
+    end
 
 end
