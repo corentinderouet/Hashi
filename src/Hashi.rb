@@ -204,5 +204,13 @@ class Hashi < Gtk::Window
     end
 end
 
+# Suppression des warnings internes à active record pour ruby > 2.7
+# Si la classe Warning n'existe pas alors la versionde ruby est < 2.7
+# donc il n'y a rien faire (d'où le rescue vide)
+begin
+    Warning[:deprecated] = false
+rescue Exception
+end
+
 ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: '../db/base.sqlite')
 Hashi.new()
