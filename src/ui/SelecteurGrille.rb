@@ -22,28 +22,34 @@ class SelecteurGrille < Gtk::ScrolledWindow
 
 	#à modifier
 	idMode = 1 # Entrainement
-        grilles = GestionBase.recupGrilles(fenetre.joueur.id, dif, 1, 0, 12)
+        grilles = [GestionBase.recupGrilles(fenetre.joueur.id, dif, 1, 0, 5),
+                   GestionBase.recupGrilles(fenetre.joueur.id, dif, 1, 10, 5),
+                   GestionBase.recupGrilles(fenetre.joueur.id, dif, 1, 20, 5)].inject(:+)
         #grilles = grilles.map() { |x| YAML.load(x.grilleSolution).grilleRes }
 
         grid = Gtk::Grid.new()
         grid.row_spacing = 40
         grid.column_spacing = 40
         grid.margin = 20
+        
+        x = 0
+        y = 0
 
-        3.times() do |x|
-            4.times do |y|
-                n = x+y*3+1
-                vBox = Gtk::Box.new(Gtk::Orientation.new(1), 0)
-                g = grilles[n - 1]
-                f = Gtk::Frame.new()
-                a = AfficheurGrille.new(YAML.load(g.grilleSolution), false, nil)
-                a.set_size_request(1,300)
-                a.expand = true
-                f.add(a)
-                vBox.add(f)
-                vBox.add(Gtk::Label.new("Grille n°#{n}"))
-                vBox.signal_connect("button-press-event") { @fenetre.finSelection(g, "entrainement") }
-                grid.attach(vBox, x, y, 1, 1)
+        grilles.each() do |g|
+            vBox = Gtk::Box.new(Gtk::Orientation.new(1), 0)
+            f = Gtk::Frame.new()
+            a = AfficheurGrille.new(YAML.load(g.grilleSolution), false, nil)
+            a.set_size_request(1,300)
+            a.expand = true
+            f.add(a)
+            vBox.add(f)
+            vBox.add(Gtk::Label.new("Grille n°#{x+y*3+1}"))
+            vBox.signal_connect("button-press-event") { @fenetre.finSelection(g, "entrainement") }
+            grid.attach(vBox, x, y, 1, 1)
+            x += 1
+            if x > 2
+                x = 0
+                y += 1
             end
         end
 
