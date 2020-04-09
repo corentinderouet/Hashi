@@ -23,7 +23,6 @@ class Monde < Carte
     end
 
     def dessinerEtiquettes()
-      puts(@carte.nbEtoiles)
         # Amérique du nord
         self.drawRectangleVide(380, 900, 1300, 950, false)
         n = @carte.etoiles[0].first(7).inject(:+)
@@ -163,8 +162,6 @@ class Monde < Carte
             if s != "null"
               @carte.choix(s)
             end
-        else
-            @carte.quitter()
         end
     end
 end
