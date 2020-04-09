@@ -17,9 +17,9 @@ class Case
     attr_reader :colonne
     # Méthode d'acces en lecture de @etiquetteCase
     attr_reader :etiquetteCase
-    # Méthode d'acces en lecture / ecriture de @tabVoisins
+    # Méthodes d'acces en lecture / ecriture de @tabVoisins
     attr_accessor :tabVoisins
-    # Méthode d'acces en lecture / ecriture de @tabTriangle
+    # Méthodes d'acces en lecture / ecriture de @tabTriangle
     attr_accessor :tabTriangle
 
     # On rend privé la méthode de classe new pour forcer l'utilisation de Case.creer
@@ -97,7 +97,7 @@ class Case
     end
 
 
-    # compte le nb de voisins dispo de la case possèdant une certaine étiquette
+    # compte le nombre de voisins dispo ayant comme etiquette la valeur passé en paramètre
     #
     # === Parametres
     #
@@ -107,7 +107,7 @@ class Case
     #
     # entier sur le nombre de voisins possédant cette etiquette
     #
-    def voisinsDispoEtiDe(etiquette)
+    def nbVoisinsDispoEtiDe(etiquette)
         compteur=0
         for i in 0..3 do
             if(@tabTriangle[i]==true && @tabVoisins[i].etiquetteCase.to_i==etiquette)
@@ -117,7 +117,7 @@ class Case
         return compteur
     end
 
-    # compte le nombre de voisins disponibles de la case possèdant une certaine étiquette ACTUELLE
+    # compte le nombre de voisins dispo ayant comme valeur leur etiquette- le nombre de liens déja fait équivalent à la valeur passé en paramètre
     #
     # === Parametres
     #
@@ -128,7 +128,7 @@ class Case
     #
     # entier sur le nombre de voisins possédant cette etiquette
     #
-    def voisinsDispoEtiRestanteDe(etiquette,tabLien)
+    def nbVoisinsDispoEtiRestanteDe(etiquette,tabLien)
         compteur=0
         for i in 0..3 do
             if(@tabTriangle[i]==true && ( @tabVoisins[i].etiquetteCase.to_i - @tabVoisins[i].nbLienCase(tabLien) )==etiquette)
@@ -138,8 +138,8 @@ class Case
         return compteur
     end
 
-    # test si un lien est présent pour un voisin dont l'etiquette est différente du parametre OU si le nombre max de voisins avec 
-    #l'etiquette est dépassé et qu'il y en a un autre avec cette meme etiquette et qu'il y a un lien
+    # test si un lien est présent vers une case voisine dont l'etiquette est différente du parametre OU si le nombre max de voisins avec 
+    # l'etiquette est dépassé et qu'il y en a un autre avec cette meme etiquette et qu'il y a un lien
     #
     # === Parametres
     #
@@ -175,7 +175,7 @@ class Case
 
 
 
-    # compte le nb de voisins déja   relié par un moins un lien
+    # compte le nb de voisins déja relié par un moins un lien
     #
     # === Parametres
     #
@@ -196,7 +196,7 @@ class Case
     end
 
 
-        # compte le nb de voisins pas encore relié par un moins un lien
+        # compte le nb de cases voisines pas encore reliées par au moins un lien sur cette case
     #
     # === Parametres
     #
@@ -220,7 +220,7 @@ class Case
 
 
 
-    # test si au moin au de ses voisins DISPO ne peux creer plus que 1 lien
+    # test si au moins un de ses voisins dispo ne peux creer plus qu'un lien
     #
     # === Parametres
     #
@@ -313,7 +313,17 @@ class Case
     end
     
 
-
+    # test si il y a au moins un lien passant entre cette case et un voisin dans une certaine direction
+    #
+    # === Parametres
+    #
+    # * + tabLien + = > le tableau des liens
+    # * + posTabTriangle + = > entier correspondant à la direction de création du lien (0==nord,1==est,2==sud,3==ouest)
+    #
+    # === Retour
+    #
+    # boolean, retourne vrai si un lien passe, faux sinon
+    #
     def lienPasseEntreDeuxCases(tabLien,posTabTriangle)
         if(@tabTriangle[posTabTriangle]!=false)
             tabLien.each do  |lien|
@@ -348,26 +358,26 @@ class Case
     # * + tabLien + = > le tableau de liens de la grille
     #
     def creerLien(posTabTriangle,hypothese,tabLien)
-        if(self.tabTriangle[posTabTriangle]!=false)
-            l=Lien.creer(self,self.tabVoisins[posTabTriangle],hypothese)
+        if(@tabTriangle[posTabTriangle]!=false)
+            l=Lien.creer(self,@tabVoisins[posTabTriangle],hypothese)
 
             c=self.nbLienEntreDeuxCases(tabLien,posTabTriangle)
 
             if(c==1)
-                self.tabTriangle[posTabTriangle] = false
-                self.tabVoisins[posTabTriangle].tabTriangle[(posTabTriangle + 2)%4] = false
+                @tabTriangle[posTabTriangle] = false
+                @tabVoisins[posTabTriangle].tabTriangle[(posTabTriangle + 2)%4] = false
             end
             tabLien.push(l)
 
             return l
         else
-            puts("impossible de creer un lien entre #{@etiquetteCase} et son voisin #{posTabTriangle}") #' "#{self.tabVoisins[posTabTriangle].etiquetteCase}"' deja existant')
+            puts("impossible de creer un lien entre #{@etiquetteCase} et son voisin #{posTabTriangle}")
         end
 
     end
 
 
-
+    # Redéfinition de l'affichage d'une Case
     def to_s()
         return "Case en [#{@ligne},#{@colonne}] : etiq[#{@etiquetteCase}]"
     end
