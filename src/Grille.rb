@@ -619,68 +619,37 @@ class Grille
                 #=================NIVEAU 1==============#
 
 
-                #bon
+                
                 if( c.nbVoisinsDispo()==1 && c.etiquetteCase.to_i>c.nbLienCase(@tabLien) ) 
-                    aides1.push( Aides.creer(1,c,"Si une case avec une etiquette de #{c.etiquetteCase} possède exactement un voisin et possède encore au moins un pont créable; il est possible de créer tous les liens restants")) #" Si une case possède 1 voisin et a une etiquette supérieur au nombre de lien déja créer, il est possible de créer tous les liens restants vers ce voisin ") )
+                    aides1.push( Aides.creer(1,c,"Si une case avec une etiquette de #{c.etiquetteCase} possède exactement un voisin et possède encore au moins un pont créable; il est possible de créer tous les ponts restants"))
                 end
 
-                #bon
+                
                 if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) == c.nbLienCasePossible(@tabLien) )
-                    aides1.push( Aides.creer(1,c,"Si une case avec une etiquette de #{c.etiquetteCase} possède autant de ponts créables que (l'étiquette - ponts); il est possible de créer tous les liens restants")) #" Si une case possède un nombre de lien restant possible vers elle égale à son etiquette moins le nombre de lien déja créé sur cette case, il est possible de créer tous les liens restant.") )
+                    aides1.push( Aides.creer(1,c,"Si une case avec une etiquette de #{c.etiquetteCase} possède autant de ponts créables que (l'étiquette - ponts); il est possible de créer tous les ponts restants")) 
                 end
 
                
 
 
 
-
-
-                #A OPTI avec boucle for
-
-                if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 3 &&  c.nbVoisinsDispo()==2  )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 3 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 2 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                for i in 0..1 do
+                    if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 3-i  &&  c.nbVoisinsDispo()==2 && c.nbCasePasDejaRelie(@tabLien)==2-i )
+                        aides1.push( Aides.creer(1,c," Si une case possède une valeur de #{c.etiquetteCase.to_i - c.nbLienCase(@tabLien)} correspondant à son etiquette moins le nombre de ponts déja présent sur cette case et #{c.nbCasePasDejaRelie(@tabLien)} voisins pas encore relié, il est possible de créer au moins un pont vers chacun de ces voisins ") )
+                    end
                 end
 
-                if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) ==2 &&  c.nbVoisinsDispo()==2 && c.nbCasePasDejaRelie(@tabLien)==1  )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 3 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 2 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                for i in 0..2 do
+                    if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 5-i  &&  c.nbVoisinsDispo()==3 && c.nbCasePasDejaRelie(@tabLien)==3-i )
+                        aides1.push( Aides.creer(1,c," Si une case possède une valeur de #{c.etiquetteCase.to_i - c.nbLienCase(@tabLien)} correspondant à son etiquette moins le nombre de ponts déja présent sur cette case et #{c.nbCasePasDejaRelie(@tabLien)} voisins pas encore relié, il est possible de créer au moins un pont vers chacun de ces voisins ") )
+                    end
                 end
 
-
-
-
-
-
-                if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 5 &&  c.nbVoisinsDispo()==3  )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 5 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 3 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
+                for i in 0..3 do
+                    if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 7-i  &&  c.nbVoisinsDispo()==4 && c.nbCasePasDejaRelie(@tabLien)==4-i )
+                        aides1.push( Aides.creer(1,c," Si une case possède une valeur de #{c.etiquetteCase.to_i - c.nbLienCase(@tabLien)} correspondant à son etiquette moins le nombre de ponts déja présent sur cette case et #{c.nbCasePasDejaRelie(@tabLien)} voisins pas encore relié, il est possible de créer au moins un pont vers chacun de ces voisins ") )
+                    end
                 end
-
-                if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 4 &&  c.nbVoisinsDispo()==3 && c.nbCasePasDejaRelie(@tabLien)==2 )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 5 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 3 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
-                end
-
-                if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 3 &&  c.nbVoisinsDispo()==3 && c.nbCasePasDejaRelie(@tabLien)==1 )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 5 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 3 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
-                end
-
-
-
-
-                if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 7 &&  c.nbVoisinsDispo()==4  )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
-                end
-
-                if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 6 &&  c.nbVoisinsDispo()==4 && c.nbCasePasDejaRelie(@tabLien)==3 )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
-                end
-
-                if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 5 &&  c.nbVoisinsDispo()==4 && c.nbCasePasDejaRelie(@tabLien)==2 )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
-                end
-
-                if( c.etiquetteCase.to_i - c.nbLienCase(@tabLien) == 4 &&  c.nbVoisinsDispo()==4 && c.nbCasePasDejaRelie(@tabLien)==1 )
-                    aides1.push( Aides.creer(1,c," Si une case possède une valeur de 7 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et 4 voisins, il est possible de créer au moins un lien vers chaque voisins ") )
-                end
-
 
 
 
@@ -688,46 +657,33 @@ class Grille
 
 
 
-                #en cours
-
                 if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==4 && c.nbVoisinsDispo()==3 && c.nbVoisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==3 ) 
-                    aides2.push( Aides.creer(2,c,"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un lien vers le troisieme voisin ") )
+                    aides2.push( Aides.creer(2,c,"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de ponts vers des directions déja completes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un pont vers le troisieme voisin ") )
                 end
 
-                if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==3 && c.nbVoisinsDispo()==3 && c.nbVoisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==2 && !c.lienDifDeFois(2,2,@tabLien) ) 
-                    aides2.push( Aides.creer(2,c,"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un lien vers le troisieme voisin ") )
+                for i in 0..1 do
+                    if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==3-i && c.nbVoisinsDispo()==3 && c.nbVoisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==2-i && !c.lienDifDeFois(2,2,@tabLien) ) 
+                        aides2.push( Aides.creer(2,c,"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de ponts vers des directions déja completes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un pont vers le troisieme voisin ") )
+                    end
                 end
 
-                if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==2 && c.nbVoisinsDispo()==3 && c.nbVoisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==1 && !c.lienDifDeFois(2,2,@tabLien) ) 
-                    aides2.push( Aides.creer(2,c,"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de liens vers des directions déja completes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un lien vers le troisieme voisin ") )
-                end
 
 
 
-
-
-
-
-
-
-
-
-
-#exemple de phrase: "Cette case #{c.etiquetteCase} possède exactement 2 voisins dont au moins un avec une étiquette 2; il est donc possible de créer 1 pont vers l'autre voisin"
-                #bon
+                
                 if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.nbVoisinsDispoEtiDe(2)==2 && c.nbLienCase(@tabLien)==0) 
-                    aides2.push( Aides.creer(2,c,"Si une case avec une etiquette de 2 possède 2 voisins qui sont deux case avec des etiquettes de 2, il est possible de créer un lien vers chaque voisin ") )
+                    aides2.push( Aides.creer(2,c,"Si une case avec une etiquette de 2 possède 2 voisins qui sont deux case avec des etiquettes de 2, il est possible de créer un pont vers chaque voisin ") )
                 end
 
 
-                #bon
+                
                 if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.nbVoisinsDispoEtiDe(2)==1 && c.nbLienCase(@tabLien)==0) 
-                    aides2.push( Aides.creer(2,c,"Si une case avec une etiquette de 2 et 0 lien possède 2 voisins dont un SEUL avec une etiquette de 2, il est possible de créer un lien vers l'autre voisin ") )
+                    aides2.push( Aides.creer(2,c,"Si une case avec une etiquette de 2 et 0 lien possède 2 voisins dont un seul avec une etiquette de 2, il est possible de créer un pont vers l'autre voisin ") )
                 end
 
 
                 if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.nbVoisinsDispoEtiDe(1)==1 && c.nbLienCase(@tabLien)==0) 
-                    aides2.push( Aides.creer(2,c,"Si une case avec une etiquette de 2 possède 2 voisins dont un avec une etiquette de 1, il est possible de créer un lien vers l'autre voisins ") )
+                    aides2.push( Aides.creer(2,c,"Si une case avec une etiquette de 2 possède 2 voisins dont un avec une etiquette de 1, il est possible de créer un pont vers l'autre voisins ") )
                 end
 
 
@@ -740,16 +696,16 @@ class Grille
 
                 
                 if( self.testArchipel1(c) )
-                    aides3.push( Aides.creer(3,c," Si lors de la création d'un lien la suite du jeu est bloqué car une archipelle complette est formé(suite de case sans triangle restant relié par des liens) , il est possible de déterminer ou créer un lien ") )
+                    aides3.push( Aides.creer(3,c," Si lors de la création d'un pont la suite du jeu est bloqué car une île complette est formé(suite de case sans triangle restant relié par des ponts) , il est possible de déterminer ou créer un pont ") )
                 end
 
 
                 if( self.testArchipel2(c) )
-                    aides3.push( Aides.creer(3,c," Si lors de la création de deux liens sur une case avec 2 voisins et 2 liens restant max a construire la suite du jeu est bloqué car une archipelle complette est formé(suite de case sans triangle restant relié par des liens) , il est possible de déterminer ou créer au moins un lien") )
+                    aides3.push( Aides.creer(3,c," Si lors de la création de deux ponts sur une case avec 2 voisins et 2 ponts restant max a construire la suite du jeu est bloqué car une île complette est formé(suite de case sans triangle restant relié par des ponts) , il est possible de déterminer ou créer au moins un pont") )
                 end
 
                 if( self.testArchipel3(c) )
-                    aides3.push( Aides.creer(3,c," Si lors de la création de quatre liens sur une case avec 3 voisins et 4 liens restant max a construire la suite du jeu est bloqué car une archipelle complette est formé(suite de case sans triangle restant relié par des liens) , il est possible de déterminer ou créer au moins un lien") )
+                    aides3.push( Aides.creer(3,c," Si lors de la création de quatre ponts sur une case avec 3 voisins et 4 ponts restant max a construire la suite du jeu est bloqué car une ile complette est formé(suite de case sans triangle restant relié par des ponts) , il est possible de déterminer ou créer au moins un pont") )
                 end
 
 
