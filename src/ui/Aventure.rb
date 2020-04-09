@@ -10,7 +10,7 @@ require_relative "AmeriqueSud"
 require_relative "Antarctique"
 
 # Widget Gtk permettant d'afficher l'aventure
-class Aventure < Gtk::Stack
+class Aventure < Gtk::Overlay
 
     attr_reader :grillesF, :grillesM, :grillesD
 
@@ -25,8 +25,9 @@ class Aventure < Gtk::Stack
     # * +fenetre+ - Fenetre principale
     def initialize(fenetre)
         super()
-        self.set_transition_type(Gtk::Stack::TransitionType::CROSSFADE);
-        self.set_transition_duration(500);
+        @stack = Gtk::Stack.new()
+        @stack.set_transition_type(Gtk::Stack::TransitionType::CROSSFADE)
+        @stack.set_transition_duration(500)
         @fenetre = fenetre
         
         @grillesF = GestionBase.recupGrilles(fenetre.joueur.id, 1, 3, 0, 14)
@@ -46,16 +47,33 @@ class Aventure < Gtk::Stack
         @ameriqueNord = AmeriqueNord.new(self)
         @ameriqueSud = AmeriqueSud.new(self)
         @antarctique = Antarctique.new(self)
-        self.add_named(@monde, "monde")
-        self.add_named(@europe, "europe")
-        self.add_named(@afrique, "afrique")
-        self.add_named(@asie, "asie")
-        self.add_named(@oceanie, "oceanie")
-        self.add_named(@ameriqueNord, "ameriqueNord")
-        self.add_named(@ameriqueSud, "ameriqueSud")
-        self.add_named(@antarctique, "antarctique")
-        @dernier = self.visible_child_name()
-        puts(@dernier)
+        @stack.add_named(@monde, "monde")
+        @stack.add_named(@europe, "europe")
+        @stack.add_named(@afrique, "afrique")
+        @stack.add_named(@asie, "asie")
+        @stack.add_named(@oceanie, "oceanie")
+        @stack.add_named(@ameriqueNord, "ameriqueNord")
+        @stack.add_named(@ameriqueSud, "ameriqueSud")
+        @stack.add_named(@antarctique, "antarctique")
+        @dernier = @stack.visible_child_name()
+
+        @stack.halign = :start
+        @stack.valign = :start
+        @stack.expand = true
+        self.add_overlay(@stack)
+        @bouton = Gtk::Button.new(label: "Retour")
+        @bouton.halign = :start
+        @bouton.valign = :end
+        @bouton.signal_connect("clicked") do
+            if @stack.visible_child == @monde
+                self.quitter()
+            else
+                self.retour()
+            end
+        end
+
+        self.add_overlay(@bouton)
+        @stack.show_all()
         self.show_all()
     end
 
@@ -76,31 +94,31 @@ class Aventure < Gtk::Stack
 
     # Fonction appellé par le monde après le choix du continent
     def choix(continent)
-        self.set_visible_child_name(continent)
+        @stack.set_visible_child_name(continent)
     end
 
     # Lancement d'une grille
     def lancer(g)
-        @dernier = self.visible_child_name()
+        @dernier = @stack.visible_child_name()
 
-        self.add_named(AfficheurJeu.new(g, self, "aventure"), "grille")
+        @stack.add_named(AfficheurJeu.new(g, self, "aventure"), "grille")
         self.show_all()
-        self.set_visible_child_name("grille")
+        @stack.set_visible_child_name("grille")
     end
 
     # Fin d'une grille
     def finJeu()
-        g = self.visible_child()
+        g = @stack.visible_child()
         self.calculNbEtoiles()
-        self.set_visible_child(@dernier)
-        self.visible_child.refresh()
-        self.remove_child(g)
+        @stack.set_visible_child(@dernier)
+        @stack.visible_child.refresh()
+        @stack.remove_child(g)
     end    
 
     # Fonction appellé les continents pour revenir au monde
     def retour()
-        self.set_visible_child(@monde)
-        self.visible_child.refresh()
+        @stack.set_visible_child(@monde)
+        @stack.visible_child.refresh()
     end
 
     # Retour au menu principal

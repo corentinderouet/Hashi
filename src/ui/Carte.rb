@@ -99,6 +99,7 @@ class Carte < Gtk::DrawingArea
         #ic.rectangle(0, 0, 1000, 1000)
         #ic.fill()
         #@zoom = @factZoom * width / height / 2
+        self.set_size_request(@carte.allocation.width, @carte.allocation.height)
         if height*1.3 > width
           @zoom = @factZoom * (width / 5000.0) * 2.5
         else
@@ -277,7 +278,5 @@ class Carte < Gtk::DrawingArea
                 return nil
             end
         end
-
-        @carte.retour()
     end
 end
