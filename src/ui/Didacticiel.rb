@@ -79,19 +79,19 @@ class Didacticiel < Gtk::Window
     Interface :
 
         Les boutons : 
-            Annuler : Permets de revenir un coup en arrière.
-            Refaire : Permets de rétablir le dernier coup annulé.
-            Vérification : Permets de revenir au dernier état de jeu sans erreur. Cependant, votre score en sera pénalisé en mode Classé et Aventure.
-            Hypothèse : Permets d'émettre des hypothèses de liens. Ces liens seront d'une couleur différente pour vous signifier que vous entrez dans ce mode. À la fin de votre hypothèse, vous aurez
-le choix de la valider, ou bien de l'annuler. 
-            Réinitialiser : supprime tout les liens dans la grille.
-            Position : Signale une case (en vert) où une technique est applicable. 
+            Annuler : Permet de revenir un coup en arrière.
+            Refaire : Permet de rétablir le dernier coup annulé.
+            Vérification : Permet de revenir au dernier état de jeu sans erreur. Cependant, votre score en sera pénalisé en mode Classé et Aventure.
+            Hypothèse : Permet d'émettre des hypothèses de liens. Ces liens seront d'une couleur différente pour vous signifier que vous entrez dans ce mode. À la fin de votre hypothèse, vous aurez
+le choix de la valider, ou bien de l'annuler afin de revenir à l'état du jeu avant l'hypothèse. 
+            Réinitialiser : Supprime tous les liens dans la grille.
+            Position : Met une case en surbrillance (vert) où une technique connue est applicable. 
             Technique : Affiche dans la zone de texte une technique applicable sur l'une des cases de la grille, sans signifier laquelle.
 
         Les clics sur : 
-            Triangle : créer un lien vers la case voisine dans la direction du triangle.
-            Case : met en évidence (en rouge) tout les liens de l'île à laquelle appartient cette case.
-            Lien : supprime le lien. 
+            Triangle : Crée un lien vers la case voisine dans la direction du triangle.
+            Case : Met en évidence (en rouge) tous les liens de l'île à laquelle appartient cette case.
+            Lien : Supprime ce lien.
 "
         view.sensitive = false
         view1.sensitive = false
