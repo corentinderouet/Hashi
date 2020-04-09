@@ -18,7 +18,7 @@ class AmeriqueNord < Carte
         super(carte)
         @dX = -1080
         @dY = -1350
-        @factZoom = 0.9
+        @factZoom = 1.1
         
         @g = carte.grillesF
         
