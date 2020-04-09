@@ -72,7 +72,13 @@ class Hashi < Gtk::Window
     #
     # * +usr+ - Utilisateur à créer
     def inscription(usr)
-        if (GestionBase.ajouterJoueur(usr)) 
+        if usr == ""
+          d = Gtk::MessageDialog.new()
+          d.text = "Veuillez rentrer un nom d'utilisateur"
+          d.message_type = :info
+          d.run
+          d.destroy
+        elsif GestionBase.ajouterJoueur(usr)
           @joueur = GestionBase.recupJoueur(usr)
           self.remove(@courant)
           puts("Utilisateur créé: #{usr}")
