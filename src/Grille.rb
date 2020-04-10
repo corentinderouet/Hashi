@@ -466,7 +466,7 @@ class Grille
 
     # Méthode pour annuler une hypothèse
     #
-    def annulerHypothese() #pas encore fonctionnelle
+    def annulerHypothese()
 
         a = @pile.sommet()
         while(a.action != "debutHypothese")
@@ -483,6 +483,10 @@ class Grille
             a = @pile.sommet()
         end
         @pile.depiler()
+
+        @tabLien.each do |l|
+            l.hypothese=false
+        end
         
         
 
@@ -660,70 +664,82 @@ class Grille
 
                 #=================NIVEAU 2==============#
 
+                    if(aides1.length==0)
 
 
-                if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==4 && c.nbVoisinsDispo()==3 && c.nbVoisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==3 ) 
-                    aides2.push( Aides.creer(2,c,"Une case n’a plus que 4 ponts à créer et ne possède plus que trois voisins dont deux au moins sont des cases 2; il est donc possible de créer un pont vers le troisième voisin pour ne pas créer d’archipel isolé."))
-
-#"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de ponts vers des directions déja completes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un pont vers le troisieme voisin ") )
-                end
-
-                for i in 0..1 do
-                    if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==3-i && c.nbVoisinsDispo()==3 && c.nbVoisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==2-i && !c.lienDifDeFois(2,2,@tabLien) ) 
-                        aides2.push( Aides.creer(2,c,"Une case n’a plus que 4 ponts à créer et ne possède plus que trois voisins dont deux au moins sont des cases 2; il est donc possible de créer un pont vers le troisième voisin pour ne pas créer d’archipel isolé."))
-#"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de ponts vers des directions déja completes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un pont vers le troisieme voisin ") )
+                    if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) == c.nbLienCasePossible(@tabLien)-1 && (c.nbCasePasDejaRelie(@tabLien)==2 || c.nbCasePasDejaRelie(@tabLien)==3 || c.nbCasePasDejaRelie(@tabLien)==4  ) && c.nbVoisinsDispoPasRelieEtiRestanteDe(1,@tabLien)==1   ) 
+                        aides2.push( Aides.creer(2,c,"Une case n’a plus que #{(c.etiquetteCase.to_i - c.nbLienCase(@tabLien))} ponts à créer et ne possède plus que #{c.nbCasePasDejaRelie(@tabLien)} voisins pas encore relié dont un au moins avec 1 pont restant à créer; il est donc possible de créer un pont vers chaque voisin sauf vers ce dernier."))
                     end
-                end
 
 
 
 
-                
-                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.nbVoisinsDispoEtiDe(2)==2 && c.nbLienCase(@tabLien)==0) 
-                    aides2.push( Aides.creer(2,c,"Une case 2 possède exactement deux voisins qui sont tous les deux des cases 2; il est donc possible de créer un pont vers chaque voisin."))
+                    if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==4 && c.nbVoisinsDispo()==3 && c.nbVoisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==3 ) 
+                        aides2.push( Aides.creer(2,c,"Une case n’a plus que 4 ponts à créer et ne possède plus que trois voisins dont deux au moins sont des cases 2; il est donc possible de créer un pont vers le troisième voisin pour ne pas créer d’archipel isolé."))
 
-#Si une case avec une etiquette de 2 possède 2 voisins qui sont deux case avec des etiquettes de 2, il est possible de créer un pont vers chaque voisin ") )
-                end
+    #"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de ponts vers des directions déja completes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un pont vers le troisieme voisin ") )
+                    end
 
-
-                
-                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.nbVoisinsDispoEtiDe(2)==1 && c.nbLienCase(@tabLien)==0) 
-                    aides2.push( Aides.creer(2,c,"Une case 2 possède exactement deux voisins dont un est une case 2 et l’autre une case portant une valeur plus élevée; il est donc possible de créer un pont vers la case dont la valeur est la plus élevée."))
-
-#"Si une case avec une etiquette de 2 et 0 lien possède 2 voisins dont un seul avec une etiquette de 2, il est possible de créer un pont vers l'autre voisin ") )
-                end
-
-
-                if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.nbVoisinsDispoEtiDe(1)==1 && c.nbLienCase(@tabLien)==0) 
-                    aides2.push( Aides.creer(2,c,"Une case 2 possède exactement deux voisins dont l’un est une case 1; il est donc possible de créer un pont vers l’autre voisin."))
-#"Si une case avec une etiquette de 2 possède 2 voisins dont un avec une etiquette de 1, il est possible de créer un pont vers l'autre voisins ") )
-                end
+                    for i in 0..1 do
+                        if( (c.etiquetteCase.to_i - c.nbLienCase(@tabLien)) ==3-i && c.nbVoisinsDispo()==3 && c.nbVoisinsDispoEtiDe(2)>=2 && c.nbCasePasDejaRelie(@tabLien)==2-i && !c.lienDifDeFois(2,2,@tabLien) ) 
+                            aides2.push( Aides.creer(2,c,"Une case n’a plus que 4 ponts à créer et ne possède plus que trois voisins dont deux au moins sont des cases 2; il est donc possible de créer un pont vers le troisième voisin pour ne pas créer d’archipel isolé."))
+    #"Si une case possède une valeur de 4 correspondant à son etiquette moins le nombre de ponts vers des directions déja completes et possède 3 voisins dont deux avec des etiquettes de 2, il est possible de créer un pont vers le troisieme voisin ") )
+                        end
+                    end
 
 
 
 
+                    
+                    if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.nbVoisinsDispoEtiDe(2)==2 && c.nbLienCase(@tabLien)==0) 
+                        aides2.push( Aides.creer(2,c,"Une case 2 possède exactement deux voisins qui sont tous les deux des cases 2; il est donc possible de créer un pont vers chaque voisin."))
 
-                #=================NIVEAU 3==============#
-
-
-
-                
-                if( self.testArchipel1(c) )
-                    aides3.push( Aides.creer(3,c,"Lors de la création d’un pont sur une case, un archipel peut être formé, ce qui bloquerait le jeu; il est donc possible de déterminer où créer un pont pour ne pas arriver à cette situation."))
-#" Si lors de la création d'un pont la suite du jeu est bloqué car une île complette est formé(suite de case sans triangle restant relié par des ponts) , il est possible de déterminer ou créer un pont ") )
-                end
+    #Si une case avec une etiquette de 2 possède 2 voisins qui sont deux case avec des etiquettes de 2, il est possible de créer un pont vers chaque voisin ") )
+                    end
 
 
-                if( self.testArchipel2(c) )
-                    aides3.push( Aides.creer(3,c,"Lors de la création d’un pont sur une case comportant 2 voisins et lui restant 2 ponts à construire, un archipel peut être formé, ce qui bloquerait le jeu; il est donc possible de déterminer où créer un pont pour ne pas arriver à cette situation."))
+                    
+                    if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.nbVoisinsDispoEtiDe(2)==1 && c.nbLienCase(@tabLien)==0) 
+                        aides2.push( Aides.creer(2,c,"Une case 2 possède exactement deux voisins dont un est une case 2 et l’autre une case portant une valeur plus élevée; il est donc possible de créer un pont vers la case dont la valeur est la plus élevée."))
 
-# Si lors de la création de deux ponts sur une case avec 2 voisins et 2 ponts restant max a construire la suite du jeu est bloqué car une île complette est formé(suite de case sans triangle restant relié par des ponts) , il est possible de déterminer ou créer au moins un pont") )
-                end
+    #"Si une case avec une etiquette de 2 et 0 lien possède 2 voisins dont un seul avec une etiquette de 2, il est possible de créer un pont vers l'autre voisin ") )
+                    end
 
-                if( self.testArchipel3(c) )
-                    aides3.push( Aides.creer(3,c,"Lors de la création de 4 ponts sur une case comportant 3 voisins et lui restant quatre ponts à construire, un archipel peut être formé, ce qui bloquerait le jeu; il est donc possible de déterminer où créer au moins un pont pour ne pas arriver à cette situation."))
 
-# Si lors de la création de quatre ponts sur une case avec 3 voisins et 4 ponts restant max a construire la suite du jeu est bloqué car une ile complette est formé(suite de case sans triangle restant relié par des ponts) , il est possible de déterminer ou créer au moins un pont") )
+                    if( c.etiquetteCase.to_i==2 && c.nbVoisinsDispo()==2 && c.nbVoisinsDispoEtiDe(1)==1 && c.nbLienCase(@tabLien)==0) 
+                        aides2.push( Aides.creer(2,c,"Une case 2 possède exactement deux voisins dont l’un est une case 1; il est donc possible de créer un pont vers l’autre voisin."))
+    #"Si une case avec une etiquette de 2 possède 2 voisins dont un avec une etiquette de 1, il est possible de créer un pont vers l'autre voisins ") )
+                    end
+
+
+
+
+
+                    #=================NIVEAU 3==============#
+
+
+                    if(aides2.length==0)
+                    
+                        if( self.testArchipel1(c) )
+                            aides3.push( Aides.creer(3,c,"Lors de la création d’un pont sur une case, un archipel peut être formé, ce qui bloquerait le jeu; il est donc possible de déterminer où créer un pont pour ne pas arriver à cette situation."))
+        #" Si lors de la création d'un pont la suite du jeu est bloqué car une île complette est formé(suite de case sans triangle restant relié par des ponts) , il est possible de déterminer ou créer un pont ") )
+                        end
+
+
+                        if( self.testArchipel2(c) )
+                            aides3.push( Aides.creer(3,c,"Lors de la création de 2 ponts sur une case comportant 2 voisins et lui restant 2 ponts à construire, un archipel peut être formé, ce qui bloquerait le jeu; il est donc possible de déterminer où créer un pont pour ne pas arriver à cette situation."))
+
+        # Si lors de la création de deux ponts sur une case avec 2 voisins et 2 ponts restant max a construire la suite du jeu est bloqué car une île complette est formé(suite de case sans triangle restant relié par des ponts) , il est possible de déterminer ou créer au moins un pont") )
+                        end
+
+                        if( self.testArchipel3(c) )
+                            aides3.push( Aides.creer(3,c,"Lors de la création de 4 ponts sur une case comportant 3 voisins et lui restant quatre ponts à construire, un archipel peut être formé, ce qui bloquerait le jeu; il est donc possible de déterminer où créer au moins un pont pour ne pas arriver à cette situation."))
+
+        # Si lors de la création de quatre ponts sur une case avec 3 voisins et 4 ponts restant max a construire la suite du jeu est bloqué car une ile complette est formé(suite de case sans triangle restant relié par des ponts) , il est possible de déterminer ou créer au moins un pont") )
+                        end
+
+                    end
+
                 end
 
 
