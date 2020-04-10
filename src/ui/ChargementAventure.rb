@@ -37,7 +37,7 @@ class ChargementAventure < Gtk::Box
     
         - Cliquez sur un continent débloqué pour vous y déplacer
         - Cliquez sur l'étiquette d'un niveau (rectangle avec le nombre d'étoiles) pour le jouer
-        - Cliquez en dehors d'un continent ou d'une étiquette pour revenir en arrière"
+        - Cliquez sur le bouton retour pour revenir en arrière"
         view.sensitive = false
 
         scroll = Gtk::ScrolledWindow.new()

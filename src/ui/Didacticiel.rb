@@ -15,14 +15,23 @@ class Didacticiel < Gtk::Window
         vbox.margin = 15
 
         view = Gtk::TextView.new()
+        view.wrap_mode = :word
         view1 = Gtk::TextView.new()
+        view1.wrap_mode = :word
         view2 = Gtk::TextView.new()
+        view2.wrap_mode = :word
         view3 = Gtk::TextView.new()
+        view3.wrap_mode = :word
         view4 = Gtk::TextView.new()
+        view4.wrap_mode = :word
         view5 = Gtk::TextView.new()
+        view5.wrap_mode = :word
         view6 = Gtk::TextView.new()
+        view6.wrap_mode = :word
         view7 = Gtk::TextView.new()
+        view7.wrap_mode = :word
         view8 = Gtk::TextView.new()
+        view8.wrap_mode = :word
         view.buffer.text = 
 "   
     Règles : 
@@ -144,7 +153,7 @@ le choix de la valider, ou bien de l'annuler afin de revenir à l'état du jeu a
         
         scroll.add(vbox2)
         scroll.set_policy(:never, :automatic)
-        scroll.expand = true
+        scroll.vexpand = true
         
         bouton = Gtk::Button.new(label: "Quitter")
         bouton.signal_connect("clicked") { self.close() }

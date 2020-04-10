@@ -106,7 +106,7 @@ class AfficheurJeu < Gtk::Paned
         @hypothese = Gtk::Stack.new()
         @boutonHypothese = Gtk::Button.new(:label => "Hypothèse")
         @boutonHypothese.signal_connect("clicked") { |widget| @grille.commencerHypothese(); @hypothese.visible_child = @boxHypothese; @afficheurGrille.queue_draw() }
-        @hypothese.add_named(@boutonHypothese, "Inactif")
+        @hypothese.add(@boutonHypothese)
 
         @boxHypothese = Gtk::Box.new(Gtk::Orientation.new(0), 0)
         @boutonValiderHypothese = Gtk::Button.new(:label => "Valider")
@@ -118,9 +118,11 @@ class AfficheurJeu < Gtk::Paned
 
         @boxHypothese.add(@boutonAnnulerHypothese)
         @boxHypothese.add(@boutonValiderHypothese)
-        @hypothese.add_named(@boxHypothese, "Actif")
-        @hypothese.visible_child = @boutonHypothese
+        @hypothese.add(@boxHypothese)
+        puts(@grille.hypothese)
         boxVerticale.add(@hypothese)
+        @hypothese.show_all()
+        @hypothese.visible_child = @grille.hypothese == true ? @boxHypothese : @boutonHypotese
 
         @reinitialiser = Gtk::Button.new(:label => "Réinitialiser")
         boxVerticale.add(@reinitialiser)
